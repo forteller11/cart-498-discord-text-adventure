@@ -14,8 +14,14 @@ namespace chext
         private DiscordSocketClient _client;
         private GamesManager _gamesManager;
         
-        private static string? _binPath;
-        private static string? _projectPath;
+        public static readonly string BinPath;
+        public static readonly string ProjectPath;
+
+        static Program()
+        {
+            BinPath = Directory.GetCurrentDirectory();
+            ProjectPath =  Directory.GetParent(BinPath).Parent.Parent.FullName;
+        }
         
         static void Main(string[] args) => new Program().MainAsync().GetAwaiter().GetResult();
         
@@ -23,8 +29,7 @@ namespace chext
         public async Task MainAsync()
         {
             Console.WriteLine("\n\n");
-            _binPath = Directory.GetCurrentDirectory();
-            _projectPath =  Directory.GetParent(_binPath).Parent.Parent.FullName;
+
 
             _client = new DiscordSocketClient();
             _client.Log += Log;
@@ -35,7 +40,7 @@ namespace chext
             };
 
             
-            var token = File.ReadAllText(_projectPath + @"Sensitive\token.txt");
+            var token = File.ReadAllText(ProjectPath + @"Sensitive\token.txt");
             await _client.LoginAsync(TokenType.Bot, token);
             await _client.StartAsync();
             
