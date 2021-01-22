@@ -1,39 +1,36 @@
 ﻿using System.Collections.Generic;
+
 #nullable enable
 
 namespace DiscordTextAdventure.Parsing
 {
+
+    
     public static class WordTables
     {
-        public static readonly Dictionary<int, string> Nouns;
-        public static readonly Dictionary<int, string> Verb;
-
-        //todo, synonomyms > string
+        public static readonly List<SynonymCollection> Nouns;
+        public static readonly List<SynonymCollection> Verbs;
+        
         static WordTables()
         {
-            string[] nouns =
+            Nouns = new List<SynonymCollection>
             {
-                "room",
-                "bot",
-                "north",
-                "south"
+               new SynonymCollection( "north"),
+               new SynonymCollection( "west"),
+               new SynonymCollection( "east"),
+               new SynonymCollection( "south")
             };
             
-            string[] verbs =
+            Verbs = new List<SynonymCollection>
             {
-                "look",
-                "walk",
+                new SynonymCollection( "look"),
+                new SynonymCollection( "type"),
+                new SynonymCollection( "pony"),
+                new SynonymCollection( "troll")
             };
-            
-            AddWords(nouns, out Nouns);
-            AddWords(nouns, out Verb);
+          
         }
 
-        static void AddWords(string [] words, out Dictionary<int, string> dictionary)
-        {
-            dictionary = new Dictionary<int, string>(words.Length);
-            for (int i = 0; i < words.Length; i++)
-                dictionary.Add(words[i].GetHashCode(), words[i]);
-        }
+
     }
 }
