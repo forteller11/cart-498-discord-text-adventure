@@ -11,4 +11,8 @@
       <PackageReference Include="Discord.Net" Version="2.2.0" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Mechanics" />
+    </ItemGroup>
+
 </Project>
