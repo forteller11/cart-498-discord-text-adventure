@@ -1,24 +1,31 @@
 ﻿using System;
-using DiscordTextAdventure.Parsing;
 
 #nullable enable
-namespace chext.Parser
+namespace DiscordTextAdventure.Parsing
 {
-    public class Tokenizer
+    public static class Tokenizer
     {
-        public static readonly char[] Seperators = {' ',};
-        public Token Tokenize(string message)
+
+        public static Token Tokenize(string message)
         {
-            var words = message.Split(Seperators, StringSplitOptions.RemoveEmptyEntries);
+            var words = message.Split(Common.SEPERATORS, StringSplitOptions.RemoveEmptyEntries);
             var tokens = new Token[words.Length];
+            
             for (int i = 0; i < words.Length; i++)
             {
-                Token? previous = i != 0 ? words[i - 1] : null; 
-                Token? next     = i <= words.Length-2 ? words[i+1] : null; 
-                tokens[i] = new Token(words[i], previous, next);
+                var currentToken = new Token(words[i]);
+                tokens[i] = currentToken;
+
+                if (i != 0)
+                {
+                    var previousToken = tokens[i - 1];
+                   
+                    previousToken.Next = currentToken;
+                    currentToken.Previous = previousToken;
+                }
             }
-            
-            //todo set previous next,
+
+            return tokens[0];
         }
     }
 }
