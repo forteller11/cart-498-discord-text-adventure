@@ -29,8 +29,10 @@ namespace DiscordTextAdventure.Parsing
             return true;
         }
 
-
         
+        /// <param name="token"> the initial token</param>
+        /// <param name="result"> the token after a parse, will be identical if no match</param>
+        /// <returns></returns>
         public bool CheckMatch(in Token token, out Token? result)
         {
             for (int i = 0; i < CompoundWords.Length; i++)
