@@ -8,11 +8,10 @@ namespace DiscordTextAdventure.Parsing
     public struct CompoundWord
     {
         public string[] Words;
-        public static readonly char[] Seperators = { ' ', '-', '\t', '\n'};
-        
+
         public CompoundWord(string words)
         {
-            Words = words.Split(Seperators, StringSplitOptions.RemoveEmptyEntries);
+            Words = words.Split(Common.SEPERATORS, StringSplitOptions.RemoveEmptyEntries);
         }
 
         public bool CheckMatch(in Token token, out Token? result)
