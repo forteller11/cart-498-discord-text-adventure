@@ -5,7 +5,7 @@
 namespace TextAdventure.Parsing
 {
     //used to represent and support compound nouns/verbs like "pick up"
-    public struct CompoundWord
+    public class CompoundWord : IEquatable<CompoundWord>
     {
         public string[] Words;
 
@@ -35,6 +35,20 @@ namespace TextAdventure.Parsing
                 {
                     result = token.Next;
                 }
+            }
+
+            return true;
+        }
+
+        public bool Equals(CompoundWord other)
+        {
+            if (Words.Length != other.Words.Length)
+                return false;
+            
+            for (int i = 0; i < Words.Length; i++)
+            {
+                if (Words[i] != other.Words[i])
+                    return false;
             }
 
             return true;

@@ -6,7 +6,7 @@ using System.Collections.Generic;
 namespace TextAdventure.Parsing
 {
 
-    public struct SynonymCollection //: IEquatable<SynonymCollection>
+    public class SynonymCollection : IEquatable<SynonymCollection>
     {
         public readonly CompoundWord[] CompoundWords;
 

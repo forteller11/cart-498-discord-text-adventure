@@ -3,7 +3,7 @@
 #nullable enable
 namespace TextAdventure.Parsing
 {
-    public class Parser
+    public class Parser //todo check for preposition and indirect object
     {
         private Phrase _phrase;
         public Phrase Parse(Token rootToken)
@@ -26,14 +26,14 @@ namespace TextAdventure.Parsing
 
             return _phrase;
             
-            void CheckForMatch(ref Token? tokenIndex,SynonymCollection [] synonyms, ref SynonymCollection wordInPhrase)
+            void CheckForMatch(ref Token? index, SynonymCollection [] synonyms, ref SynonymCollection? wordInPhrase)
             {
                 for (int i = 0; i < synonyms.Length; i++)
                 {
-                    if (synonyms[i].CheckMatch(tokenIndex, out var result))
+                    if (synonyms[i].CheckMatch(index, out var result))
                     {
                         wordInPhrase = synonyms[i];
-                        tokenIndex = result;
+                        index = result;
                         return;
                     }
                 }
