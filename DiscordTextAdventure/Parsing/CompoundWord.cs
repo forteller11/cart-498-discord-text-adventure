@@ -33,18 +33,21 @@ namespace TextAdventure.Parsing
         
         public bool CheckMatch(List<Token> tokens, ref int index, out CompoundWord? matchedWord)
         {
-            Token currentToken = tokens[index];
 
             matchedWord = null;
             
             for (int i = 0; i < Words.Count; i++)
             {
-                if (Words[i] == currentToken.Raw)
+                if (Words[i] == tokens[index].Raw)
                 {
                     index++;
                     
                     if (index >= tokens.Count)
                         return false;
+                }
+                else
+                {
+                    return false;
                 }
             }
 

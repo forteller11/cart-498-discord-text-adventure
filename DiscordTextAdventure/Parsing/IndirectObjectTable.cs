@@ -3,7 +3,7 @@
     public static class IndirectObjectTable
     {
 
-        public static SynonymCollection Axe = new SynonymCollection("axe");
+        public static SynonymCollection Axe = new SynonymCollection("axe", "sword");
         public static readonly SynonymCollection[] IndirectObjects;
 
         static IndirectObjectTable()
