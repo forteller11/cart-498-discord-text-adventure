@@ -38,17 +38,15 @@ namespace DiscordTextAdventure.Parsing.DataStructures
             
             for (int i = 0; i < Words.Count; i++)
             {
-                if (Words[i] == tokens[index].Raw)
-                {
-                    index++;
-                    
-                    if (index >= tokens.Count)
-                        return false;
-                }
-                else
-                {
+                if (index >= tokens.Count)
                     return false;
-                }
+                
+                if (Words[i] == tokens[index].Raw)
+                    index++;
+                
+                else
+                    return false;
+                
             }
 
             matchedWord = this;

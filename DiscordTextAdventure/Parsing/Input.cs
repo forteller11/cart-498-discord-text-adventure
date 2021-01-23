@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using DiscordTextAdventure.Parsing.DataStructures;
 
 #nullable enable
 
-namespace TextAdventure.Parsing
+namespace DiscordTextAdventure.Parsing
 {
     public class Input
     {

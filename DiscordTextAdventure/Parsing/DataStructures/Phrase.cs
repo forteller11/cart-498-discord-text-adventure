@@ -15,7 +15,7 @@ namespace DiscordTextAdventure.Parsing.DataStructures
             string b = Noun != null ? Noun.ToString() : "";
             string c = Preposition != null ? Preposition.ToString() : "";
             string d = IndirectObject != null ? IndirectObject.ToString() : "";
-            return a + " " + b + " " + c + " "+ d;
+            return "V:" + a + " N:" + b + " P:" + c + " IO:"+ d;
         }
     }
 }
