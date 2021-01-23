@@ -15,6 +15,8 @@ namespace TextAdventure.Parsing
             var sanitizedWords = new string[words.Length];
             for (int i = 0; i < words.Length; i++)
                 sanitizedWords[i] = words[i].ToLower();
+            
+            //todo allow for compound words using "word-word" in inpuyt
 
             Synonyms = new CompoundWord[sanitizedWords.Length];
             for (int i = 0; i < sanitizedWords.Length; i++)
@@ -34,17 +36,17 @@ namespace TextAdventure.Parsing
         }
 
         
-        /// <param name="token"> the initial token</param>
-        /// <param name="result"> the token after a parse, will be identical if no match</param>
-        /// <returns></returns>
-        public bool CheckMatch(in Token token, out Token? result, out CompoundWord? matchedWord)
+
+        public bool CheckMatch(List<Token> tokens, ref int index, out CompoundWord? matchedWord)
         {
-            result = token;
             matchedWord = null;
             
             for (int i = 0; i < Synonyms.Length; i++)
             {
-                if (Synonyms[i].CheckMatch(token, out result, out matchedWord))
+                if (index >= tokens.Count)
+                    return false;
+
+                if (Synonyms[i].CheckMatch(tokens, ref index, out matchedWord))
                     return true;
             }
             return false;

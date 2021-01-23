@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 
 #nullable enable
 namespace TextAdventure.Parsing
@@ -6,7 +8,7 @@ namespace TextAdventure.Parsing
     public class Tokenizer
     {
         //todo, remove articles and sanitize....
-        public Token Tokenize(string message)
+        public List<Token> Tokenize(string message)
         {
             var words = message.Split(Common.SEPERATORS, StringSplitOptions.RemoveEmptyEntries);
             var tokens = new Token[words.Length];
@@ -25,7 +27,7 @@ namespace TextAdventure.Parsing
                 }
             }
 
-            return tokens[0];
+            return tokens.ToList();
         }
     }
 }

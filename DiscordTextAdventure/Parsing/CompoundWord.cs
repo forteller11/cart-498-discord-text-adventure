@@ -29,38 +29,26 @@ namespace TextAdventure.Parsing
             }
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="initialToken"></param>
-        /// <param name="result"> result null if at last token</param>
-        /// <returns></returns>
-        public bool CheckMatch(in Token initialToken, out Token? result, out CompoundWord? matchedWord)
+      
+        
+        public bool CheckMatch(List<Token> tokens, ref int index, out CompoundWord? matchedWord)
         {
-            Token currentToken = initialToken;
-            result = null;
+            Token currentToken = tokens[index];
+
             matchedWord = null;
             
             for (int i = 0; i < Words.Count; i++)
             {
                 if (Words[i] == currentToken.Raw)
                 {
-                    matchedWord ??= new CompoundWord();
-                    matchedWord.Words.Add(initialToken.Raw);
-
-                    if (initialToken.Next != null)
-                        currentToken = initialToken.Next;
-                    else
+                    index++;
+                    
+                    if (index >= tokens.Count)
                         return false;
-                }
-                
-                else
-                {
-                    result = initialToken;
-                    return false;
                 }
             }
 
+            matchedWord = this;
             return true;
         }
 

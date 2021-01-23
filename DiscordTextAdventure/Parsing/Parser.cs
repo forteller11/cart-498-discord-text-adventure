@@ -3,38 +3,35 @@
 #nullable enable
 namespace TextAdventure.Parsing
 {
-    public class Parser //todo check for preposition and indirect object
+    public class Parser
     {
-        //private Phrase _phrase;
-        public Phrase Parse(Token rootToken)
+        public Phrase Parse(List<Token> tokens)
         {
-            var phrase = new Phrase();
-            var tokenIndex = rootToken;
-            
             var verbs = VerbTable.Verbs;
             var nouns = NounTable.Nouns;
-            // var prepositions = NoaunTable.Nouns;
-            // var IndirectObject = NounTdasable.Nouns;
+            var prepositions = PrepositionTable.Prepositions;
+            var IndirectObject = IndirectObjectTable.IndirectObjects;
             
-
-            phrase.Verb = CheckForMatch(ref tokenIndex, verbs);
-            phrase.Noun = CheckForMatch(ref tokenIndex, nouns);
+            var phrase = new Phrase();
+            int tokenIndex = 0;
+            
+            phrase.Verb             = CheckForMatch(tokens, ref tokenIndex, verbs);
+            phrase.Noun             = CheckForMatch(tokens, ref tokenIndex, nouns);
+            phrase.Preposition      = CheckForMatch(tokens, ref tokenIndex, prepositions);
+            phrase.IndirectObject   = CheckForMatch(tokens, ref tokenIndex, IndirectObject);
 
             return phrase;
             
-            CompoundWord? CheckForMatch(ref Token? index, SynonymCollection [] synonyms)
+            CompoundWord? CheckForMatch(List<Token> tokens, ref int index, SynonymCollection [] synonyms)
             {
-                if (index == null)
-                    return null;
-                
                 CompoundWord? matchedWord = null;
                 for (int i = 0; i < synonyms.Length; i++)
                 {
-                    if (synonyms[i].CheckMatch(index, out var result, out matchedWord))
-                    {
-                        index = result;
+                    if (index >= tokens.Count)
+                        return null;
+                    
+                    if (synonyms[i].CheckMatch(tokens, ref index, out matchedWord))
                         return matchedWord;
-                    }
                 }
                 return matchedWord;
             }
