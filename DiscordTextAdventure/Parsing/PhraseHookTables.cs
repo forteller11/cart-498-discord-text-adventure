@@ -2,7 +2,7 @@
 {
     public class PhraseHookTables
     {
-        private PhraseHook GoNorth = 
+        //private PhraseHook GoNorth = 
         //todo do do all actions
         private PhraseBlueprint[] Actions; 
     }

@@ -24,6 +24,9 @@ namespace TextAdventure.Parsing
             
             CompoundWord? CheckForMatch(ref Token? index, SynonymCollection [] synonyms)
             {
+                if (index == null)
+                    return null;
+                
                 CompoundWord? matchedWord = null;
                 for (int i = 0; i < synonyms.Length; i++)
                 {

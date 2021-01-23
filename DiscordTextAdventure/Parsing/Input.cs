@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 #nullable enable
 
@@ -22,6 +23,7 @@ namespace TextAdventure.Parsing
         {
            var tokens = _tokenizer.Tokenize(message);
            var phrase = _parser.Parse(tokens);
+           Console.WriteLine(phrase.ToString());
            
            for (int i = 0; i < Responses.Count; i++)
            {

@@ -88,6 +88,14 @@ namespace TextAdventure.Parsing
 
             return true;
         }
-        
+
+        public override string ToString()
+        {
+            var output = String.Empty;
+            for (int i = 0; i < Words.Count; i++)
+                output += Words[i];
+            
+            return output;
+        }
     }
 }
