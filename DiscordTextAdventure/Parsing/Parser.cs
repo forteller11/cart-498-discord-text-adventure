@@ -5,38 +5,35 @@ namespace TextAdventure.Parsing
 {
     public class Parser //todo check for preposition and indirect object
     {
-        private Phrase _phrase;
+        //private Phrase _phrase;
         public Phrase Parse(Token rootToken)
         {
-
+            var phrase = new Phrase();
             var tokenIndex = rootToken;
+            
             var verbs = VerbTable.Verbs;
             var nouns = NounTable.Nouns;
-
-            // for (int i = 0; i < WordTables.Verbs.Count; i++)
-            //     if (verbs[i].CheckMatch(currentToken, out result))
-            //         _phrase.Verb = verbs[i];
-            //
-            // for (int i = 0; i < WordTables.Verbs.Count; i++)
-            //     if (verbs[i].CheckMatch(currentToken, out result))
-            //         _phrase.Verb = verbs[i];
-
-            CheckForMatch(ref tokenIndex, verbs, ref _phrase.Verb);
-            CheckForMatch(ref tokenIndex, nouns, ref _phrase.Noun);
-
-            return _phrase;
+            // var prepositions = NoaunTable.Nouns;
+            // var IndirectObject = NounTdasable.Nouns;
             
-            void CheckForMatch(ref Token? index, SynonymCollection [] synonyms, ref SynonymCollection? wordInPhrase)
+
+            phrase.Verb = CheckForMatch(ref tokenIndex, verbs);
+            phrase.Noun = CheckForMatch(ref tokenIndex, nouns);
+
+            return phrase;
+            
+            CompoundWord? CheckForMatch(ref Token? index, SynonymCollection [] synonyms)
             {
+                CompoundWord? matchedWord = null;
                 for (int i = 0; i < synonyms.Length; i++)
                 {
-                    if (synonyms[i].CheckMatch(index, out var result))
+                    if (synonyms[i].CheckMatch(index, out var result, out matchedWord))
                     {
-                        wordInPhrase = synonyms[i];
                         index = result;
-                        return;
+                        return matchedWord;
                     }
                 }
+                return matchedWord;
             }
                 
         }

@@ -4,6 +4,6 @@
     {
         private PhraseHook GoNorth = 
         //todo do do all actions
-        private Phrase[] Actions; 
+        private PhraseBlueprint[] Actions; 
     }
 }

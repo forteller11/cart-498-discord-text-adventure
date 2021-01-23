@@ -5,13 +5,13 @@ namespace TextAdventure.Parsing
     //to respond to phrase with, phrase
     public class Response
     {
-        public readonly Phrase PhraseToMatch;
-        public readonly Action<Phrase> Action;
+        public readonly PhraseBlueprint PhraseBlueprintToMatch;
+        public readonly Action<PhraseBlueprint> Action;
 
 
-        public Response(Phrase phraseToMatch, Action<Phrase> action)
+        public Response(PhraseBlueprint phraseBlueprintToMatch, Action<PhraseBlueprint> action)
         {
-            PhraseToMatch = phraseToMatch;
+            PhraseBlueprintToMatch = phraseBlueprintToMatch;
             Action = action;
         }
     }

@@ -4,12 +4,12 @@ namespace TextAdventure.Parsing
 {
     public struct PhraseHook
     {
-        public readonly Phrase Phrase;
-        public readonly event Action<Phrase> DoSomething;
+        public readonly PhraseBlueprint PhraseBlueprint;
+        public readonly event Action<PhraseBlueprint> DoSomething;
 
-        public PhraseHook(Phrase phrase)
+        public PhraseHook(PhraseBlueprint phraseBlueprint)
         {
-            Phrase = phrase;
+            PhraseBlueprint = phraseBlueprint;
         }
     }
 }
