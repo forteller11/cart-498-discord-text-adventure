@@ -5,7 +5,7 @@ namespace TextAdventure.Parsing
 {
     public class Tokenizer
     {
-
+        //todo, remove articles and sanitize....
         public Token Tokenize(string message)
         {
             var words = message.Split(Common.SEPERATORS, StringSplitOptions.RemoveEmptyEntries);
