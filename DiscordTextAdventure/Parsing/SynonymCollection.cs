@@ -12,10 +12,14 @@ namespace TextAdventure.Parsing
 
         public SynonymCollection(params string[] words)
         {
-            CompoundWords = new CompoundWord[words.Length];
+            var sanitizedWords = new string[words.Length];
             for (int i = 0; i < words.Length; i++)
+                sanitizedWords[i] = words[i].ToLower();
+
+            CompoundWords = new CompoundWord[sanitizedWords.Length];
+            for (int i = 0; i < sanitizedWords.Length; i++)
             {
-                CompoundWords[i] = new CompoundWord(words[i]);
+                CompoundWords[i] = new CompoundWord(sanitizedWords[i]);
             }
         }
 

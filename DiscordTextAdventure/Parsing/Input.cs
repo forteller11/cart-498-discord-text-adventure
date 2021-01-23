@@ -15,7 +15,8 @@ namespace TextAdventure.Parsing
         public void ProcessMessage(string message)
         {
            var tokens = _tokenizer.Tokenize(message);
-           _parser.Parse(tokens);
+           var phrase = _parser.Parse(tokens);
+           
         }
     }
 }

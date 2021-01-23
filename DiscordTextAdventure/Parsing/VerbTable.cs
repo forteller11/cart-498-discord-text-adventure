@@ -2,8 +2,7 @@
 {
     public static class VerbTable
     {
-        public static SynonymCollection north = new SynonymCollection("dog");
-        public static SynonymCollection south = new SynonymCollection("southexample");
+        public static SynonymCollection Move = new SynonymCollection("go", "travel", "walk", "run", "move");
 
         public readonly static SynonymCollection[] Verbs;
 
