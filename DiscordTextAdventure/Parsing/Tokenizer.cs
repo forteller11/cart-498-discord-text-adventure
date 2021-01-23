@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using DiscordTextAdventure.Parsing.DataStructures;
+using DiscordTextAdventure.Parsing.Tables;
 
 #nullable enable
 namespace DiscordTextAdventure.Parsing
@@ -11,24 +12,25 @@ namespace DiscordTextAdventure.Parsing
         //todo, remove articles and sanitize....
         public List<Token> Tokenize(string message)
         {
-            var words = message.Split(Common.SEPERATORS, StringSplitOptions.RemoveEmptyEntries);
-            var tokens = new Token[words.Length];
+
+            var lowerWords = message.ToLower();
             
-            for (int i = 0; i < words.Length; i++)
+            var words = lowerWords.Split(Common.SEPERATORS, StringSplitOptions.RemoveEmptyEntries).ToList();
+
+            //remove articles
+            for (int i = 0; i < words.Count; i++)
             {
-                var currentToken = new Token(words[i]);
-                tokens[i] = currentToken;
-
-                if (i != 0)
-                {
-                    var previousToken = tokens[i - 1];
-                   
-                    previousToken.Next = currentToken;
-                    currentToken.Previous = previousToken;
-                }
+                if (ArticleTable.Articles.Contains(words[i]))
+                    words.RemoveAt(i);
             }
+            
+            var tokens = new List<Token>(words.Count);
+            for (int i = 0; i < words.Count; i++)
+                tokens.Add(new Token(words[i]));
 
-            return tokens.ToList();
+            return tokens;
         }
+        
+      
     }
 }
