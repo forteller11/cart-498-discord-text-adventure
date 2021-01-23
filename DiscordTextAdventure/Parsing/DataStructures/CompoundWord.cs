@@ -53,16 +53,7 @@ namespace DiscordTextAdventure.Parsing.DataStructures
             return true;
         }
 
-        // public bool Contains(string word)
-        // {
-        //     for (int i = 0; i < Words.Length; i++)
-        //     {
-        //         if (Words[i] == word)
-        //             return true;
-        //     }
-        //
-        //     return false;
-        // }
+
 
         public bool Equals(CompoundWord other)
         {
@@ -82,8 +73,12 @@ namespace DiscordTextAdventure.Parsing.DataStructures
         {
             var output = String.Empty;
             for (int i = 0; i < Words.Count; i++)
+            {
                 output += Words[i];
-            
+                if (i < Words.Count - 1)
+                    output += "-";
+            }
+
             return output;
         }
     }

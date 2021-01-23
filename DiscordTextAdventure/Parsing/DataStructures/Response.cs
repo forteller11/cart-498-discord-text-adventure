@@ -5,13 +5,13 @@ namespace DiscordTextAdventure.Parsing.DataStructures
     //to respond to phrase with, phrase
     public class Response
     {
-        public readonly PhraseBlueprint PhraseBlueprintToMatch;
-        public readonly Action<PhraseBlueprint> Action;
+        public readonly PhraseBlueprint PhraseBlueprint;
+        public readonly Action<Phrase> Action;
 
 
-        public Response(PhraseBlueprint phraseBlueprintToMatch, Action<PhraseBlueprint> action)
+        public Response(PhraseBlueprint phraseBlueprint, Action<Phrase> action)
         {
-            PhraseBlueprintToMatch = phraseBlueprintToMatch;
+            PhraseBlueprint = phraseBlueprint;
             Action = action;
         }
     }

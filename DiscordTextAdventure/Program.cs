@@ -30,7 +30,7 @@ namespace chext
         static void TestParse()
         {
             var input = new Input();
-            input.ProcessMessage("go north using the axe");
+            input.ProcessMessage("pick up axe using hands");
 
         }
         

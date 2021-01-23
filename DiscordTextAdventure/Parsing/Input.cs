@@ -8,7 +8,7 @@ namespace DiscordTextAdventure.Parsing
 {
     public class Input
     {
-        public List<Response> Responses;
+        private List<Response> _responses;
         
         private Tokenizer _tokenizer;
         private Parser _parser;
@@ -17,21 +17,23 @@ namespace DiscordTextAdventure.Parsing
         {
             _tokenizer = new Tokenizer();
             _parser = new Parser();
-            Responses = new List<Response>();
+            _responses = new List<Response>();
+        }
+
+        public void AddResponse(Response response)
+        {
+            _responses.Add(response);
         }
         
         public void ProcessMessage(string message)
         {
            var tokens = _tokenizer.Tokenize(message);
            var phrase = _parser.Parse(tokens);
-           Console.WriteLine(phrase.ToString());
-           
-           for (int i = 0; i < Responses.Count; i++)
+
+           for (int i = 0; i < _responses.Count; i++)
            {
-               if (phrase.Equals(Responses[i].Action))
-               {
-                   
-               }
+               if (_responses[i].PhraseBlueprint.MatchesPhrase(phrase))
+                   _responses[i].Action.Invoke(phrase);
            }
            
         }
