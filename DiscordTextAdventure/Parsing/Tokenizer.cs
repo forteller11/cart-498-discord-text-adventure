@@ -3,10 +3,10 @@
 #nullable enable
 namespace DiscordTextAdventure.Parsing
 {
-    public static class Tokenizer
+    public class Tokenizer
     {
 
-        public static Token Tokenize(string message)
+        public Token Tokenize(string message)
         {
             var words = message.Split(Common.SEPERATORS, StringSplitOptions.RemoveEmptyEntries);
             var tokens = new Token[words.Length];

@@ -2,6 +2,7 @@
 {
     public struct Phrase
     {
-        
+        public SynonymCollection Verb;
+        public SynonymCollection Noun;
     }
 }

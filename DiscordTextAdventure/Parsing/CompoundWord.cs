@@ -14,6 +14,12 @@ namespace DiscordTextAdventure.Parsing
             Words = words.Split(Common.SEPERATORS, StringSplitOptions.RemoveEmptyEntries);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="token"></param>
+        /// <param name="result"> result null if at last token</param>
+        /// <returns></returns>
         public bool CheckMatch(in Token token, out Token? result)
         {
             result = null;

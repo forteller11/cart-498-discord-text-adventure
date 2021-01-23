@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using chext.Discord;
 using Discord;
 using Discord.WebSocket;
+using DiscordTextAdventure.Parsing;
 
 #nullable enable
 namespace chext
@@ -23,9 +24,15 @@ namespace chext
             ProjectPath =  Directory.GetParent(BinPath).Parent.Parent.FullName;
         }
         
-        static void Main(string[] args) => new Program().MainAsync().GetAwaiter().GetResult();
-        
+        // static void Main(string[] args) => new Program().MainAsync().GetAwaiter().GetResult();
+        static void Main(string[] args) => TestParse();
 
+        static void TestParse()
+        {
+            var input = new Input();
+            input.ProcessMessage("go north fellow");
+        }
+        
         public async Task MainAsync()
         {
             Console.WriteLine("\n\n");

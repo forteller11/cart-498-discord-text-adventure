@@ -35,13 +35,12 @@ namespace DiscordTextAdventure.Parsing
         /// <returns></returns>
         public bool CheckMatch(in Token token, out Token? result)
         {
+            result = token;
             for (int i = 0; i < CompoundWords.Length; i++)
             {
                 if (CompoundWords[i].CheckMatch(token, out result))
                     return true;
             }
-
-            result = null;
             return false;
         }
         

@@ -1,29 +1,44 @@
-﻿using DiscordTextAdventure.Parsing;
+﻿using System.Collections.Generic;
 
-namespace chext.Parser
+#nullable enable
+namespace DiscordTextAdventure.Parsing
 {
     public class Parser
     {
         private Phrase _phrase;
         public Phrase Parse(Token rootToken)
         {
-            var currentToken = rootToken;
-            var nouns = WordTables.Nouns;
-            var verbs = WordTables.Verbs;
 
-            Token result = null;
+            var tokenIndex = rootToken;
+            var verbs = WordTables.Verbs;
+            var nouns = WordTables.Nouns;
+
+            // for (int i = 0; i < WordTables.Verbs.Count; i++)
+            //     if (verbs[i].CheckMatch(currentToken, out result))
+            //         _phrase.Verb = verbs[i];
+            //
+            // for (int i = 0; i < WordTables.Verbs.Count; i++)
+            //     if (verbs[i].CheckMatch(currentToken, out result))
+            //         _phrase.Verb = verbs[i];
+
+            CheckForMatch(ref tokenIndex, verbs, ref _phrase.Verb);
+            CheckForMatch(ref tokenIndex, nouns, ref _phrase.Noun);
+
+            return _phrase;
             
-                for (int i = 0; i < WordTables.Nouns.Count; i++)
+            void CheckForMatch(ref Token? tokenIndex, List<SynonymCollection> synonyms, ref SynonymCollection wordInPhrase)
+            {
+                for (int i = 0; i < synonyms.Count; i++)
                 {
-                    if (!nouns[i].CheckMatch(currentToken, out result))
-                        continue;
-                    else
+                    if (synonyms[i].CheckMatch(tokenIndex, out var result))
                     {
-                        _phrase.Noun = nouns[i];
+                        wordInPhrase = synonyms[i];
+                        tokenIndex = result;
+                        return;
                     }
                 }
-            
+            }
                 
         }
-}
+    }
 }

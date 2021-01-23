@@ -1,12 +1,10 @@
 ﻿
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.Design;
 using System.Threading.Tasks;
-using chext.Discord.Parsing;
-using Discord;
+using chext.Mechanics;
 using Discord.WebSocket;
-using Game = chext.Mechanics.Game;
+using DiscordTextAdventure.Parsing;
 
 #nullable enable
 
@@ -15,10 +13,10 @@ namespace chext.Discord
     
     public class GamesManager
     {
-        private Parsing.pa _parser;
+        private Input _input;
         private DiscordSocketClient _client;
         
-        private Dictionary<ulong, Game> _games = new Dictionary<ulong, Game>();
+        private Dictionary<ulong, Session> _games = new Dictionary<ulong, Session>();
 
         private Dictionary<ulong, GameProposal> _proposals = new Dictionary<ulong, GameProposal>();
 
@@ -31,7 +29,7 @@ namespace chext.Discord
             Program.DebugLog("Game manger created");
             _client = client;
             
-            _parser = new PreGameParser();
+            _input = new Input();
             // _parser.GameProposalHandler += OnGameProposalProposal;
             // _parser.JoinHandler += OnJoin;
             // _parser.JoinSideHandler += OnJoinSide;
@@ -46,17 +44,17 @@ namespace chext.Discord
             Program.DebugLog("Game Manager message received");
             if (message.Author.Id == _client.CurrentUser.Id)
                 return Task.CompletedTask;
-
-            Parser.Parse(message);
             
-            foreach (var gameKV in _games)
-            {
-                var game = gameKV.Value;
-                if (message.Channel.Id == game.Channel.Id)
-                {
-                    game.InChannelNonSelfMessageReceived(message);
-                }
-            }
+            _input.ProcessMessage(message.Content);
+            
+            //todo foreach (var gameKV in _games)
+            // {
+            //     var game = gameKV.Value;
+            //     if (message.Channel.Id == game.Channel.Id)
+            //     {
+            //         game.InChannelNonSelfMessageReceived(message);
+            //     }
+            // }
             
             return Task.CompletedTask;
         }
