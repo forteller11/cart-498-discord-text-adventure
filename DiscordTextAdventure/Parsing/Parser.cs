@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 
 #nullable enable
-namespace DiscordTextAdventure.Parsing
+namespace TextAdventure.Parsing
 {
     public class Parser
     {
@@ -10,8 +10,8 @@ namespace DiscordTextAdventure.Parsing
         {
 
             var tokenIndex = rootToken;
-            var verbs = WordTables.Verbs;
-            var nouns = WordTables.Nouns;
+            var verbs = VerbTable.Verbs;
+            var nouns = NounTable.Nouns;
 
             // for (int i = 0; i < WordTables.Verbs.Count; i++)
             //     if (verbs[i].CheckMatch(currentToken, out result))
@@ -26,9 +26,9 @@ namespace DiscordTextAdventure.Parsing
 
             return _phrase;
             
-            void CheckForMatch(ref Token? tokenIndex, List<SynonymCollection> synonyms, ref SynonymCollection wordInPhrase)
+            void CheckForMatch(ref Token? tokenIndex,SynonymCollection [] synonyms, ref SynonymCollection wordInPhrase)
             {
-                for (int i = 0; i < synonyms.Count; i++)
+                for (int i = 0; i < synonyms.Length; i++)
                 {
                     if (synonyms[i].CheckMatch(tokenIndex, out var result))
                     {

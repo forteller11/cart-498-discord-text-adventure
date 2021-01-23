@@ -2,7 +2,7 @@
 
 #nullable enable
 
-namespace DiscordTextAdventure.Parsing
+namespace TextAdventure.Parsing
 {
     //used to represent and support compound nouns/verbs like "pick up"
     public struct CompoundWord

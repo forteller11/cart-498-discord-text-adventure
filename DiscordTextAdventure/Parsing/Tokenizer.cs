@@ -1,7 +1,7 @@
 ﻿using System;
 
 #nullable enable
-namespace DiscordTextAdventure.Parsing
+namespace TextAdventure.Parsing
 {
     public class Tokenizer
     {

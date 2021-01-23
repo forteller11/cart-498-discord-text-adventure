@@ -1,4 +1,4 @@
-﻿namespace DiscordTextAdventure.Parsing
+﻿namespace TextAdventure.Parsing
 {
     public struct Phrase
     {

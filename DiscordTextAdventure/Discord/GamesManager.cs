@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using chext.Mechanics;
 using Discord.WebSocket;
-using DiscordTextAdventure.Parsing;
+using TextAdventure.Parsing;
 
 #nullable enable
 

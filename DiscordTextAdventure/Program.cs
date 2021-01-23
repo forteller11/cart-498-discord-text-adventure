@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using chext.Discord;
 using Discord;
 using Discord.WebSocket;
-using DiscordTextAdventure.Parsing;
+using TextAdventure.Parsing;
 
 #nullable enable
 namespace chext
@@ -31,6 +31,8 @@ namespace chext
         {
             var input = new Input();
             input.ProcessMessage("go north fellow");
+
+            
         }
         
         public async Task MainAsync()
