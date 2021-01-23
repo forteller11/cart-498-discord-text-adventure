@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace TextAdventure.Parsing
+namespace DiscordTextAdventure.Parsing.DataStructures
 {
     //to respond to phrase with, phrase
     public class Response

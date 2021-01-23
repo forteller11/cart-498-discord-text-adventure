@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Reflection;
 
 #nullable enable
-namespace TextAdventure.Parsing
+namespace DiscordTextAdventure.Parsing
 {
     public static class Common
     {

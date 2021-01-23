@@ -1,4 +1,4 @@
-﻿namespace TextAdventure.Parsing
+﻿namespace DiscordTextAdventure.Parsing.Tables
 {
     public class PhraseTable
     {

@@ -1,6 +1,8 @@
-﻿#nullable enable
+﻿using DiscordTextAdventure.Parsing.DataStructures;
 
-namespace TextAdventure.Parsing
+#nullable enable
+
+namespace DiscordTextAdventure.Parsing.Tables
 {
     public static class NounTable
     {

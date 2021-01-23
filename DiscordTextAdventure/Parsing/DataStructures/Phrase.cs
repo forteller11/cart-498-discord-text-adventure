@@ -1,6 +1,6 @@
 ﻿#nullable enable
 
-namespace TextAdventure.Parsing
+namespace DiscordTextAdventure.Parsing.DataStructures
 {
     public class Phrase
     {

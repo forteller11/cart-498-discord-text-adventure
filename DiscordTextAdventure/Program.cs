@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using chext.Discord;
 using Discord;
 using Discord.WebSocket;
-using TextAdventure.Parsing;
+using DiscordTextAdventure.Parsing;
 
 #nullable enable
 namespace chext

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 #nullable enable
 
-namespace TextAdventure.Parsing
+namespace DiscordTextAdventure.Parsing.DataStructures
 {
     //used to represent and support compound nouns/verbs like "pick up"
     

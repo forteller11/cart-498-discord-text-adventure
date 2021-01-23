@@ -1,4 +1,6 @@
-﻿namespace TextAdventure.Parsing
+﻿using DiscordTextAdventure.Parsing.DataStructures;
+
+namespace DiscordTextAdventure.Parsing.Tables
 {
     public static class PrepositionTable
     {

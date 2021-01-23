@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 #nullable enable
 
-namespace TextAdventure.Parsing
+namespace DiscordTextAdventure.Parsing.DataStructures
 {
 
     public class SynonymCollection : IEquatable<SynonymCollection>

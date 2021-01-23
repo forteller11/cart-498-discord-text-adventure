@@ -1,7 +1,9 @@
 ﻿using System.Collections.Generic;
+using DiscordTextAdventure.Parsing.DataStructures;
+using DiscordTextAdventure.Parsing.Tables;
 
 #nullable enable
-namespace TextAdventure.Parsing
+namespace DiscordTextAdventure.Parsing
 {
     public class Parser
     {
