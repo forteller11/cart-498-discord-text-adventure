@@ -1,6 +1,7 @@
 ﻿using System.Threading.Tasks;
 using chext;
 using Discord;
+using DiscordTextAdventure.Mechanics;
 
 namespace DiscordTextAdventure.Discord.Rendering
 {
@@ -19,7 +20,7 @@ namespace DiscordTextAdventure.Discord.Rendering
             Channel = channel;
         }
 
-        public async ValueTask Draw()
+        public async ValueTask DrawRoom(Room room)
         {
             if (_hasDrawnBefore)
             {
