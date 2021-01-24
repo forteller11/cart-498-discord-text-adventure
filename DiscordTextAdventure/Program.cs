@@ -37,7 +37,7 @@ namespace chext
             };
 
             
-            var token = File.ReadAllText(ProjectPath + @"Sensitive\token.txt");
+            var token = File.ReadAllText(ProjectPath + @"\Sensitive\token.txt");
             await _client.LoginAsync(TokenType.Bot, token);
             await _client.StartAsync();
             

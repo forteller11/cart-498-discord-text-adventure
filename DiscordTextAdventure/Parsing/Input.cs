@@ -52,7 +52,7 @@ namespace DiscordTextAdventure.Parsing
                 return Task.CompletedTask;
             }
 
-            if (guildChannel.Id != _guild.Id)
+            if (guildChannel.Guild.Id != _guild.Id)
             {
                 Program.DebugLog("message not part of relevant guild");
                 return Task.CompletedTask;
@@ -77,7 +77,10 @@ namespace DiscordTextAdventure.Parsing
                if (_responses[i].PhraseBlueprint.MatchesPhrase(phrase))
                    _responses[i].Action.Invoke(phrase);
            }
-           
+
+           Program.DebugLog(message);
+           Program.DebugLog(phrase);
+
         }
     }
 }
