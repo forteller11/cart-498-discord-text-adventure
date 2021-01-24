@@ -21,8 +21,8 @@ namespace DiscordTextAdventure.Mechanics.Rooms
         public RoomManager(DiscordSocketClient client, SocketGuild guild)
         {
             #region blueprint
-            TestRoom = new Room("test room name", "here lies a fun pot");
-            TestRoom2 = new Room("funny second room name", "i like doughnuts");
+            TestRoom = new Room("test room name").WithStaticDescriptions("here lies a fun pot");
+            TestRoom2 = new Room("funny second room name").WithStaticDescriptions("i like doughnuts");
             #endregion
             
             Rooms = Common.ClassMembersToArray<Room>(typeof(RoomManager), this);
@@ -39,7 +39,7 @@ namespace DiscordTextAdventure.Mechanics.Rooms
                 {
                     if (currentRoom.Name == channel.Name)
                     {
-                        currentRoom.Init((IMessageChannel) channel);
+                        currentRoom.Init(channel);
                         foundExistingChannelWithSameName = true;
                         break;
                     }
@@ -51,7 +51,7 @@ namespace DiscordTextAdventure.Mechanics.Rooms
                     var task = guild.CreateTextChannelAsync(Rooms[i].Name, null, null);
                     var task2 = task.ContinueWith((e) =>
                     {
-                        currentRoom.Init((IMessageChannel) e.Result);
+                        currentRoom.Init(e.Result);
                     });
                     createChannelTasks.Add(task2);
                 }
@@ -63,9 +63,7 @@ namespace DiscordTextAdventure.Mechanics.Rooms
            
 
             #endregion
-            //todo foreach room, check if room name exists, if not, create, if it does, clear the room, then add.
-            TestRoom = new Room("test room name", "here lies a fun pot");
-            TestRoom2 = new Room("funny second room name", "i like doughnuts");
+
 
             //todo init
             Program.DebugLog(Rooms.Length);

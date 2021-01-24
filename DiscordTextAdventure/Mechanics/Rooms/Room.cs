@@ -11,34 +11,64 @@ namespace DiscordTextAdventure.Mechanics.Rooms
     public class Room
     {
         public string Name;
-        public string StaticDescription;
-        public Func<Room, string> DynamicDescription;
+        public string Subtitle = String.Empty;
+        public string StaticDescription = String.Empty;
+        public Func<Room, string> DynamicDescription = DefaultDynamicDescription;
         
         public List<AdventureObject> Objects = new List<AdventureObject>();
         
         public IMessageChannel? Channel;
         public RoomRenderer? Renderer;
 
-        public Room(string name, string staticDescription, params AdventureObject [] objects)
+        public Room(string name)
         {
             Name = name.Replace(' ', '_');
-            StaticDescription = staticDescription;
-            
-            Objects = objects.ToList();
         }
+        
 
         public void Init(IMessageChannel channel)
         {
             Channel = channel;
-            Renderer = new RoomRenderer(channel);
+            Renderer = new RoomRenderer(this, channel);
+            Renderer.DrawRoom();
         }
+        
+        #region builder helpers
+        public Room WithStaticDescriptions(string staticDescription) 
+        {
+            StaticDescription = staticDescription;
+            return this;
+        }
+        
+        public Room WithSubtitle(string subtitle) 
+        {
+            Subtitle = subtitle;
+            return this;
+        }
+
+        public Room WithDynamicDescription(Func<Room, string> dynamicDescription)
+        {
+            DynamicDescription = dynamicDescription;
+            return this;
+        }
+        
+        public Room WithObjects(params AdventureObject[] objects)
+        {
+            Objects = objects.ToList();
+            return this;
+        }
+        #endregion
         
         
 
         static string DefaultDynamicDescription(Room room)
         {
-            StringBuilder builder = new StringBuilder();
-            
+            StringBuilder builder = new StringBuilder("");
+
+            if (room.Objects.Count == 0)
+            {
+                builder.Append("The room is empty.");
+            }
             for (int i = 0; i < room.Objects.Count; i++)
             {
                 if (i == 0)
