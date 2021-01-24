@@ -13,7 +13,7 @@ namespace DiscordTextAdventure.Parsing.Tables
         
         static NounTable()
         {
-            Nouns = DiscordTextAdventure.Common.ClassMembersToArray<SynonymCollection>(typeof(NounTable));
+            Nouns = DiscordTextAdventure.Common.ClassMembersToArray<SynonymCollection>(typeof(NounTable), null);
         }
 
         

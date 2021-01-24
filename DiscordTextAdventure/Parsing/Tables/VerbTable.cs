@@ -12,7 +12,7 @@ namespace DiscordTextAdventure.Parsing.Tables
 
         static VerbTable()
         {
-            Verbs = DiscordTextAdventure.Common.ClassMembersToArray<SynonymCollection>(typeof(VerbTable));
+            Verbs = DiscordTextAdventure.Common.ClassMembersToArray<SynonymCollection>(typeof(VerbTable), null);
         }
     }
 }

@@ -11,7 +11,7 @@ namespace DiscordTextAdventure.Parsing.Tables
 
         static IndirectObjectTable()
         {
-            IndirectObjects = DiscordTextAdventure.Common.ClassMembersToArray<SynonymCollection>(typeof(IndirectObjectTable));
+            IndirectObjects = DiscordTextAdventure.Common.ClassMembersToArray<SynonymCollection>(typeof(IndirectObjectTable), null);
         }
     }
 }
