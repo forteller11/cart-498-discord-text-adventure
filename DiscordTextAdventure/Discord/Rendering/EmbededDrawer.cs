@@ -2,6 +2,7 @@
 using chext;
 using Discord;
 using DiscordTextAdventure.Mechanics;
+using DiscordTextAdventure.Mechanics.Rooms;
 
 namespace DiscordTextAdventure.Discord.Rendering
 {

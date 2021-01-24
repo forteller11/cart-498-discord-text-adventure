@@ -4,23 +4,26 @@ using System.Text;
 using Discord;
 
 #nullable enable
-namespace DiscordTextAdventure.Mechanics
+namespace DiscordTextAdventure.Mechanics.Rooms
 {
     public class Room
     {
         public string Name;
         public string StaticDescription;
         
-        public Func<Room, string> DynamicDescription = DefaultDynamicDescription;
+        public Func<Room, string> DynamicDescription;
         public List<AdventureObject> Objects = new List<AdventureObject>();
-        public IMessageChannel? Channel;
+        public IMessageChannel Channel;
 
-        public Room(string name, string staticDescription)
+        public Room(string name, string staticDescription, IMessageChannel channel)
         {
             Name = name;
             StaticDescription = staticDescription;
+            Channel = channel;
         }
         
+        
+
         static string DefaultDynamicDescription(Room room)
         {
             StringBuilder builder = new StringBuilder();
@@ -41,11 +44,6 @@ namespace DiscordTextAdventure.Mechanics
             }
 
             return builder.ToString();
-        }
-
-        Room ValueCopy()
-        {
-            
         }
     }
 }
