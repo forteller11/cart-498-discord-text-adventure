@@ -28,36 +28,29 @@ namespace DiscordTextAdventure.Mechanics.Rooms
             Rooms = Common.ClassMembersToArray<Room>(typeof(RoomManager), this);
             
             #region MyRegion
-
+            
             List<Task> createChannelTasks = new List<Task>();
+            
+            foreach (var channel in guild.TextChannels)
+            {
+                channel.DeleteAsync();
+            }
             
             for (int i = 0; i < Rooms.Length; i++)
             {
                 var currentRoom = Rooms[i];
-                bool foundExistingChannelWithSameName = false;
-                foreach (var channel in guild.TextChannels)
-                {
-                    if (currentRoom.Name == channel.Name)
-                    {
-                        currentRoom.Init(channel);
-                        foundExistingChannelWithSameName = true;
-                        break;
-                    }
-                }
                 
-                //if haven't found channel, create new channels
-                if (!foundExistingChannelWithSameName)
-                {
-                    var task = guild.CreateTextChannelAsync(Rooms[i].Name, null, null);
-                    var task2 = task.ContinueWith((e) =>
-                    {
-                        currentRoom.Init(e.Result);
-                    });
-                    createChannelTasks.Add(task2);
-                }
-
-                Task.WaitAll(createChannelTasks.ToArray());
-                //wait for tasks
+               var createChannelTask = guild.CreateTextChannelAsync(Rooms[i].Name, null, null);
+               
+               var initRoomTask = createChannelTask.ContinueWith((e) =>
+               {
+                   currentRoom.Init(e.Result);
+               });
+               
+               createChannelTasks.Add(initRoomTask);
+               
+               Task.WaitAll(createChannelTasks.ToArray());
+        
             } 
        
            

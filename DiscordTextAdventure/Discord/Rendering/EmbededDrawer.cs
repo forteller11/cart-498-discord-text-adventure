@@ -24,9 +24,11 @@ namespace DiscordTextAdventure.Discord.Rendering
             Builder = new EmbedBuilder();
         }
 
+      
         public async Task DrawRoom()
         {
-            //Builder.Title = Room.Name;
+            
+            Builder.Title = Room.Subtitle;
             Builder.Description = Room.StaticDescription;
             
             EmbedFieldBuilder fieldBuilder = new EmbedFieldBuilder();
