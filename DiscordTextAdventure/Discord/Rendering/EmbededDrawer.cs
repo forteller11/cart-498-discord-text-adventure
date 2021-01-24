@@ -7,7 +7,7 @@ using DiscordTextAdventure.Mechanics.Rooms;
 namespace DiscordTextAdventure.Discord.Rendering
 {
 
-    public class EmbededDrawer
+    public class RoomRenderer
     {
         public readonly EmbedBuilder Builder;
         public readonly IMessageChannel Channel;
@@ -15,7 +15,7 @@ namespace DiscordTextAdventure.Discord.Rendering
         private Task<IUserMessage> _messageTask;
         private bool _hasDrawnBefore;
 
-        public EmbededDrawer(IMessageChannel channel)
+        public RoomRenderer(IMessageChannel channel)
         {
             Builder = new EmbedBuilder();
             Channel = channel;

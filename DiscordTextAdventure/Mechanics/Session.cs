@@ -11,7 +11,7 @@ namespace chext.Mechanics
     {
         private DiscordSocketClient _client;
         public readonly SocketGuild Guild;
-        private EmbededDrawer _drawer;
+   
         private Input _input;
         private RoomManager _roomsManager;
         
@@ -22,7 +22,7 @@ namespace chext.Mechanics
             Guild = guild;
             
             _input = new Input(_client, Guild);
-            _roomsManager = new RoomManager();
+            _roomsManager = new RoomManager(_client, guild);
         }
     }
 }

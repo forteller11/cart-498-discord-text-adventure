@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using Discord;
+using DiscordTextAdventure.Discord.Rendering;
 
 #nullable enable
 namespace DiscordTextAdventure.Mechanics.Rooms
@@ -10,16 +12,25 @@ namespace DiscordTextAdventure.Mechanics.Rooms
     {
         public string Name;
         public string StaticDescription;
-        
         public Func<Room, string> DynamicDescription;
+        
         public List<AdventureObject> Objects = new List<AdventureObject>();
-        public IMessageChannel Channel;
+        
+        public IMessageChannel? Channel;
+        public RoomRenderer? Renderer;
 
-        public Room(string name, string staticDescription, IMessageChannel channel)
+        public Room(string name, string staticDescription, params AdventureObject [] objects)
         {
-            Name = name;
+            Name = name.Replace(' ', '_');
             StaticDescription = staticDescription;
+            
+            Objects = objects.ToList();
+        }
+
+        public void Init(IMessageChannel channel)
+        {
             Channel = channel;
+            Renderer = new RoomRenderer(channel);
         }
         
         
