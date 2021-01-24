@@ -71,16 +71,19 @@ namespace DiscordTextAdventure.Mechanics.Rooms
             }
             for (int i = 0; i < room.Objects.Count; i++)
             {
+                var obj = room.Objects[i];
+                bool isLastElement = i == room.Objects.Count - 1;
+                
                 if (i == 0)
-                    builder.Append("There is a");
-                else if (i == room.Objects.Count - 1 && room.Objects.Count > 1)
-                    builder.Append(", and a ");
+                    builder.Append("There is");
+                else if (isLastElement) //else if means that this will only apply if last element and there is MORE than one object
+                    builder.Append(", and");
                 else
-                    builder.Append(", a");
+                    builder.Append(",");
                 
-                builder.Append(room.Objects[i].Name);
+                builder.Append(" " + obj.Article + " " + room.Objects[i].Name);
                 
-                if (i == room.Objects.Count - 1)
+                if (isLastElement)
                     builder.Append(".");
             }
 

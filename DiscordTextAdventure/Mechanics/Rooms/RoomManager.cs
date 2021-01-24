@@ -20,14 +20,20 @@ namespace DiscordTextAdventure.Mechanics.Rooms
 
         public RoomManager(DiscordSocketClient client, SocketGuild guild)
         {
-            #region blueprint
-            TestRoom = new Room("test room name").WithStaticDescriptions("here lies a fun pot");
+            #region create rooms
+            
+            TestRoom = new Room("test room name").WithStaticDescriptions("here lies a fun pot").
+                WithObjects(
+                    new AdventureObject("apple", "the apple has a tooth in it"),
+                    new AdventureObject("pole", "a long thin pole")
+                    );
+            
             TestRoom2 = new Room("funny second room name").WithStaticDescriptions("i like doughnuts");
             #endregion
             
             Rooms = Common.ClassMembersToArray<Room>(typeof(RoomManager), this);
             
-            #region MyRegion
+            #region tie rooms to text channels
             
             List<Task> createChannelTasks = new List<Task>();
             
@@ -51,15 +57,9 @@ namespace DiscordTextAdventure.Mechanics.Rooms
                
                Task.WaitAll(createChannelTasks.ToArray());
         
-            } 
-       
-           
-
+            }
             #endregion
 
-
-            //todo init
-            Program.DebugLog(Rooms.Length);
         }
    
     }
