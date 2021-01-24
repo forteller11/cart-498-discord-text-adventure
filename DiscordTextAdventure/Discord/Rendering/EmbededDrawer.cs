@@ -1,12 +1,10 @@
-﻿using System;
-using System.Runtime.CompilerServices;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
+using chext;
 using Discord;
 
-namespace chext.Discord
+namespace DiscordTextAdventure.Discord.Rendering
 {
-    //todo optimization where only allocate new embed class if fields are changed and it's necessary
-    //todo also don't always clear fields?
+
     public class EmbededDrawer
     {
         public readonly EmbedBuilder Builder;
