@@ -14,31 +14,20 @@ namespace chext
     {
         private DiscordSocketClient _client;
         private GamesManager _gamesManager;
-        
+
         public static readonly string BinPath;
         public static readonly string ProjectPath;
 
         static Program()
         {
             BinPath = Directory.GetCurrentDirectory();
-            ProjectPath =  Directory.GetParent(BinPath).Parent.Parent.FullName;
+            ProjectPath = Directory.GetParent(BinPath).Parent.Parent.FullName;
         }
         
-        // static void Main(string[] args) => new Program().MainAsync().GetAwaiter().GetResult();
-        static void Main(string[] args) => TestParse();
-
-        static void TestParse()
-        {
-            var input = new Input();
-            input.ProcessMessage("pick up axe using hands");
-
-        }
+        static void Main(string[] args) => new Program().MainAsync().Wait();
         
         public async Task MainAsync()
         {
-            Console.WriteLine("\n\n");
-
-
             _client = new DiscordSocketClient();
             _client.Log += Log;
             _client.Ready += () =>

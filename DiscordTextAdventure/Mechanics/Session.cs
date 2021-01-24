@@ -3,6 +3,7 @@ using Discord.WebSocket;
 using DiscordTextAdventure.Discord.Rendering;
 using DiscordTextAdventure.Parsing;
 
+#nullable enable
 namespace chext.Mechanics
 {
     public class Session
@@ -17,7 +18,8 @@ namespace chext.Mechanics
         {
             _client = client;
             Guild = guild;
-            _input = new Input();
+            
+            _input = new Input(_client, Guild);
         }
     }
 }
