@@ -1,6 +1,6 @@
 ﻿using Discord.WebSocket;
 
-namespace DiscordTextAdventure.Mechanics.Player
+namespace DiscordTextAdventure.Mechanics.User
 {
     public class Player
     {

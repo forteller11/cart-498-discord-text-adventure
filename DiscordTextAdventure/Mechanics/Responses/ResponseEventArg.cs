@@ -1,6 +1,6 @@
 ﻿using chext.Tables;
+using DiscordTextAdventure.Mechanics.User;
 using DiscordTextAdventure.Parsing.DataStructures;
-using DiscordTextAdventure.Mechanics.Player;
 
 #nullable enable
 

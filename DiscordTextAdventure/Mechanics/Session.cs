@@ -1,9 +1,10 @@
-﻿using Discord;
+﻿using System.Threading.Tasks;
 using Discord.WebSocket;
-using DiscordTextAdventure.Discord.Rendering;
-using DiscordTextAdventure.Mechanics.Player;
+using DiscordTextAdventure.Mechanics.Responses;
 using DiscordTextAdventure.Mechanics.Rooms;
+using DiscordTextAdventure.Mechanics.User;
 using DiscordTextAdventure.Parsing;
+using DiscordTextAdventure.Parsing.DataStructures;
 
 #nullable enable
 namespace chext.Mechanics
@@ -15,6 +16,7 @@ namespace chext.Mechanics
    
         private Input _input;
         private RoomManager _roomsManager;
+        private ResponseManager _responseManager;
         
         public Player Player;
         public Session(DiscordSocketClient client, SocketGuild guild)
@@ -22,9 +24,23 @@ namespace chext.Mechanics
             _client = client;
             Guild = guild;
             
-            _input = new Input(_client, Guild);
+            _input = new Input();
+            _responseManager = new ResponseManager();
             _roomsManager = new RoomManager(_client, guild);
             Player = new Player();
+
+            client.MessageReceived += OnMessageReceived;
         }
+
+        async Task OnMessageReceived(SocketMessage socketMessage)
+        {
+            Phrase? phrase = _input.ProcessMessageForThisSession(socketMessage, _client, Guild);
+            if (phrase != null)
+            {
+                _responseManager.CallResponseFromPhrase(phrase!, Player);
+            }
+        }
+        
+        
     }
 }
