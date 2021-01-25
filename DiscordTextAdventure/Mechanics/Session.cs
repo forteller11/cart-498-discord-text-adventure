@@ -18,7 +18,7 @@ namespace chext.Mechanics
         private RoomManager _roomsManager;
         private ResponseManager _responseManager;
         
-        public Player Player;
+        public Player? Player;
         public Session(DiscordSocketClient client, SocketGuild guild)
         {
             _client = client;
@@ -27,7 +27,7 @@ namespace chext.Mechanics
             _input = new Input();
             _responseManager = new ResponseManager();
             _roomsManager = new RoomManager(_client, guild);
-            Player = new Player();
+            //Player = new Player();
 
             client.MessageReceived += OnMessageReceived;
         }
@@ -37,6 +37,7 @@ namespace chext.Mechanics
             Phrase? phrase = _input.ProcessMessageForThisSession(socketMessage, _client, Guild);
             if (phrase != null)
             {
+                Program.DebugLog("phrase relevant");
                 _responseManager.CallResponseFromPhrase(phrase!, Player);
             }
         }

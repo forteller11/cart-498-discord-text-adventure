@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Discord;
 using DiscordTextAdventure.Parsing.DataStructures;
 using DiscordTextAdventure.Parsing.Tables;
 
@@ -7,14 +8,14 @@ namespace DiscordTextAdventure.Parsing
 {
     public class Parser
     {
-        public Phrase Parse(List<Token> tokens)
+        public Phrase Parse(List<Token> tokens, IMessageChannel channel)
         {
             var verbs = VerbTable.Verbs;
             var nouns = NounTable.Nouns;
             var prepositions = PrepositionTable.Prepositions;
             var IndirectObject = IndirectObjectTable.IndirectObjects;
             
-            var phrase = new Phrase();
+            var phrase = new Phrase(channel);
             int tokenIndex = 0;
             
             phrase.Verb             = CheckForMatch(tokens, ref tokenIndex, verbs);

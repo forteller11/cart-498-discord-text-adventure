@@ -6,8 +6,8 @@ namespace DiscordTextAdventure.Parsing.Tables
 {
     public static class NounTable
     {
-        public static SynonymCollection South = new SynonymCollection("south");
-        public static SynonymCollection North = new SynonymCollection("north");
+        public static readonly SynonymCollection South = new SynonymCollection("south");
+        public static readonly SynonymCollection North = new SynonymCollection("north");
         
         public static readonly SynonymCollection[] Nouns;
         

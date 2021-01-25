@@ -44,15 +44,15 @@ namespace DiscordTextAdventure.Parsing
             }
             #endregion
 
-            return ProcessMessage(message.Content);
+            return ProcessMessage(message);
       
         }
         #endregion
 
-        private Phrase ProcessMessage(string message)
+        private Phrase ProcessMessage(SocketMessage message)
         {
-           var tokens = _tokenizer.Tokenize(message);
-           var phrase = _parser.Parse(tokens);
+           var tokens = _tokenizer.Tokenize(message.Content);
+           var phrase = _parser.Parse(tokens, message.Channel);
            return phrase;
         }
         

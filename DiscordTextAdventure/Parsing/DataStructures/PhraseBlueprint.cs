@@ -9,6 +9,15 @@ namespace DiscordTextAdventure.Parsing.DataStructures
         public SynonymCollection? Preposition;
         public SynonymCollection? IndirectObject;
 
+
+        public PhraseBlueprint(SynonymCollection? verb, SynonymCollection? noun, SynonymCollection? preposition, SynonymCollection? indirectObject)
+        {
+            Verb = verb;
+            Noun = noun;
+            Preposition = preposition;
+            IndirectObject = indirectObject;
+        }
+
         public override string ToString()
         {
             string a = Verb != null ? Verb.ToString()! : "";

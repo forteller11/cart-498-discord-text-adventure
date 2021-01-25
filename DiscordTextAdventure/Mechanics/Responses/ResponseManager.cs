@@ -2,12 +2,18 @@
 using DiscordTextAdventure.Mechanics.User;
 using DiscordTextAdventure.Parsing.DataStructures;
 
+#nullable enable
 namespace DiscordTextAdventure.Mechanics.Responses
 {
     public class ResponseManager
     {
-        List<Response> _responses = new List<Response>();
+        List<Response> _responses;
 
+        public ResponseManager()
+        {
+            _responses = ResponseTable.GetStaticResponseList();
+        }
+        
         public void CallResponseFromPhrase(Phrase phrase, Player player)
         {
             for (int i = 0; i < _responses.Count; i++)
