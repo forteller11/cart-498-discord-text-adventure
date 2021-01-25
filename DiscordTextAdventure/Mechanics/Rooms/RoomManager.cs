@@ -1,6 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
-using chext;
 using Discord;
 using Discord.Rest;
 using Discord.WebSocket;
@@ -11,68 +11,100 @@ namespace DiscordTextAdventure.Mechanics.Rooms
     public class RoomManager
     {
         public Room [] Rooms;
+        public RoomCategory [] Categories;
 
         
         #region declaring rooms
+        
         public readonly Room UserAgreement;
         public readonly Room TestRoom;
         public readonly Room TestRoom2;
+        
+        public readonly RoomCategory Intro;
+        public readonly RoomCategory Screen;
         #endregion
 
         public RoomManager(DiscordSocketClient client, SocketGuild guild)
         {
+            Intro = new RoomCategory("Welcome");
+            Screen = new RoomCategory("Screens");
+            
             #region create rooms
-
-            UserAgreement = new Room("User Agreement")
+            UserAgreement = new Room("User Agreement", Intro)
                 .WithStaticDescriptions("*user agreement")
                 .WithReaction(new Emoji("✅"));
             
-            TestRoom = new Room("test room name")
+            
+            TestRoom = new Room("test room name", Screen)
                 .WithStaticDescriptions("here lies a fun pot")
                 .WithObjects(
                     new AdventureObject("apple", "the apple has a tooth in it"),
                     new AdventureObject("pole", "a long thin pole")
                     );
             
-            TestRoom2 = new Room("funny second room name")
+            TestRoom2 = new Room("funny second room name", Screen)
                 .WithStaticDescriptions("i like doughnuts");
             
             #endregion
-
-            #region deal with how rooms are connected by default visibility
-
-
-            #endregion
+            
             Rooms = Common.ClassMembersToArray<Room>(typeof(RoomManager), this);
+            Categories = Common.ClassMembersToArray<RoomCategory>(typeof(RoomManager), this);
             
             #region tie rooms to text channels
-            
-            List<Task> createChannelTasks = new List<Task>();
-            
+
+            //clean slate
             foreach (var channel in guild.TextChannels)
-            {
                 channel.DeleteAsync();
-            }
+            foreach (var channel in guild.CategoryChannels)
+                channel.DeleteAsync();
             
-            for (int i = 0; i < Rooms.Length; i++)
+            Task<RestCategoryChannel> [] createCategoriesTasks = new Task<RestCategoryChannel>[Categories.Length];
+            for (int i = 0; i < Categories.Length; i++)
+                createCategoriesTasks[i] = guild.CreateCategoryChannelAsync(Categories[i].Name);
+            
+            Task.WaitAll(createCategoriesTasks);
+            
+            List<Task<RestTextChannel>> createChannelTasks = new List<Task<RestTextChannel>>();
+            for (int i = 0; i < Categories.Length; i++)
             {
-                var currentRoom = Rooms[i];
+                var category = Categories[i];
+                Categories[i].Init(createCategoriesTasks[i].Result);
+             
+                for (int j = 0; j < Categories[i].Rooms.Count; j++)
+                {
+                    var room = category.Rooms[j];
+
+                    var textCreateTask = guild.CreateTextChannelAsync(room.Name, props =>
+                    {
+                        props.CategoryId = Categories[i].Channel.Id;
+                    });
+
+                    createChannelTasks.Add(textCreateTask);
+                }
                 
-               var createChannelTask = guild.CreateTextChannelAsync(Rooms[i].Name, null, null);
-               
-               var initRoomTask = createChannelTask.ContinueWith((e) =>
-               {
-                   currentRoom.Init(e.Result);
-               });
-               
-               createChannelTasks.Add(initRoomTask);
-               
-               Task.WaitAll(createChannelTasks.ToArray());
-        
             }
+
+            var createChannelTasksArr = createChannelTasks.ToArray();
+            Task.WaitAll(createChannelTasksArr);
+
+            int createChannelTaskIndex = 0;
+            for (int i = 0; i < Categories.Length; i++)
+            {
+                for (int j = 0; j < Categories[i].Rooms.Count; j++)
+                {
+                    Categories[i].Rooms[j].Init(createChannelTasksArr[createChannelTaskIndex].Result);
+                    createChannelTaskIndex++;
+                }
+            }
+
             #endregion
 
         }
+
+        // public void ConnectRoomsToMessageChannels(SocketGuild guild)
+        // {
+        //     //guild.CreateCategoryChannelAsync()
+        // }
    
     }
 }

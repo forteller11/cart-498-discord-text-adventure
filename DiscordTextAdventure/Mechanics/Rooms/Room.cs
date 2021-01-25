@@ -22,9 +22,10 @@ namespace DiscordTextAdventure.Mechanics.Rooms
         public IMessageChannel? Channel;
         public RoomRenderer? Renderer;
 
-        public Room(string name)
+        public Room(string name, RoomCategory category)
         {
             Name = name.Replace(' ', '_');
+            category.Rooms.Add(this);
         }
         
 
@@ -69,6 +70,7 @@ namespace DiscordTextAdventure.Mechanics.Rooms
             Reactions = reactions;
             return this;
         }
+        
         #endregion
         
         
