@@ -2,10 +2,11 @@
  
  todo
  
- - [ ] player login via user-agreement
- - [ ] room connections
+ - [x] player login via user-agreement
+ - [ ] room visibility dynamic
  - [ ] player roles
  - [ ] dm support
  - [ ] multiple bots support
- - [ ] emotes support
+ - [x] emoji support
+ - [ ] custom emote support
  - [ ] gif and image reading support
