@@ -8,14 +8,14 @@ namespace DiscordTextAdventure.Parsing
 {
     public class Parser
     {
-        public Phrase Parse(List<Token> tokens, IMessageChannel channel)
+        public Phrase Parse(List<Token> tokens)
         {
             var verbs = VerbTable.Verbs;
             var nouns = NounTable.Nouns;
             var prepositions = PrepositionTable.Prepositions;
             var IndirectObject = IndirectObjectTable.IndirectObjects;
             
-            var phrase = new Phrase(channel);
+            var phrase = new Phrase();
             int tokenIndex = 0;
             
             phrase.Verb             = CheckForMatch(tokens, ref tokenIndex, verbs);

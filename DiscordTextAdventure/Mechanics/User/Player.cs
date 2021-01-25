@@ -1,19 +1,25 @@
-﻿using Discord.WebSocket;
+﻿using Discord;
+using Discord.WebSocket;
 
 namespace DiscordTextAdventure.Mechanics.User
 {
     public class Player
     {
-        public SocketUser User;
-        public SocketGuildUser GuildUser;
-        public DiscordSocketClient Client;
+        public SocketUser SocketUser;
+        public IUser User;
+        //public SocketGuildUser GuildUser;
+        //public DiscordSocketClient Client;
 
-        public Player (SocketGuildUser user, DiscordSocketClient client)
+
+
+        public Player (IUser user)
         {
-            User = (SocketUser) user;
-            GuildUser = user;
+            SocketUser = (SocketUser) user;
+            User = user;
+  
+            
+            //user.
         }
-
         public void OnLogOut()
         {
             

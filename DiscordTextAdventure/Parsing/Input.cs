@@ -52,7 +52,7 @@ namespace DiscordTextAdventure.Parsing
         private Phrase ProcessMessage(SocketMessage message)
         {
            var tokens = _tokenizer.Tokenize(message.Content);
-           var phrase = _parser.Parse(tokens, message.Channel);
+           var phrase = _parser.Parse(tokens);
            return phrase;
         }
         

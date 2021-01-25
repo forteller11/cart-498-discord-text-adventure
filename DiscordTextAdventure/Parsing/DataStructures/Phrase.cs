@@ -11,14 +11,7 @@ namespace DiscordTextAdventure.Parsing.DataStructures
         public CompoundWord? Noun;
         public CompoundWord? Preposition;
         public CompoundWord? IndirectObject;
-        
-        public IMessageChannel ChannelOrigin;
 
-        public Phrase(IMessageChannel channel)
-        {
-            ChannelOrigin = channel;
-        }
-        
         public override string ToString()
         {
             string a = Verb != null ? Verb.ToString() : "";
