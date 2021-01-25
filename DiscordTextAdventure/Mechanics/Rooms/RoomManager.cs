@@ -30,7 +30,11 @@ namespace DiscordTextAdventure.Mechanics.Rooms
             
             TestRoom2 = new Room("funny second room name").WithStaticDescriptions("i like doughnuts");
             #endregion
-            
+
+            #region deal with how rooms are connected by default visibility
+
+
+            #endregion
             Rooms = Common.ClassMembersToArray<Room>(typeof(RoomManager), this);
             
             #region tie rooms to text channels

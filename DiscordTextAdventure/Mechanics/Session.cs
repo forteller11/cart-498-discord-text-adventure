@@ -1,6 +1,7 @@
 ﻿using Discord;
 using Discord.WebSocket;
 using DiscordTextAdventure.Discord.Rendering;
+using DiscordTextAdventure.Mechanics.Player;
 using DiscordTextAdventure.Mechanics.Rooms;
 using DiscordTextAdventure.Parsing;
 
@@ -15,7 +16,7 @@ namespace chext.Mechanics
         private Input _input;
         private RoomManager _roomsManager;
         
-        public SocketGuildUser Player;
+        public Player Player;
         public Session(DiscordSocketClient client, SocketGuild guild)
         {
             _client = client;
@@ -23,6 +24,7 @@ namespace chext.Mechanics
             
             _input = new Input(_client, Guild);
             _roomsManager = new RoomManager(_client, guild);
+            Player = new Player();
         }
     }
 }

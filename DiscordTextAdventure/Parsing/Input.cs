@@ -4,6 +4,8 @@ using System.Threading.Tasks;
 using chext;
 using chext.Mechanics;
 using Discord.WebSocket;
+using DiscordTextAdventure.Mechanics.Player;
+using DiscordTextAdventure.Mechanics.Responses;
 using DiscordTextAdventure.Parsing.DataStructures;
 
 #nullable enable
@@ -13,27 +15,25 @@ namespace DiscordTextAdventure.Parsing
     public class Input
     {
         private List<Response> _responses;
-        
         private Tokenizer _tokenizer;
         private Parser _parser;
+        
         private readonly SocketGuild _guild;
         private readonly DiscordSocketClient _client;
+        
+        private readonly DiscordSocketClient _client;
+        private readonly DiscordSocketClient _client;
 
-        public Input(DiscordSocketClient client, SocketGuild guild)
+        public Input(DiscordSocketClient client, SocketGuild guild, Player player)
         {
             _client = client;
             _guild = guild;
-            
+
             _tokenizer = new Tokenizer();
             _parser = new Parser();
-            _responses = new List<Response>();
-
+            _responses = ResponseTable.InstantiateResponses();
+            
             _client.MessageReceived += ClientOnMessageReceived;
-        }
-
-        public void AddResponse(Response response)
-        {
-            _responses.Add(response);
         }
         
         #region onClientEvents
@@ -65,8 +65,7 @@ namespace DiscordTextAdventure.Parsing
         
         
         #endregion
-        
-        
+
         public void ProcessMessage(string message)
         {
            var tokens = _tokenizer.Tokenize(message);
@@ -75,7 +74,9 @@ namespace DiscordTextAdventure.Parsing
            for (int i = 0; i < _responses.Count; i++)
            {
                if (_responses[i].PhraseBlueprint.MatchesPhrase(phrase))
+               {
                    _responses[i].Action.Invoke(phrase);
+               }
            }
 
            Program.DebugLog(message);
