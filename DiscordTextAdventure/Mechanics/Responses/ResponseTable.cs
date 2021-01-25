@@ -29,20 +29,13 @@ namespace DiscordTextAdventure.Mechanics.Responses
             #endregion
             
             #region emote responses
-            AcceptUserAgreement = new ReactionResponse(new Emoji("✅"),SetPlayer );
+            AcceptUserAgreement = new ReactionResponse(new Emoji("✅"),null, SetPlayer );
             
-            void SetPlayer(ReactionResponseEventArgs e)
+            void SetPlayer(ReactionResponseEventArgs e, IUserMessage userMessage)
             {
-                if (e.SocketReaction.User.IsSpecified)
-                {
-                    e.Player = new Player(e.SocketReaction.User.Value);
-                }
-                else
-                {
-                    Program.DebugLog("user not in cache...."); //todo get user restfully
-                }
-                
-                //todo call start game event with player initialized
+                e.Player = new Player(userMessage.Author);
+
+                Program.DebugLog("Set player");
             }
             #endregion
         }

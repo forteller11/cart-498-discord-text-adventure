@@ -38,20 +38,29 @@ namespace chext.Mechanics
             client.ReactionAdded += OnReactionAdded;
         }
 
-        private Task OnReactionAdded(Cacheable<IUserMessage, ulong> potentialMessage, ISocketMessageChannel channel, SocketReaction reaction)
+        private async Task OnReactionAdded(Cacheable<IUserMessage, ulong> potentialMessage, ISocketMessageChannel channel, SocketReaction reaction)
         {
+            IUserMessage? userMessage = null;
+            var eventArgs = new ReactionResponseEventArgs();
+            eventArgs.Player = Player;
+            eventArgs.SocketReaction = reaction;
+            
             for (int i = 0; i < _reactionResponses.Count; i++)
             {
-                if (_reactionResponses[i].ReactionBlueprint.Name == reaction.Emote.Name)
+                var response = _reactionResponses[i];
+                if (response.ReactionBlueprint.Name == reaction.Emote.Name)
                 {
-                    var eventArgs = new ReactionResponseEventArgs();
-                    eventArgs.Player = Player;
-                    eventArgs.SocketReaction = reaction;
-                    _reactionResponses[i].Action.Invoke(eventArgs);
+                    response.Action?.Invoke(eventArgs);
+                    if (response.ActionWithUserMessage != null)
+                    {
+                        if (userMessage == null)
+                            userMessage = await potentialMessage.GetOrDownloadAsync();
+                        
+                        response.ActionWithUserMessage.Invoke(eventArgs, userMessage);
+                    }
                 }
             }
-
-            return Task.CompletedTask;
+            
         }
 
         async Task OnMessageReceived(SocketMessage socketMessage)

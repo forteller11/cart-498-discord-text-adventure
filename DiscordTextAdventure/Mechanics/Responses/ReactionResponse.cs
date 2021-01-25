@@ -10,11 +10,13 @@ namespace DiscordTextAdventure.Mechanics.Responses
     {
         public readonly IEmote ReactionBlueprint;
         public readonly Action<ReactionResponseEventArgs> Action;
+        public readonly Action<ReactionResponseEventArgs, IUserMessage> ActionWithUserMessage;
         
-        public ReactionResponse(Emoji reactionBlueprint, Action<ReactionResponseEventArgs> action)
+        public ReactionResponse(Emoji reactionBlueprint, Action<ReactionResponseEventArgs> action, Action<ReactionResponseEventArgs, IUserMessage> actionWithUserMessage)
         {
             ReactionBlueprint = reactionBlueprint;
             Action = action;
+            ActionWithUserMessage = actionWithUserMessage;
         }
     }
     
