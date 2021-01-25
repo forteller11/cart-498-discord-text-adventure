@@ -1,8 +1,10 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using chext;
 using Discord;
 using DiscordTextAdventure.Mechanics;
 using DiscordTextAdventure.Mechanics.Rooms;
+#nullable enable
 
 namespace DiscordTextAdventure.Discord.Rendering
 {
@@ -13,7 +15,7 @@ namespace DiscordTextAdventure.Discord.Rendering
         public readonly IMessageChannel Channel;
         public readonly Room Room;
         
-        private Task<IUserMessage> _messageTask;
+        private Task<IUserMessage>? _messageTask;
         private bool _hasDrawnBefore;
 
         public RoomRenderer(Room room, IMessageChannel channel)
@@ -43,19 +45,32 @@ namespace DiscordTextAdventure.Discord.Rendering
 
         private async Task Draw()
         {
+            if (_hasDrawnBefore && _messageTask == null)
+                throw new Exception("Called draw too soon after initial draw...  task wasn't ready");
+            
             if (_hasDrawnBefore)
             {
                 Program.DebugLog("draw modify start");
-                await _messageTask; //makes sure you have the result of the user message returned from the first draw
-                await _messageTask.Result.ModifyAsync(properties => { properties.Embed = Builder.Build(); });
+                await _messageTask;
+                _messageTask.Result.ModifyAsync(properties => { properties.Embed = Builder.Build(); });
             }
             else
             {
                 Program.DebugLog("draw create start");
                 _messageTask = Channel.SendMessageAsync(null, false, Builder.Build());
                 _hasDrawnBefore = true;
-                await _messageTask;
             }
+
+            await _messageTask;
+            
+            if (Room.Reactions != null)
+            {
+                var emojiTask = _messageTask.Result.AddReactionsAsync(Room.Reactions);
+                await emojiTask;
+                
+                Program.DebugLog(Room.Reactions);
+            }
+
             Program.DebugLog("draw done");
         }
     }

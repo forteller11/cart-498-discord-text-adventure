@@ -1,4 +1,5 @@
-﻿using chext.Tables;
+﻿
+using DiscordTextAdventure.Mechanics.Rooms;
 using DiscordTextAdventure.Mechanics.User;
 using DiscordTextAdventure.Parsing.DataStructures;
 

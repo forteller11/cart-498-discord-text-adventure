@@ -4,7 +4,7 @@ using chext;
 using Discord;
 using Discord.Rest;
 using Discord.WebSocket;
-
+//https://www.fileformat.info/info/emoji/white_check_mark/index.htm for emoji unicode representations
 #nullable enable
 namespace DiscordTextAdventure.Mechanics.Rooms
 {
@@ -14,6 +14,7 @@ namespace DiscordTextAdventure.Mechanics.Rooms
 
         
         #region declaring rooms
+        public readonly Room UserAgreement;
         public readonly Room TestRoom;
         public readonly Room TestRoom2;
         #endregion
@@ -21,14 +22,21 @@ namespace DiscordTextAdventure.Mechanics.Rooms
         public RoomManager(DiscordSocketClient client, SocketGuild guild)
         {
             #region create rooms
+
+            UserAgreement = new Room("User Agreement")
+                .WithStaticDescriptions("*user agreement")
+                .WithReaction(new Emoji("✅"));
             
-            TestRoom = new Room("test room name").WithStaticDescriptions("here lies a fun pot").
-                WithObjects(
+            TestRoom = new Room("test room name")
+                .WithStaticDescriptions("here lies a fun pot")
+                .WithObjects(
                     new AdventureObject("apple", "the apple has a tooth in it"),
                     new AdventureObject("pole", "a long thin pole")
                     );
             
-            TestRoom2 = new Room("funny second room name").WithStaticDescriptions("i like doughnuts");
+            TestRoom2 = new Room("funny second room name")
+                .WithStaticDescriptions("i like doughnuts");
+            
             #endregion
 
             #region deal with how rooms are connected by default visibility

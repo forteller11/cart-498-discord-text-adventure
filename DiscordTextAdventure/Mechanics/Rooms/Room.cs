@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using chext;
 using Discord;
 using DiscordTextAdventure.Discord.Rendering;
 
@@ -14,6 +15,7 @@ namespace DiscordTextAdventure.Mechanics.Rooms
         public string Subtitle = String.Empty;
         public string StaticDescription = String.Empty;
         public Func<Room, string> DynamicDescription = DefaultDynamicDescription;
+        public Emoji []? Reactions;
         
         public List<AdventureObject> Objects = new List<AdventureObject>();
         
@@ -55,6 +57,16 @@ namespace DiscordTextAdventure.Mechanics.Rooms
         public Room WithObjects(params AdventureObject[] objects)
         {
             Objects = objects.ToList();
+            return this;
+        }
+
+        public Room WithReaction(params Emoji[] reactions)
+        {
+            for (int i = 0; i < reactions.Length; i++)
+            {
+                Program.DebugLog (reactions[i].Name) ;
+            }
+            Reactions = reactions;
             return this;
         }
         #endregion

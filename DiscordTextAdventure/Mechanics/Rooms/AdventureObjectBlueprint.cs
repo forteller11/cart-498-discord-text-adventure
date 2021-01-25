@@ -1,4 +1,0 @@
-﻿namespace DiscordTextAdventure.Mechanics.Rooms
-{
- 
-}
