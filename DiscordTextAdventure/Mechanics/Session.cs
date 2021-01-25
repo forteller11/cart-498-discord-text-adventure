@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using Discord;
 using Discord.WebSocket;
+using DiscordTextAdventure;
 using DiscordTextAdventure.Mechanics.Responses;
 using DiscordTextAdventure.Mechanics.Rooms;
 using DiscordTextAdventure.Mechanics.User;

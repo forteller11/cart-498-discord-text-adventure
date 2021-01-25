@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using chext;
 using Discord;
 using Discord.Rest;
 using Discord.WebSocket;
@@ -31,7 +32,7 @@ namespace DiscordTextAdventure.Mechanics.Rooms
             
             #region create rooms
             UserAgreement = new Room("User Agreement", Intro)
-                .WithStaticDescriptions("*user agreement")
+                .WithStaticDescriptions("don't harm system hardware")
                 .WithReaction(new Emoji("✅"));
             
             
@@ -50,14 +51,23 @@ namespace DiscordTextAdventure.Mechanics.Rooms
             Rooms = Common.ClassMembersToArray<Room>(typeof(RoomManager), this);
             Categories = Common.ClassMembersToArray<RoomCategory>(typeof(RoomManager), this);
             
-            #region tie rooms to text channels
-
-            //clean slate
-            foreach (var channel in guild.TextChannels)
-                channel.DeleteAsync();
-            foreach (var channel in guild.CategoryChannels)
-                channel.DeleteAsync();
+            #region tie channels and categories to their discord entities (by creating them), and put channels in their proper categories
+        
+            //todo could make this faster by immediately creating the rooms of a category channel when it's done
+            //todo instead of wait for ALL the categories to be done and then creating text channels
             
+            //clean slate
+            Task [] deleteTasks = new Task[guild.Channels.Count];
+            int index = 0;
+            foreach (var channel in guild.Channels)
+            {
+                deleteTasks[index] = channel.DeleteAsync();
+                index++;
+            }
+
+            //Task.WaitAll(deleteTasks);
+
+          
             Task<RestCategoryChannel> [] createCategoriesTasks = new Task<RestCategoryChannel>[Categories.Length];
             for (int i = 0; i < Categories.Length; i++)
                 createCategoriesTasks[i] = guild.CreateCategoryChannelAsync(Categories[i].Name);
@@ -74,6 +84,7 @@ namespace DiscordTextAdventure.Mechanics.Rooms
                 {
                     var room = category.Rooms[j];
 
+                    Program.DebugLog(room.Name);
                     var textCreateTask = guild.CreateTextChannelAsync(room.Name, props =>
                     {
                         props.CategoryId = Categories[i].Channel.Id;
@@ -98,6 +109,7 @@ namespace DiscordTextAdventure.Mechanics.Rooms
             }
 
             #endregion
+            
 
         }
 
