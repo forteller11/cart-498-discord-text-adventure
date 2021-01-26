@@ -28,6 +28,8 @@ namespace DiscordTextAdventure.Mechanics.Responses
         {
             ReactionBlueprint = reactionBlueprint;
             Trigger = trigger;
+            Action = action;
+            ActionAsync = actionAsync;
         }
         // public ReactionResponse(IEmote reactionBlueprint, OnReactionTrigger trigger, Action<ReactionResponseEventArgs> action) 
         //     : this (reactionBlueprint, trigger)

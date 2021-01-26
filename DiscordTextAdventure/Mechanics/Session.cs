@@ -23,8 +23,8 @@ namespace chext.Mechanics
         private Input _input;
         public readonly RoomManager RoomManager;
         
-        private List<PhraseResponse> _phraseResponses;
-        private List<ReactionResponse> _reactionResponses;
+        //private List<PhraseResponse> _phraseResponses;
+        //private List<ReactionResponse> _reactionResponses;
         
         public Player? Player;
         public Session(DiscordSocketClient dissonanceBot, DiscordSocketClient memeBot, DiscordSocketClient bodyBot, SocketGuild guild)
@@ -35,16 +35,26 @@ namespace chext.Mechanics
             Guild = guild;
             
             _input = new Input();
-            _phraseResponses = ResponseTable.GetStaticPhraseResponseList();
-            _reactionResponses = ResponseTable.GetStaticReactionResponseList();
+
             RoomManager = new RoomManager(this, guild);
             RoomManager.Screen.ChangeRoomVisibilityAsync(this, OverwritePermissions.DenyAll(RoomManager.Screen.Channel));
 
             dissonanceBot.MessageReceived += OnMessageReceived;
             dissonanceBot.ReactionAdded   += OnReactionAdded;
+            dissonanceBot.ReactionRemoved += OnReactionRemoved;
         }
 
         private async Task OnReactionAdded(Cacheable<IUserMessage, ulong> potentialMessage, ISocketMessageChannel channel, SocketReaction reaction)
+        {
+            OnReactionChanged(ReactionResponseTable.OnReactionAddedResponseEvents, potentialMessage, channel, reaction);
+        }
+        
+        private async Task OnReactionRemoved(Cacheable<IUserMessage, ulong> potentialMessage, ISocketMessageChannel channel, SocketReaction reaction)
+        {
+            OnReactionChanged(ReactionResponseTable.OnReactionRemovedResponseEvents, potentialMessage, channel, reaction);
+        }
+        
+        private async Task OnReactionChanged(List<ReactionResponse> reactionResponses, Cacheable<IUserMessage, ulong> potentialMessage, ISocketMessageChannel channel, SocketReaction reaction)
         {
             //var userMessage = await potentialMessage.GetOrDownloadAsync();
             IUser user = reaction.User.IsSpecified ? reaction.User.Value : Guild.GetUser(reaction.UserId);
@@ -53,11 +63,11 @@ namespace chext.Mechanics
                 return;
 
             var eventArgs = new ReactionResponseEventArgs(this, reaction, user, RoomManager.RoomKV[channel.Id]);
-
-            for (int i = 0; i < _reactionResponses.Count; i++)
+            
+            for (int i = 0; i < reactionResponses.Count; i++)
             {
-                if (_reactionResponses[i].ReactionBlueprint.Name == reaction.Emote.Name)
-                    _reactionResponses[i].CallResponses(eventArgs);
+                if (reactionResponses[i].ReactionBlueprint.Name == reaction.Emote.Name)
+                    reactionResponses[i].CallResponses(eventArgs);
             }
         }
 
@@ -68,10 +78,11 @@ namespace chext.Mechanics
             
             Phrase phrase = _input.ProcessMessage(socketMessage);
 
-            for (int i = 0; i < _phraseResponses.Count; i++)
+            var phraseResponses = PhraseResponseTable.PhraseResponses;
+            for (int i = 0; i < phraseResponses.Length; i++)
             { 
-                if (_phraseResponses[i].PhraseBlueprint.MatchesPhrase(phrase))
-                    _phraseResponses[i].CallResponses(new PhraseResponseEventArgs(phrase, socketMessage, RoomManager.RoomKV[socketMessage.Channel.Id], this));
+                if (phraseResponses[i].PhraseBlueprint.MatchesPhrase(phrase))
+                    phraseResponses[i].CallResponses(new PhraseResponseEventArgs(phrase, socketMessage, RoomManager.RoomKV[socketMessage.Channel.Id], this));
             }
         }
         
