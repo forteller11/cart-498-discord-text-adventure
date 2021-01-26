@@ -29,13 +29,13 @@ namespace DiscordTextAdventure.Mechanics.Responses
             #endregion
             
             #region emote responses
-            AcceptUserAgreement = new ReactionResponse(new Emoji("✅"),null, SetPlayer );
+            AcceptUserAgreement = new ReactionResponse(new Emoji("✅"), SetPlayer );
             
-            void SetPlayer(ReactionResponseEventArgs e, IUserMessage userMessage)
+            void SetPlayer(ReactionResponseEventArgs e)
             {
-                e.Player = new Player(userMessage.Author);
-
-                Program.DebugLog("Set player");
+     
+                e.Session.Player = new Player(e.User);
+                Program.DebugLog("Player set");
             }
             #endregion
         }

@@ -30,17 +30,20 @@ namespace DiscordTextAdventure.Parsing
             if (message.Author.Id == client.CurrentUser.Id)
                 return null;
             
+            if (message.Author.IsBot)
+                return null;
+            
             SocketGuildChannel? guildChannel = message.Channel as SocketGuildChannel;
 
             if (guildChannel == null)
             {
                 Program.DebugLog("message sent by DMS?");
-                return null;
             }
 
-            if (guildChannel.Guild.Id != guild.Id)
+            else if (guildChannel.Guild.Id != guild.Id)
             {
                 Program.DebugLog("message not part of relevant guild");
+                return null;
             }
             #endregion
 

@@ -1,9 +1,11 @@
 ﻿using System;
+using chext.Mechanics;
 using Discord.WebSocket;
 using DiscordTextAdventure.Mechanics.Rooms;
 using DiscordTextAdventure.Mechanics.User;
 using DiscordTextAdventure.Parsing.DataStructures;
 
+#nullable enable
 namespace DiscordTextAdventure.Mechanics.Responses
 {
     //to respond to phrase with, phrase
@@ -23,8 +25,16 @@ namespace DiscordTextAdventure.Mechanics.Responses
     public class PhraseResponseEventArgs
     {
         public Phrase Phrase;
-        public Player? Player;
         public SocketMessage Message;
         public Room RoomOfPhrase;
+        public Session Session;
+
+        public PhraseResponseEventArgs(Phrase phrase, SocketMessage message, Room roomOfPhrase, Session session)
+        {
+            Phrase = phrase;
+            Message = message;
+            RoomOfPhrase = roomOfPhrase;
+            Session = session;
+        }
     }
 }

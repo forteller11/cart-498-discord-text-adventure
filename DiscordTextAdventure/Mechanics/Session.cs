@@ -36,52 +36,59 @@ namespace chext.Mechanics
             //Player = new Player();
 
             client.MessageReceived += OnMessageReceived;
-            client.ReactionAdded += OnReactionAdded;
+            client.ReactionAdded   += OnReactionAdded;
         }
 
         private async Task OnReactionAdded(Cacheable<IUserMessage, ulong> potentialMessage, ISocketMessageChannel channel, SocketReaction reaction)
         {
-            IUserMessage? userMessage = null;
-            var eventArgs = new ReactionResponseEventArgs();
-            eventArgs.Player = Player;
-            eventArgs.SocketReaction = reaction;
+            //var userMessage = await potentialMessage.GetOrDownloadAsync();
+            IUser user = (reaction.User.IsSpecified) ? reaction.User.Value : Guild.GetUser(reaction.UserId);
+            
+            #region qualify response
+
+            if (user.IsBot)
+            {
+                Program.DebugLog("reaction is from a bot");
+                return;
+            }
+            
+            SocketGuildChannel? guildChannel = channel as SocketGuildChannel;
+            if (guildChannel == null)
+            {
+                Program.DebugLog("reaction dm?");
+            }
+            else if (guildChannel.Guild.Id != Guild.Id)
+            {
+                Program.DebugLog("reaction didnt occur in this guild!");
+                return;
+            }
+            
+            var eventArgs = new ReactionResponseEventArgs(this, reaction, user);
+            #endregion
             
             for (int i = 0; i < _reactionResponses.Count; i++)
             {
-                var response = _reactionResponses[i];
-                if (response.ReactionBlueprint.Name == reaction.Emote.Name)
-                {
-                    response.Action?.Invoke(eventArgs);
-                    if (response.ActionWithUserMessage != null)
-                    {
-                        if (userMessage == null)
-                            userMessage = await potentialMessage.GetOrDownloadAsync();
-                        
-                        response.ActionWithUserMessage.Invoke(eventArgs, userMessage);
-                    }
-                }
+                if (_reactionResponses[i].ReactionBlueprint.Name == reaction.Emote.Name)
+                    _reactionResponses[i].Action.Invoke(eventArgs);
             }
-            
         }
 
         async Task OnMessageReceived(SocketMessage socketMessage)
         {
             Phrase? phrase = _input.ProcessMessageForThisSession(socketMessage, _client, Guild);
-            if (phrase != null)
-            {
-                Program.DebugLog("phrase relevant");
-                for (int i = 0; i < _phraseResponses.Count; i++)
+
+            if (phrase == null) //if phrase was meant for another guild, or was sent by self
+                return;
+            
+            for (int i = 0; i < _phraseResponses.Count; i++)
+            { 
+                if (_phraseResponses[i].PhraseBlueprint.MatchesPhrase(phrase)) 
                 {
-                    if (_phraseResponses[i].PhraseBlueprint.MatchesPhrase(phrase))
-                    {
-                        var responseArgs = new PhraseResponseEventArgs();
-                        responseArgs.Phrase = phrase;
-                        responseArgs.Player = Player;
-                        responseArgs.Message = socketMessage;
-                        _phraseResponses[i].Action.Invoke(responseArgs);
-                    }
+                    //todo calculate room of phrase... or use room of phrase as part of the response signature
+                    _phraseResponses[i].Action.Invoke(new PhraseResponseEventArgs(phrase, socketMessage, null, this));
                 }
             }
+            
         }
         
       
