@@ -3,7 +3,6 @@ using System.Threading.Tasks;
 using chext.Mechanics;
 using Discord.WebSocket;
 using DiscordTextAdventure.Mechanics.Rooms;
-using DiscordTextAdventure.Mechanics.User;
 using DiscordTextAdventure.Parsing.DataStructures;
 
 #nullable enable
@@ -15,7 +14,6 @@ namespace DiscordTextAdventure.Mechanics.Responses
         public readonly PhraseBlueprint PhraseBlueprint;
         private readonly Action<PhraseResponseEventArgs> Action;
         private readonly Func<PhraseResponseEventArgs, Task> ActionAsync;
-
 
         public PhraseResponse(PhraseBlueprint phraseBlueprint, Action<PhraseResponseEventArgs> action)
         {

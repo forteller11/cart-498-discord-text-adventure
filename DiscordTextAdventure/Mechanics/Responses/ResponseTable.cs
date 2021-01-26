@@ -43,13 +43,32 @@ namespace DiscordTextAdventure.Mechanics.Responses
             
             async Task SetPlayer(ReactionResponseEventArgs e)
             {
-                e.Session.Player = new Player(e.User);
-                e.Session.RoomManager.Screen.ChangeRoomVisibilityAsync(e.Session, RoomCategory.ViewAndSendPermission);
-                var dm = await e.Session.Player.SocketUser.GetOrCreateDMChannelAsync();
-                await dm.SendMessageAsync($"Welcome to the server {e.Session.Player.User.Username}! " +
-                                          $"\nThese are exciting times you're entering the server, we have a special event." +
-                                          $"\nThe user with the most contributions to our community, will get to visit our headquarters where " +
-                                          $"you'll get to meet our tech-forward crew and cutting edge technology! Message today! ");
+             
+                IDMChannel? dmChannel;
+                if (e.Session.Player?.User.Id == e.User.Id) //player already not null and player is the user who reacted
+                {
+                    var player = e.Session.Player;
+                    dmChannel = await e.Session.Player.SocketUser.GetOrCreateDMChannelAsync();
+                    await dmChannel.SendMessageAsync(
+                        $"{player.User.Username}, it looks like you are trying to VOID the user-agreement you accepted" +
+                        $"at {player.AcceptUserAgreement.ToLocalTime().ToLongTimeString()} on {player.AcceptUserAgreement.ToShortDateString()}" +
+                        $"\nWe regret to inform you at the Dissonance legal team, that you can not revoke these terms of service." +
+                        $"\nYour data is now stored in our servers and third party affiliate.");
+                }
+                else if (e.Session.Player == null)
+                {
+                    e.Session.Player = new Player(e.User);
+                    e.Session.RoomManager.Screen.ChangeRoomVisibilityAsync(e.Session,
+                        RoomCategory.ViewAndSendPermission);
+                    dmChannel = await  e.Session.Player.SocketUser.GetOrCreateDMChannelAsync();
+                    await dmChannel.SendMessageAsync(
+                        $"Welcome { e.Session.Player.User.Username}!" +
+                        $"\nThese are exciting times in which you're entering Dissonance server, as we have a special event currently taking place!." +
+                        $"\nThe user with the most contributions to our community, will have the privilege to visit *The Cloud*. " +
+                        $"\nOur headquarters where you'll get to me out ambitious crew and have a chance to get to know our cutting edge technology." +
+                        $"\nMake sure to participate! We recommend getting to know each one of our communities and posting relevant content!");
+                    //you can read about more here: 404
+                }
             }
             #endregion
         }
