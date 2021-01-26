@@ -17,6 +17,7 @@ namespace DiscordTextAdventure.Parsing
             
             var words = lowerWords.Split(Common.SEPERATORS, StringSplitOptions.RemoveEmptyEntries).ToList();
 
+            //todo, remove ' and ? etc.
             //remove articles
             for (int i = 0; i < words.Count; i++)
             {

@@ -85,7 +85,7 @@ namespace chext.Mechanics
                 if (_phraseResponses[i].PhraseBlueprint.MatchesPhrase(phrase)) 
                 {
                     //todo calculate room of phrase... or use room of phrase as part of the response signature
-                    _phraseResponses[i].Action.Invoke(new PhraseResponseEventArgs(phrase, socketMessage, null, this));
+                    _phraseResponses[i].Action.Invoke(new PhraseResponseEventArgs(phrase, socketMessage, _roomsManager.RoomKV[socketMessage.Channel.Id], this));
                 }
             }
             

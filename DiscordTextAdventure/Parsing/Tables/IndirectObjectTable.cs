@@ -7,6 +7,7 @@ namespace DiscordTextAdventure.Parsing.Tables
     {
 
         public static readonly SynonymCollection Axe = new SynonymCollection("axe", "sword");
+  
         public static readonly  SynonymCollection[] IndirectObjects;
 
         static IndirectObjectTable()

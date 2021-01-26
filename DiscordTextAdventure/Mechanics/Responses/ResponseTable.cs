@@ -14,6 +14,8 @@ namespace DiscordTextAdventure.Mechanics.Responses
     public class ResponseTable
     {
         public readonly static PhraseResponse GoNorth;
+        public readonly static PhraseResponse HelloMemeBot;
+        
         public readonly static ReactionResponse AcceptUserAgreement;
 
         static ResponseTable()
@@ -24,8 +26,14 @@ namespace DiscordTextAdventure.Mechanics.Responses
                 new PhraseBlueprint(VerbTable.Move, NounTable.North, null, null),
                 GoNorthAction
                 );
+            
+            HelloMemeBot = new PhraseResponse(
+                new PhraseBlueprint(VerbTable.Salutation, NounTable.DankMemeBot, null, null), MemeBotHelloResponse
+                );
 
             void GoNorthAction(PhraseResponseEventArgs e) => Program.DebugLog("GO NORTH RESPONSE");
+            
+            void MemeBotHelloResponse(PhraseResponseEventArgs e) => e.RoomOfPhrase.Channel.SendMessageAsync($"Hello {e.Message.Author.Username}, are you a memer aswell?");
             #endregion
             
             #region emote responses

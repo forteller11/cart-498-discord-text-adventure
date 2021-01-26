@@ -12,6 +12,7 @@ namespace DiscordTextAdventure.Mechanics.Rooms
     public class RoomManager
     {
         public Room [] Rooms;
+        public Dictionary<ulong, Room> RoomKV;
         public RoomCategory [] Categories;
 
         
@@ -50,7 +51,7 @@ namespace DiscordTextAdventure.Mechanics.Rooms
             
             Rooms = Common.ClassMembersToArray<Room>(typeof(RoomManager), this);
             Categories = Common.ClassMembersToArray<RoomCategory>(typeof(RoomManager), this);
-            
+
             #region tie channels and categories to their discord entities (by creating them), and put channels in their proper categories
         
             //todo could make this faster by immediately creating the rooms of a category channel when it's done
@@ -107,6 +108,10 @@ namespace DiscordTextAdventure.Mechanics.Rooms
                     createChannelTaskIndex++;
                 }
             }
+            
+            RoomKV = new Dictionary<ulong, Room>(Rooms.Length);
+            for (int i = 0; i < Rooms.Length; i++)
+                RoomKV.Add(Rooms[i].Channel!.Id, Rooms[i]);
 
             #endregion
             

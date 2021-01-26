@@ -8,6 +8,7 @@ namespace DiscordTextAdventure.Parsing.Tables
     {
         public static readonly SynonymCollection South = new SynonymCollection("south");
         public static readonly SynonymCollection North = new SynonymCollection("north");
+        public static readonly SynonymCollection DankMemeBot = new SynonymCollection("meme bot", "meme generator", "memer");
         
         public static readonly SynonymCollection[] Nouns;
         
