@@ -18,7 +18,7 @@ namespace chext.Mechanics
         public readonly SocketGuild Guild;
    
         private Input _input;
-        private RoomManager _roomsManager;
+        public readonly RoomManager RoomManager;
         
         private List<PhraseResponse> _phraseResponses;
         private List<ReactionResponse> _reactionResponses;
@@ -32,7 +32,8 @@ namespace chext.Mechanics
             _input = new Input();
             _phraseResponses = ResponseTable.GetStaticPhraseResponseList();
             _reactionResponses = ResponseTable.GetStaticReactionResponseList();
-            _roomsManager = new RoomManager(this, guild);
+            RoomManager = new RoomManager(this, guild);
+            RoomManager.Screen.ChangeRoomVisibilityAsync(this, OverwritePermissions.DenyAll(RoomManager.Screen.Channel));
             //Player = new Player();
 
             client.MessageReceived += OnMessageReceived;
@@ -85,7 +86,7 @@ namespace chext.Mechanics
                 if (_phraseResponses[i].PhraseBlueprint.MatchesPhrase(phrase)) 
                 {
                     //todo calculate room of phrase... or use room of phrase as part of the response signature
-                    _phraseResponses[i].Action.Invoke(new PhraseResponseEventArgs(phrase, socketMessage, _roomsManager.RoomKV[socketMessage.Channel.Id], this));
+                    _phraseResponses[i].Action.Invoke(new PhraseResponseEventArgs(phrase, socketMessage, RoomManager.RoomKV[socketMessage.Channel.Id], this));
                 }
             }
             

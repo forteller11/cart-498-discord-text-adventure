@@ -29,8 +29,8 @@ namespace DiscordTextAdventure.Mechanics.Rooms
 
         public RoomManager(Session session, SocketGuild guild)
         {
-            Intro = new RoomCategory("Welcome", RoomCategory.ViewAndSendPermission);
-            Screen = new RoomCategory("Screens", RoomCategory.NothingPermission);
+            Intro = new RoomCategory("Welcome");
+            Screen = new RoomCategory("Screens");
             
             #region create rooms
             UserAgreement = new Room("User Agreement", Intro)
@@ -115,7 +115,6 @@ namespace DiscordTextAdventure.Mechanics.Rooms
                     createChannelTaskIndex++;
                 }
                 
-                Categories[i].ChangeRoomVisibilityAsync(session, OverwritePermissions.DenyAll(Categories[i].Channel));
             }
             
             RoomKV = new Dictionary<ulong, Room>(Rooms.Length);

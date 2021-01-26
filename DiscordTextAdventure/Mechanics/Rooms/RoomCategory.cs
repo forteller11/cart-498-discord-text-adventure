@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using chext.Mechanics;
 using Discord;
 using Discord.Commands;
@@ -14,7 +15,7 @@ namespace DiscordTextAdventure.Mechanics.Rooms
         public string Name;
         public RestCategoryChannel? Channel;
         public List<Room> Rooms;
-        public OverwritePermissions OverwritePermissions;
+
 
         // public static readonly ChannelPermission ViewAndSendPermission = ChannelPermission.Connect
         //                                                                  | ChannelPermission.AddReactions
@@ -40,11 +41,10 @@ namespace DiscordTextAdventure.Mechanics.Rooms
         );
         
         
-        public RoomCategory(string name, OverwritePermissions permissions)
+        public RoomCategory(string name)
         {
             Name = name;
             Rooms = new List<Room>();
-            OverwritePermissions = permissions;
         }
 
         public void LinkToDiscord(RestCategoryChannel channel)
@@ -52,35 +52,29 @@ namespace DiscordTextAdventure.Mechanics.Rooms
             Channel = channel;
         }
 
-        public void ChangeRoomVisibilityAsync(Session session, OverwritePermissions overwritePermissions)
+        public async Task ChangeRoomVisibilityAsync(Session session, OverwritePermissions overwritePermissions)
         {
-            OverwritePermissions = overwritePermissions;
+    
+            await Channel.AddPermissionOverwriteAsync(session.Guild.EveryoneRole, overwritePermissions);
             
-            for (int i = 0; i < Rooms.Count; i++)
-            {
-                if (Rooms[i].IsDMChannel)
-                    throw new Exception("Can't change visibility of dm channel!");
-
-
-                if (session.Player == null)
-                {
-                    foreach (var user in session.Guild.Users)
-                    {
-                        if (!user.IsBot)
-                        {
-                            Rooms[i].GuildChannel!.AddPermissionOverwriteAsync(user, overwritePermissions);
-                            Channel.AddPermissionOverwriteAsync(user, overwritePermissions);
-                            Program.DebugLog("Permission overwrite");
-                        }
-                    }
-                }
-                else
-                {
-                    Program.DebugLog("Permission overwrite");
-                    Channel.AddPermissionOverwriteAsync(session.Player.User, overwritePermissions);
-                    Rooms[i].GuildChannel!.AddPermissionOverwriteAsync(session.Player.User, overwritePermissions);
-                }
-            }
+            // if (session.Player == null)
+            // {
+            //     foreach (var user in session.Guild.Users)
+            //     {
+            //         if (!user.IsBot)
+            //         {
+            //             Program.DebugLog("Permission overwrite no player");
+            //             
+            //             await Channel.AddPermissionOverwriteAsync(session.Guild.EveryoneRole, overwritePermissions);
+            //         }
+            //     }
+            // }
+            // else
+            // {
+            //     Program.DebugLog("Permission overwrite category");
+            //     await Channel.AddPermissionOverwriteAsync(session.Guild.EveryoneRole, overwritePermissions);
+            // }
+            
         }
     }
 }

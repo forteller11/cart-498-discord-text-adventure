@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using chext;
 using Discord;
+using DiscordTextAdventure.Mechanics.Rooms;
 using DiscordTextAdventure.Mechanics.User;
 using DiscordTextAdventure.Parsing;
 using DiscordTextAdventure.Parsing.DataStructures;
@@ -41,9 +42,8 @@ namespace DiscordTextAdventure.Mechanics.Responses
             
             void SetPlayer(ReactionResponseEventArgs e)
             {
-     
                 e.Session.Player = new Player(e.User);
-                Program.DebugLog("Player set");
+                e.Session.RoomManager.Screen.ChangeRoomVisibilityAsync(e.Session, RoomCategory.ViewAndSendPermission);
             }
             #endregion
         }
