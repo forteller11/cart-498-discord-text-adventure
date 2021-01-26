@@ -33,7 +33,7 @@ namespace DiscordTextAdventure.Mechanics.Responses
 
             void GoNorthAction(PhraseResponseEventArgs e) => Program.DebugLog("GO NORTH RESPONSE");
             
-            void MemeBotHelloResponse(PhraseResponseEventArgs e) => e.RoomOfPhrase.Channel.SendMessageAsync($"Hello {e.Message.Author.Username}, are you a memer aswell?");
+            void MemeBotHelloResponse(PhraseResponseEventArgs e) => e.RoomOfPhrase.MessageChannel.SendMessageAsync($"Hello {e.Message.Author.Username}, are you a memer aswell?");
             #endregion
             
             #region emote responses

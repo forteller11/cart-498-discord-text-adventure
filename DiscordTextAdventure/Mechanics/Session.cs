@@ -32,7 +32,7 @@ namespace chext.Mechanics
             _input = new Input();
             _phraseResponses = ResponseTable.GetStaticPhraseResponseList();
             _reactionResponses = ResponseTable.GetStaticReactionResponseList();
-            _roomsManager = new RoomManager(_client, guild);
+            _roomsManager = new RoomManager(this, guild);
             //Player = new Player();
 
             client.MessageReceived += OnMessageReceived;

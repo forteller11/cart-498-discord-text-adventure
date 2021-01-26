@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using chext;
 using Discord;
+using Discord.Rest;
 using DiscordTextAdventure.Discord.Rendering;
 
 #nullable enable
@@ -17,9 +18,12 @@ namespace DiscordTextAdventure.Mechanics.Rooms
         public Func<Room, string> DynamicDescription = DefaultDynamicDescription;
         public Emoji []? Reactions;
         
+        
         public List<AdventureObject> Objects = new List<AdventureObject>();
         
-        public IMessageChannel? Channel;
+        public bool IsDMChannel = false;
+        public IMessageChannel? MessageChannel;
+        public IGuildChannel? GuildChannel;
         public RoomRenderer? Renderer;
 
         public Room(string name, RoomCategory category)
@@ -29,9 +33,16 @@ namespace DiscordTextAdventure.Mechanics.Rooms
         }
         
 
-        public void Init(IMessageChannel channel)
+        public void LinkToDiscord(IMessageChannel channel, IGuildChannel? guildChannel)
         {
-            Channel = channel;
+            if (IsDMChannel && guildChannel != null)
+                throw new ArgumentException("This is a DM channel but was fed a guild channel");
+            if (!IsDMChannel && guildChannel == null)
+                throw new ArgumentException("This is a guild channel but was NOT fed a guild channel");
+            
+            MessageChannel = channel;
+            GuildChannel = guildChannel;
+
             Renderer = new RoomRenderer(this, channel);
             Renderer.DrawRoom();
         }
@@ -68,6 +79,12 @@ namespace DiscordTextAdventure.Mechanics.Rooms
                 Program.DebugLog (reactions[i].Name) ;
             }
             Reactions = reactions;
+            return this;
+        }
+
+        public Room WithDM()
+        {
+            IsDMChannel = true;
             return this;
         }
         

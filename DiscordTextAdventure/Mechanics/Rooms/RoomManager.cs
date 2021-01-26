@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using chext;
+using chext.Mechanics;
 using Discord;
 using Discord.Rest;
 using Discord.WebSocket;
@@ -26,10 +27,10 @@ namespace DiscordTextAdventure.Mechanics.Rooms
         public readonly RoomCategory Screen;
         #endregion
 
-        public RoomManager(DiscordSocketClient client, SocketGuild guild)
+        public RoomManager(Session session, SocketGuild guild)
         {
-            Intro = new RoomCategory("Welcome");
-            Screen = new RoomCategory("Screens");
+            Intro = new RoomCategory("Welcome", RoomCategory.ViewAndSendPermission);
+            Screen = new RoomCategory("Screens", RoomCategory.NothingPermission);
             
             #region create rooms
             UserAgreement = new Room("User Agreement", Intro)
@@ -75,12 +76,13 @@ namespace DiscordTextAdventure.Mechanics.Rooms
             
             Task.WaitAll(createCategoriesTasks);
             
+            
             List<Task<RestTextChannel>> createChannelTasks = new List<Task<RestTextChannel>>();
             for (int i = 0; i < Categories.Length; i++)
             {
                 var category = Categories[i];
-                Categories[i].Init(createCategoriesTasks[i].Result);
-             
+                Categories[i].LinkToDiscord(createCategoriesTasks[i].Result);
+
                 for (int j = 0; j < Categories[i].Rooms.Count; j++)
                 {
                     var room = category.Rooms[j];
@@ -104,14 +106,21 @@ namespace DiscordTextAdventure.Mechanics.Rooms
             {
                 for (int j = 0; j < Categories[i].Rooms.Count; j++)
                 {
-                    Categories[i].Rooms[j].Init(createChannelTasksArr[createChannelTaskIndex].Result);
+                    var channel = createChannelTasksArr[createChannelTaskIndex].Result;
+                    RestGuildChannel? guildChannel = channel as RestGuildChannel; //will be null if dm channel
+                    if (guildChannel == null && !Categories[i].Rooms[j].IsDMChannel)
+                        throw new Exception("Inconsistent DM usage");
+                    
+                    Categories[i].Rooms[j].LinkToDiscord(createChannelTasksArr[createChannelTaskIndex].Result, guildChannel);
                     createChannelTaskIndex++;
                 }
+                
+                Categories[i].ChangeRoomVisibilityAsync(session, OverwritePermissions.DenyAll(Categories[i].Channel));
             }
             
             RoomKV = new Dictionary<ulong, Room>(Rooms.Length);
             for (int i = 0; i < Rooms.Length; i++)
-                RoomKV.Add(Rooms[i].Channel!.Id, Rooms[i]);
+                RoomKV.Add(Rooms[i].GuildChannel!.Id, Rooms[i]);
 
             #endregion
             
