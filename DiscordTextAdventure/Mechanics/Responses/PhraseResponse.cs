@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using chext.Mechanics;
 using Discord.WebSocket;
 using DiscordTextAdventure.Mechanics.Rooms;
@@ -12,13 +13,26 @@ namespace DiscordTextAdventure.Mechanics.Responses
     public class PhraseResponse
     {
         public readonly PhraseBlueprint PhraseBlueprint;
-        public readonly Action<PhraseResponseEventArgs> Action;
+        private readonly Action<PhraseResponseEventArgs> Action;
+        private readonly Func<PhraseResponseEventArgs, Task> ActionAsync;
 
 
         public PhraseResponse(PhraseBlueprint phraseBlueprint, Action<PhraseResponseEventArgs> action)
         {
             PhraseBlueprint = phraseBlueprint;
             Action = action;
+        }
+        
+        public PhraseResponse(PhraseBlueprint phraseBlueprint, Func<PhraseResponseEventArgs, Task> actionAsync)
+        {
+            PhraseBlueprint = phraseBlueprint;
+            ActionAsync = actionAsync;
+        }
+
+        public void CallResponses(PhraseResponseEventArgs args)
+        {
+            Action?.Invoke(args);
+            ActionAsync?.Invoke(args);
         }
     }
     

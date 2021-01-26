@@ -39,7 +39,6 @@ namespace chext.Mechanics
             _reactionResponses = ResponseTable.GetStaticReactionResponseList();
             RoomManager = new RoomManager(this, guild);
             RoomManager.Screen.ChangeRoomVisibilityAsync(this, OverwritePermissions.DenyAll(RoomManager.Screen.Channel));
-            //Player = new Player();
 
             dissonanceBot.MessageReceived += OnMessageReceived;
             dissonanceBot.ReactionAdded   += OnReactionAdded;
@@ -48,30 +47,13 @@ namespace chext.Mechanics
         private async Task OnReactionAdded(Cacheable<IUserMessage, ulong> potentialMessage, ISocketMessageChannel channel, SocketReaction reaction)
         {
             //var userMessage = await potentialMessage.GetOrDownloadAsync();
-            IUser user = (reaction.User.IsSpecified) ? reaction.User.Value : Guild.GetUser(reaction.UserId);
-            
-            #region qualify response
+            IUser user = reaction.User.IsSpecified ? reaction.User.Value : Guild.GetUser(reaction.UserId);
 
-            if (user.IsBot)
-            {
-                Program.DebugLog("reaction is from a bot");
+            if (!_input.FilterMessage(user, channel, Guild))
                 return;
-            }
-            
-            SocketGuildChannel? guildChannel = channel as SocketGuildChannel;
-            if (guildChannel == null)
-            {
-                Program.DebugLog("reaction dm?");
-            }
-            else if (guildChannel.Guild.Id != Guild.Id)
-            {
-                Program.DebugLog("reaction didnt occur in this guild!");
-                return;
-            }
-            
+
             var eventArgs = new ReactionResponseEventArgs(this, reaction, user);
-            #endregion
-            
+
             for (int i = 0; i < _reactionResponses.Count; i++)
             {
                 if (_reactionResponses[i].ReactionBlueprint.Name == reaction.Emote.Name)
@@ -81,21 +63,19 @@ namespace chext.Mechanics
 
         async Task OnMessageReceived(SocketMessage socketMessage)
         {
-            Phrase? phrase = _input.ProcessMessageForThisSession(socketMessage, DissonanceBot, Guild);
-
-            if (phrase == null) //if phrase was meant for another guild, or was sent by self
+            if (!_input.FilterMessage(socketMessage.Author, socketMessage.Channel, Guild))
                 return;
             
+            Phrase phrase = _input.ProcessMessage(socketMessage);
+
             for (int i = 0; i < _phraseResponses.Count; i++)
             { 
-                if (_phraseResponses[i].PhraseBlueprint.MatchesPhrase(phrase)) 
-                {
-                    //todo calculate room of phrase... or use room of phrase as part of the response signature
+                if (_phraseResponses[i].PhraseBlueprint.MatchesPhrase(phrase))
                     _phraseResponses[i].CallResponses(new PhraseResponseEventArgs(phrase, socketMessage, RoomManager.RoomKV[socketMessage.Channel.Id], this));
-                }
             }
-            
         }
+        
+        
         
       
         

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using chext;
+using Discord;
 using Discord.WebSocket;
 using DiscordTextAdventure.Mechanics.Responses;
 using DiscordTextAdventure.Parsing.DataStructures;
@@ -22,37 +23,28 @@ namespace DiscordTextAdventure.Parsing
 
         }
         
-        #region onClientEvents
-        public Phrase? ProcessMessageForThisSession(SocketMessage message, DiscordSocketClient client, SocketGuild guild)
+        public bool FilterMessage(IUser author, IChannel channel, SocketGuild guild)
         {
-            #region make sure message is appropriate for session
-            Program.DebugLog("Game Manager message received");
-            if (message.Author.Id == client.CurrentUser.Id)
-                return null;
             
-            if (message.Author.IsBot)
-                return null;
+            if (author.IsBot)
+                return false;
             
-            SocketGuildChannel? guildChannel = message.Channel as SocketGuildChannel;
+            SocketGuildChannel? guildChannel = channel as SocketGuildChannel;
 
             if (guildChannel == null)
-            {
                 Program.DebugLog("message sent by DMS?");
-            }
 
             else if (guildChannel.Guild.Id != guild.Id)
             {
                 Program.DebugLog("message not part of relevant guild");
-                return null;
+                return false;
             }
-            #endregion
 
-            return ProcessMessage(message);
-      
+            return true;
         }
-        #endregion
 
-        private Phrase ProcessMessage(SocketMessage message)
+        
+        public Phrase ProcessMessage(SocketMessage message)
         {
            var tokens = _tokenizer.Tokenize(message.Content);
            var phrase = _parser.Parse(tokens);
