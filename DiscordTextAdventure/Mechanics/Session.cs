@@ -14,7 +14,10 @@ namespace chext.Mechanics
 {
     public class Session
     {
-        private DiscordSocketClient _client;
+        public readonly DiscordSocketClient DissonanceBot;
+        public readonly DiscordSocketClient MemeBot;
+        public readonly DiscordSocketClient BodyBot;
+        
         public readonly SocketGuild Guild;
    
         private Input _input;
@@ -24,9 +27,11 @@ namespace chext.Mechanics
         private List<ReactionResponse> _reactionResponses;
         
         public Player? Player;
-        public Session(DiscordSocketClient client, SocketGuild guild)
+        public Session(DiscordSocketClient dissonanceBot, DiscordSocketClient memeBot, DiscordSocketClient bodyBot, SocketGuild guild)
         {
-            _client = client;
+            DissonanceBot = dissonanceBot;
+            MemeBot = memeBot;
+            BodyBot = bodyBot;
             Guild = guild;
             
             _input = new Input();
@@ -36,8 +41,8 @@ namespace chext.Mechanics
             RoomManager.Screen.ChangeRoomVisibilityAsync(this, OverwritePermissions.DenyAll(RoomManager.Screen.Channel));
             //Player = new Player();
 
-            client.MessageReceived += OnMessageReceived;
-            client.ReactionAdded   += OnReactionAdded;
+            dissonanceBot.MessageReceived += OnMessageReceived;
+            dissonanceBot.ReactionAdded   += OnReactionAdded;
         }
 
         private async Task OnReactionAdded(Cacheable<IUserMessage, ulong> potentialMessage, ISocketMessageChannel channel, SocketReaction reaction)
@@ -70,13 +75,13 @@ namespace chext.Mechanics
             for (int i = 0; i < _reactionResponses.Count; i++)
             {
                 if (_reactionResponses[i].ReactionBlueprint.Name == reaction.Emote.Name)
-                    _reactionResponses[i].Action.Invoke(eventArgs);
+                    _reactionResponses[i].CallResponses(eventArgs);
             }
         }
 
         async Task OnMessageReceived(SocketMessage socketMessage)
         {
-            Phrase? phrase = _input.ProcessMessageForThisSession(socketMessage, _client, Guild);
+            Phrase? phrase = _input.ProcessMessageForThisSession(socketMessage, DissonanceBot, Guild);
 
             if (phrase == null) //if phrase was meant for another guild, or was sent by self
                 return;
@@ -86,7 +91,7 @@ namespace chext.Mechanics
                 if (_phraseResponses[i].PhraseBlueprint.MatchesPhrase(phrase)) 
                 {
                     //todo calculate room of phrase... or use room of phrase as part of the response signature
-                    _phraseResponses[i].Action.Invoke(new PhraseResponseEventArgs(phrase, socketMessage, RoomManager.RoomKV[socketMessage.Channel.Id], this));
+                    _phraseResponses[i].CallResponses(new PhraseResponseEventArgs(phrase, socketMessage, RoomManager.RoomKV[socketMessage.Channel.Id], this));
                 }
             }
             

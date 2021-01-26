@@ -40,8 +40,6 @@ namespace DiscordTextAdventure
         
         public async Task MainAsync()
         {
-            
-            
             _dissonanceBot.Log += Log;
             _dankMemeBot.Log   += Log;
             _bodyBot.Log       += Log;
@@ -72,10 +70,7 @@ namespace DiscordTextAdventure
             
             
             Task.WaitAll(startTasks);
-            
-            
-            _gamesManager = new GamesManager(_dissonanceBot);
-            
+
             await Task.Delay(-1);
 
             Task CreateSessionIfAllBotsReady(ref bool isReady)
@@ -84,7 +79,7 @@ namespace DiscordTextAdventure
                 
                 if (dissoannceIsReady && memeIsReady && bodyIsReady)
                 {
-                    _gamesManager = new GamesManager(_dissonanceBot);
+                    _gamesManager = new GamesManager(_dissonanceBot, _dankMemeBot, _bodyBot);
                     Program.DebugLog("Created game maanger");
                 }
                 return Task.CompletedTask;

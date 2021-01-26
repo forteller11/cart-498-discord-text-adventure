@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using chext;
 using Discord;
 using DiscordTextAdventure.Mechanics.Rooms;
@@ -40,10 +41,15 @@ namespace DiscordTextAdventure.Mechanics.Responses
             #region emote responses
             AcceptUserAgreement = new ReactionResponse(new Emoji("✅"), SetPlayer );
             
-            void SetPlayer(ReactionResponseEventArgs e)
+            async Task SetPlayer(ReactionResponseEventArgs e)
             {
                 e.Session.Player = new Player(e.User);
                 e.Session.RoomManager.Screen.ChangeRoomVisibilityAsync(e.Session, RoomCategory.ViewAndSendPermission);
+                var dm = await e.Session.Player.SocketUser.GetOrCreateDMChannelAsync();
+                await dm.SendMessageAsync($"Welcome to the server {e.Session.Player.User.Username}! " +
+                                          $"\nThese are exciting times you're entering the server, we have a special event." +
+                                          $"\nThe user with the most contributions to our community, will get to visit our headquarters where " +
+                                          $"you'll get to meet our tech-forward crew and cutting edge technology! Message today! ");
             }
             #endregion
         }

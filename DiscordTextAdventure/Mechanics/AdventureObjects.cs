@@ -1,4 +1,7 @@
 ﻿using System;
+using DiscordTextAdventure.Parsing.DataStructures;
+using DiscordTextAdventure.Parsing.Tables;
+
 #nullable enable
 
 namespace DiscordTextAdventure.Mechanics
@@ -14,8 +17,17 @@ namespace DiscordTextAdventure.Mechanics
             Name = name;
             Description = description;
         }
-        
-        public bool Carryable;
+
+        public virtual void OnLook(Phrase phrase)
+        {
+            
+        }
+
+        public virtual void OnHit(Phrase phrase)
+        {
+            // IndirectObjectTable.Axe.ContainsCompoundWord(phrase.IndirectObject);
+            // if (phrase.IndirectObject.Equals(IndirectObjectTable.Axe))
+        }
 
     }
 }

@@ -13,20 +13,25 @@ namespace chext.Discord
     
     public class GamesManager
     {
-        private DiscordSocketClient _client;
+        private DiscordSocketClient _disonanceBot;
+        private DiscordSocketClient _memeBot;
+        private DiscordSocketClient _bodyBot;
         private List<Session> _sessions;
 
         /// <summary>
         /// assumed to be called after _client is Ready()
         /// </summary>
         /// <param name="client"></param>
-        public GamesManager(DiscordSocketClient client)
+        public GamesManager(DiscordSocketClient dissonanceBot, DiscordSocketClient memeBot, DiscordSocketClient bodyBot)
         {
-            _client = client;
-            _sessions = new List<Session>(client.Guilds.Count);
+            
+            _sessions = new List<Session>(dissonanceBot.Guilds.Count);
 
-            foreach (var guild in client.Guilds)
-                _sessions.Add(new Session(_client,guild));
+            if (dissonanceBot.Guilds.Count != memeBot.Guilds.Count || memeBot.Guilds.Count != bodyBot.Guilds.Count)
+                throw new Exception("bots are not added to same amount of servers!");
+
+            foreach (var guild in dissonanceBot.Guilds)
+                _sessions.Add(new Session(dissonanceBot, memeBot, bodyBot, guild));
         }
 
 
