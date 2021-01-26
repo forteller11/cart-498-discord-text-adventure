@@ -19,6 +19,7 @@ namespace DiscordTextAdventure.Mechanics.Responses
         public readonly static PhraseResponse HelloMemeBot;
         
         public readonly static ReactionResponse AcceptUserAgreement;
+        public readonly static ReactionResponse AttemptVoidUserAgreement;
 
         static ResponseTable()
         {
@@ -39,28 +40,19 @@ namespace DiscordTextAdventure.Mechanics.Responses
             #endregion
             
             #region emote responses
-            AcceptUserAgreement = new ReactionResponse(new Emoji("✅"), SetPlayer );
+
+            IEmote checkmark = new Emoji("✅");
+            AcceptUserAgreement = new ReactionResponse(checkmark, ReactionResponse.OnReactionTrigger.OnAdd,         null, SetPlayer );
+            AttemptVoidUserAgreement = new ReactionResponse(checkmark, ReactionResponse.OnReactionTrigger.OnRemove, null, AttemptVoidAgreement );
             
             async Task SetPlayer(ReactionResponseEventArgs e)
             {
-             
-                IDMChannel? dmChannel;
-                if (e.Session.Player?.User.Id == e.User.Id) //player already not null and player is the user who reacted
-                {
-                    var player = e.Session.Player;
-                    dmChannel = await e.Session.Player.SocketUser.GetOrCreateDMChannelAsync();
-                    await dmChannel.SendMessageAsync(
-                        $"{player.User.Username}, it looks like you are trying to VOID the user-agreement you accepted" +
-                        $"at {player.AcceptUserAgreement.ToLocalTime().ToLongTimeString()} on {player.AcceptUserAgreement.ToShortDateString()}" +
-                        $"\nWe regret to inform you at the Dissonance legal team, that you can not revoke these terms of service." +
-                        $"\nYour data is now stored in our servers and third party affiliate.");
-                }
-                else if (e.Session.Player == null)
+                if (e.Session.Player == null || e.Session?.Player.User.Id != e.User.Id)
                 {
                     e.Session.Player = new Player(e.User);
                     e.Session.RoomManager.Screen.ChangeRoomVisibilityAsync(e.Session,
                         RoomCategory.ViewAndSendPermission);
-                    dmChannel = await  e.Session.Player.SocketUser.GetOrCreateDMChannelAsync();
+                    var dmChannel = await  e.Session.Player.SocketUser.GetOrCreateDMChannelAsync();
                     await dmChannel.SendMessageAsync(
                         $"Welcome { e.Session.Player.User.Username}!" +
                         $"\nThese are exciting times in which you're entering Dissonance server, as we have a special event currently taking place!." +
@@ -68,6 +60,25 @@ namespace DiscordTextAdventure.Mechanics.Responses
                         $"\nOur headquarters where you'll get to me out ambitious crew and have a chance to get to know our cutting edge technology." +
                         $"\nMake sure to participate! We recommend getting to know each one of our communities and posting relevant content!");
                     //you can read about more here: 404
+                }
+            }
+
+            async Task AttemptVoidAgreement(ReactionResponseEventArgs e)
+            {
+                if (e.Session.Player?.User.Id == e.User.Id) //player already not null and player is the user who reacted
+                {
+                    var player = e.Session.Player;
+                    var dmChannel = await e.Session.Player.SocketUser.GetOrCreateDMChannelAsync();
+                    await dmChannel.SendMessageAsync(
+                        $"```diff" +
+                        $"\n=======================================================================================" +
+                        $"\n{player.User.Username}, it looks like you are trying to VOID the user-agreement you accepted" +
+                        $"\nat {player.AcceptUserAgreement.ToLocalTime().ToLongTimeString()} on {player.AcceptUserAgreement.ToShortDateString()}." +
+                        $"\nWe regret to inform you you can not revoke these terms of service." +
+                        $"\nYour data may be stored in our servers and third party affiliates indefinitely.\n" +
+                        "=======================================================================================" +
+                        "" +
+                        "\n\n- The Dissonance Legal Team```");
                 }
             }
             #endregion

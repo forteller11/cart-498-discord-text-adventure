@@ -52,7 +52,7 @@ namespace chext.Mechanics
             if (!_input.FilterMessage(user, channel, Guild))
                 return;
 
-            var eventArgs = new ReactionResponseEventArgs(this, reaction, user);
+            var eventArgs = new ReactionResponseEventArgs(this, reaction, user, RoomManager.RoomKV[channel.Id]);
 
             for (int i = 0; i < _reactionResponses.Count; i++)
             {

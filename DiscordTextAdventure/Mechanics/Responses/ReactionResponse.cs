@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using chext.Mechanics;
 using Discord;
 using Discord.WebSocket;
+using DiscordTextAdventure.Mechanics.Rooms;
 using DiscordTextAdventure.Mechanics.User;
 
 #nullable enable
@@ -13,18 +14,32 @@ namespace DiscordTextAdventure.Mechanics.Responses
         public readonly IEmote ReactionBlueprint;
         private readonly Action<ReactionResponseEventArgs>? Action;
         private readonly Func<ReactionResponseEventArgs, Task>? ActionAsync;
-        
-        public ReactionResponse(Emoji reactionBlueprint, Action<ReactionResponseEventArgs> action)
+
+        [Flags]
+        public enum OnReactionTrigger
+        {
+            OnAdd    = 0b_0001,
+            OnRemove = 0b_0010
+        }
+        public static OnReactionTrigger OnReactionTriggerBoth = OnReactionTrigger.OnAdd | OnReactionTrigger.OnRemove;
+        public readonly OnReactionTrigger Trigger;
+
+        public ReactionResponse(IEmote reactionBlueprint, OnReactionTrigger trigger, Action<ReactionResponseEventArgs> action, Func<ReactionResponseEventArgs, Task> actionAsync)
         {
             ReactionBlueprint = reactionBlueprint;
-            Action = action;
+            Trigger = trigger;
         }
-        
-        public ReactionResponse(Emoji reactionBlueprint, Func<ReactionResponseEventArgs, Task> action)
-        {
-            ReactionBlueprint = reactionBlueprint;
-            ActionAsync = action;
-        }
+        // public ReactionResponse(IEmote reactionBlueprint, OnReactionTrigger trigger, Action<ReactionResponseEventArgs> action) 
+        //     : this (reactionBlueprint, trigger)
+        // {
+        //     Action = action;
+        // }
+        //
+        // public ReactionResponse(IEmote reactionBlueprint, OnReactionTrigger trigger, Func<ReactionResponseEventArgs, Task> actionAsync) 
+        //     : this(reactionBlueprint, trigger)
+        // {
+        //     ActionAsync = actionAsync;
+        // }
 
         public void CallResponses(ReactionResponseEventArgs args)
         {
@@ -35,16 +50,18 @@ namespace DiscordTextAdventure.Mechanics.Responses
     
     public class ReactionResponseEventArgs
     {
-        public Session Session;
-        public SocketReaction SocketReaction;
+        public readonly Session Session;
+        public readonly SocketReaction SocketReaction;
         //public IUserMessage UserMessage;
-        public IUser User;
+        public readonly Room PostedRoom;
+        public readonly IUser User;
 
-        public ReactionResponseEventArgs(Session session, SocketReaction socketReaction, IUser user)
+        public ReactionResponseEventArgs(Session session, SocketReaction socketReaction, IUser user, Room postedRoom)
         {
             Session = session;
             SocketReaction = socketReaction;
             User = user;
+            PostedRoom = postedRoom;
         }
     }
 }
