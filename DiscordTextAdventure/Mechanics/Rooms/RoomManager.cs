@@ -20,8 +20,10 @@ namespace DiscordTextAdventure.Mechanics.Rooms
         #region declaring rooms
         
         public readonly Room UserAgreement;
-        public readonly Room TestRoom;
-        public readonly Room TestRoom2;
+        
+        public readonly Room DnD;
+        public readonly Room Pokemon;
+        public readonly Room Animals;
         
         public readonly RoomCategory Intro;
         public readonly RoomCategory Screen;
@@ -38,15 +40,17 @@ namespace DiscordTextAdventure.Mechanics.Rooms
                 .WithReaction(new Emoji("✅"));
             
             
-            TestRoom = new Room("test room name", Screen)
-                .WithStaticDescriptions("here lies a fun pot")
+            DnD = new Room("DnD", Screen)
+                .WithStaticDescriptions("all stuff DnD, tolken, ttrp!")
                 .WithObjects(
-                    new AdventureObject("apple", "the apple has a tooth in it"),
-                    new AdventureObject("pole", "a long thin pole")
+                   
                     );
             
-            TestRoom2 = new Room("funny second room name", Screen)
-                .WithStaticDescriptions("i like doughnuts");
+            Pokemon = new Room("Pokemon", Screen)
+                .WithStaticDescriptions("gotta catch em' all");
+            
+            Animals = new Room("Cute Animals", Screen)
+                .WithStaticDescriptions("cats jumping from cucumbers, tiny frogs making impressive noises, we love them all!\nPreferably pictures!");
             
             #endregion
             
