@@ -9,22 +9,23 @@ using DiscordTextAdventure.Parsing.DataStructures;
 namespace DiscordTextAdventure.Mechanics.Responses
 {
     //to respond to phrase with, phrase
-    public class PhraseResponse
+    public class PhraseResponse : IResponse
     {
         public readonly PhraseBlueprint PhraseBlueprint;
         private readonly Action<PhraseResponseEventArgs> Action;
         private readonly Func<PhraseResponseEventArgs, Task> ActionAsync;
+        public Room[] RoomFilter { get; set; }
 
         public PhraseResponse(PhraseBlueprint phraseBlueprint, Action<PhraseResponseEventArgs> action)
         {
             PhraseBlueprint = phraseBlueprint;
             Action = action;
         }
-        
-        public PhraseResponse(PhraseBlueprint phraseBlueprint, Func<PhraseResponseEventArgs, Task> actionAsync)
+
+        public PhraseResponse WithRoomFilters(params Room[] filter)
         {
-            PhraseBlueprint = phraseBlueprint;
-            ActionAsync = actionAsync;
+            RoomFilter = filter;
+            return this;
         }
 
         public void CallResponses(PhraseResponseEventArgs args)
@@ -32,8 +33,11 @@ namespace DiscordTextAdventure.Mechanics.Responses
             Action?.Invoke(args);
             ActionAsync?.Invoke(args);
         }
+
+
     }
-    
+
+
     public class PhraseResponseEventArgs
     {
         public Phrase Phrase;

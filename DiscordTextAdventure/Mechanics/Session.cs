@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Discord;
 using Discord.WebSocket;
@@ -86,14 +87,19 @@ namespace chext.Mechanics
                 for (int i = 0; i < phraseResponses.Length; i++)
                 {
                     if (phraseResponses[i].PhraseBlueprint.MatchesPhrase(parseResult.Item1))
-                        phraseResponses[i].CallResponses(new PhraseResponseEventArgs(parseResult.Item1, socketMessage,
-                            RoomManager.RoomKV[socketMessage.Channel.Id], this));
+                    {
+                        phraseResponses[i].CallResponses(new PhraseResponseEventArgs(parseResult.Item1, socketMessage, RoomManager.RoomKV[socketMessage.Channel.Id], this));
+                    }
                 }
             }
 
             if (parseResult.Item2 != null)
             {
-                Program.DebugLog("link responses dawg");
+                var linkResponses = LinkResponseTable.LinkResponses;
+                for (int i = 0; i < linkResponses.Length; i++)
+                {
+                    linkResponses[i].CallResponses(new PhraseResponseEventArgs(parseResult.Item1, socketMessage, RoomManager.RoomKV[socketMessage.Channel.Id], this));
+                }
             }
         }
         
