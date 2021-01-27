@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Net.Http;
 using System.Threading.Tasks;
 using chext;
 using Discord;
@@ -44,11 +46,36 @@ namespace DiscordTextAdventure.Parsing
         }
 
         
-        public Phrase ProcessMessage(SocketMessage message)
+        public async Task<Tuple<Phrase?, Link?>> ProcessMessage(SocketMessage message)
         {
-           var tokens = _tokenizer.Tokenize(message.Content);
-           var phrase = _parser.Parse(tokens);
-           return phrase;
+            var tokens = _tokenizer.Tokenize(message.Content);
+            
+            if (Uri.TryCreate(message.Content, UriKind.Absolute, out var validURI))
+            {
+                Program.DebugLog("Message is a url");
+                var isValid = await IsValidLink(validURI);
+                Program.DebugLog($"Valid ur: {isValid}");
+                return new Tuple<Phrase?, Link?>(null , new Link(message, tokens, isValid));
+            }
+            else
+            {
+               return new Tuple<Phrase?, Link?>(_parser.Parse(tokens), null);
+            }
+        }
+
+        async Task<bool> IsValidLink(Uri uri)
+        {
+            try //gross
+            {
+                HttpResponseMessage response = await Program.HttpClient.GetAsync(uri);
+                return response.IsSuccessStatusCode;
+            }
+            catch(HttpRequestException e) //ew
+            {
+                Program.DebugLog("\nException Caught!");	
+                Program.DebugLog("Message :{0} ",e.Message);
+                return false;
+            }
         }
         
         

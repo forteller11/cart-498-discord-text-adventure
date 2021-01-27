@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Discord;
 using Discord.WebSocket;
@@ -75,14 +76,24 @@ namespace chext.Mechanics
         {
             if (!_input.FilterMessage(socketMessage.Author, socketMessage.Channel, Guild))
                 return;
-            
-            Phrase phrase = _input.ProcessMessage(socketMessage);
 
-            var phraseResponses = PhraseResponseTable.PhraseResponses;
-            for (int i = 0; i < phraseResponses.Length; i++)
-            { 
-                if (phraseResponses[i].PhraseBlueprint.MatchesPhrase(phrase))
-                    phraseResponses[i].CallResponses(new PhraseResponseEventArgs(phrase, socketMessage, RoomManager.RoomKV[socketMessage.Channel.Id], this));
+            Program.DebugLog($"Message received at {Guild.Name}");
+            Tuple<Phrase?, Link?> parseResult = await _input.ProcessMessage(socketMessage);
+
+            if (parseResult.Item1 != null)
+            {
+                var phraseResponses = PhraseResponseTable.PhraseResponses;
+                for (int i = 0; i < phraseResponses.Length; i++)
+                {
+                    if (phraseResponses[i].PhraseBlueprint.MatchesPhrase(parseResult.Item1))
+                        phraseResponses[i].CallResponses(new PhraseResponseEventArgs(parseResult.Item1, socketMessage,
+                            RoomManager.RoomKV[socketMessage.Channel.Id], this));
+                }
+            }
+
+            if (parseResult.Item2 != null)
+            {
+                Program.DebugLog("link responses dawg");
             }
         }
         

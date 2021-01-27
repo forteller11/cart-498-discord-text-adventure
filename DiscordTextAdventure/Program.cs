@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.IO;
+using System.Net.Http;
 using System.Threading.Tasks;
 using chext.Discord;
 using Discord;
@@ -18,6 +19,8 @@ namespace DiscordTextAdventure
         
         private GamesManager? _gamesManager;
 
+        public static readonly HttpClient HttpClient = new HttpClient();
+        
         public static readonly string BinPath;
         public static readonly string ProjectPath;
 
