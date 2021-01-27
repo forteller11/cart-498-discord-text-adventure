@@ -9,6 +9,7 @@ using DiscordTextAdventure.Mechanics.User;
 using DiscordTextAdventure.Parsing;
 using DiscordTextAdventure.Parsing.DataStructures;
 using DiscordTextAdventure.Parsing.Tables;
+using DiscordTextAdventure.Reflection;
 
 #nullable enable
 namespace DiscordTextAdventure.Mechanics.Responses
@@ -38,7 +39,7 @@ namespace DiscordTextAdventure.Mechanics.Responses
             void MemeBotHelloResponse(PhraseResponseEventArgs e) => e.RoomOfPhrase.MessageChannel.SendMessageAsync($"Hello {e.Message.Author.Username}, are you a memer aswell?");
             #endregion
 
-            PhraseResponses = Common.ClassMembersToArray<PhraseResponse>(typeof(PhraseResponseTable), null);
+            PhraseResponses = ReflectionHelpers.ClassMembersToArray<PhraseResponse>(typeof(PhraseResponseTable), null);
         }
 
     }

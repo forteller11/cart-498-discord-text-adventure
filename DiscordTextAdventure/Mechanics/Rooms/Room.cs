@@ -58,6 +58,12 @@ namespace DiscordTextAdventure.Mechanics.Rooms
         }
         
 
+        public void LinkToDiscordAndDraw(IMessageChannel channel, IGuildChannel? guildChannel)
+        {
+            LinkToDiscord(channel, guildChannel);
+            Renderer.DrawRoomStateEmbed();
+        }
+        
         public void LinkToDiscord(IMessageChannel channel, IGuildChannel? guildChannel)
         {
             if (IsDMChannel && guildChannel != null)
@@ -69,7 +75,6 @@ namespace DiscordTextAdventure.Mechanics.Rooms
             GuildChannel = guildChannel;
 
             Renderer = new RoomRenderer(this, channel);
-            Renderer.DrawRoomStateEmbed();
         }
         
         #region builder helpers
@@ -107,12 +112,6 @@ namespace DiscordTextAdventure.Mechanics.Rooms
             return this;
         }
 
-        public Room WithDM()
-        {
-            IsDMChannel = true;
-            return this;
-        }
-        
         #endregion
         
         

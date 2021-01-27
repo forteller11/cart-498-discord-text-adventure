@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using chext.Math;
 
-namespace DiscordTextAdventure
+namespace DiscordTextAdventure.Reflection
 {
-    public static class Common
+    public static class ReflectionHelpers
     {
         /// <summary>
         /// takes all members of type T in static class and returns as array
@@ -24,7 +24,8 @@ namespace DiscordTextAdventure
                 if (fieldInfos[i].FieldType == typeof(TFieldToFind))
                 {
                     var value = fieldInfos[i].GetValue(parentObject);
-                    members.Add((TFieldToFind) value);
+                    if (!Attribute.IsDefined(fieldInfos[i], typeof(DontIncludeInMembersToArray)))
+                        members.Add((TFieldToFind) value);
                 }
             }
 
@@ -34,6 +35,12 @@ namespace DiscordTextAdventure
             }
 
             return members.ToArray();
+        }
+
+        [AttributeUsage(AttributeTargets.Field, AllowMultiple = false)]
+        public class DontIncludeInMembersToArray : Attribute
+        {
+            
         }
 
     }

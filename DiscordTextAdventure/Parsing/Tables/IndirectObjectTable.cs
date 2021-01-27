@@ -1,5 +1,6 @@
-﻿using Discord.WebSocket;
+﻿
 using DiscordTextAdventure.Parsing.DataStructures;
+using DiscordTextAdventure.Reflection;
 
 namespace DiscordTextAdventure.Parsing.Tables
 {
@@ -12,7 +13,7 @@ namespace DiscordTextAdventure.Parsing.Tables
 
         static IndirectObjectTable()
         {
-            IndirectObjects = DiscordTextAdventure.Common.ClassMembersToArray<SynonymCollection>(typeof(IndirectObjectTable), null);
+            IndirectObjects = ReflectionHelpers.ClassMembersToArray<SynonymCollection>(typeof(IndirectObjectTable), null);
         }
     }
 }

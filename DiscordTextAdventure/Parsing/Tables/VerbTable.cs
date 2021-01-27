@@ -1,5 +1,6 @@
 ﻿using Discord.WebSocket;
 using DiscordTextAdventure.Parsing.DataStructures;
+using DiscordTextAdventure.Reflection;
 
 namespace DiscordTextAdventure.Parsing.Tables
 {
@@ -13,7 +14,7 @@ namespace DiscordTextAdventure.Parsing.Tables
 
         static VerbTable()
         {
-            Verbs = DiscordTextAdventure.Common.ClassMembersToArray<SynonymCollection>(typeof(VerbTable), null);
+            Verbs = ReflectionHelpers.ClassMembersToArray<SynonymCollection>(typeof(VerbTable), null);
         }
     }
 }

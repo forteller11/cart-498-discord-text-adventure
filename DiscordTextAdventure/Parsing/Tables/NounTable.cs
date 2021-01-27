@@ -1,4 +1,5 @@
 ﻿using DiscordTextAdventure.Parsing.DataStructures;
+using DiscordTextAdventure.Reflection;
 
 #nullable enable
 
@@ -14,9 +15,10 @@ namespace DiscordTextAdventure.Parsing.Tables
         
         static NounTable()
         {
-            Nouns = DiscordTextAdventure.Common.ClassMembersToArray<SynonymCollection>(typeof(NounTable), null);
+            Nouns = ReflectionHelpers.ClassMembersToArray<SynonymCollection>(typeof(NounTable), null);
         }
 
         
     }
 }
+

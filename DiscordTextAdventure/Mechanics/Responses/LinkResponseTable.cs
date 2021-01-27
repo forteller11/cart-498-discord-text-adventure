@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using DiscordTextAdventure.Mechanics.Rooms;
 using DiscordTextAdventure.Parsing.DataStructures;
+using DiscordTextAdventure.Reflection;
 
 namespace DiscordTextAdventure.Mechanics.Responses
 {
@@ -133,7 +134,7 @@ namespace DiscordTextAdventure.Mechanics.Responses
                 return false;
             }
 
-            LinkResponses = Common.ClassMembersToArray<LinkResponse>(typeof(LinkResponseTable), null);
+            LinkResponses = ReflectionHelpers.ClassMembersToArray<LinkResponse>(typeof(LinkResponseTable), null);
 
 
         }

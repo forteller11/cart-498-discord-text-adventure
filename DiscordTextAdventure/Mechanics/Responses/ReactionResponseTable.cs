@@ -1,8 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using Discord;
+using Discord.Rest;
 using DiscordTextAdventure.Mechanics.Rooms;
 using DiscordTextAdventure.Mechanics.User;
+using DiscordTextAdventure.Reflection;
 
 namespace DiscordTextAdventure.Mechanics.Responses
 {
@@ -19,32 +21,59 @@ namespace DiscordTextAdventure.Mechanics.Responses
             #region signatures
             
             IEmote checkmark = new Emoji("✅");
-            AcceptUserAgreement      = new ReactionResponse(checkmark, ReactionResponse.OnReactionTrigger.OnAdd,    null, SetPlayer );
-            AttemptVoidUserAgreement = new ReactionResponse(checkmark, ReactionResponse.OnReactionTrigger.OnRemove, null, AttemptVoidAgreement );
+            AcceptUserAgreement      = new ReactionResponse(checkmark, ReactionResponse.OnReactionTrigger.OnAdd,    null, SetPlayerAndCreateDMChannelsAsync );
+            AttemptVoidUserAgreement = new ReactionResponse(checkmark, ReactionResponse.OnReactionTrigger.OnRemove, null, AttemptVoidAgreementAsync );
             
             #endregion
             
             
             #region response logic
-            async Task SetPlayer(ReactionResponseEventArgs e)
+
+            async Task SetPlayerAndCreateDMChannelsAsync(ReactionResponseEventArgs e)
             {
                 if (e.Session.Player == null || e.Session?.Player.User.Id != e.User.Id)
                 {
+                    var userId = e.User.Id;
                     e.Session.Player = new Player(e.User);
-                    e.Session.RoomManager.Screen.ChangeRoomVisibilityAsync(e.Session,
-                        RoomCategory.ViewAndSendPermission);
-                    var dmChannel = await  e.Session.Player.SocketUser.GetOrCreateDMChannelAsync();
-                    await dmChannel.SendMessageAsync(
-                        $"Welcome { e.Session.Player.User.Username}!" +
-                        $"\nThese are exciting times in which you're entering Dissonance server, as we have a special event currently taking place!." +
-                        $"\nThe user with the most contributions to our community, will have the privilege to visit *The Cloud*. " +
-                        $"\nOur headquarters where you'll get to me out ambitious crew and have a chance to get to know our cutting edge technology." +
-                        $"\nMake sure to participate! We recommend getting to know each one of our communities and posting relevant content!");
-                    //you can read about more here: 404
+
+                    e.Session.RoomManager.Screen.ChangeRoomVisibilityAsync(e.Session, RoomCategory.ViewAndSendPermission);
+                    
+                    var dissonanceDMTask = e.Session.DissonanceBot.GetUser(userId).GetOrCreateDMChannelAsync().ContinueWith(
+                        task =>
+                        {
+                            var room = e.Session.RoomManager.DissonanceDM;
+                            room.LinkToDiscordAndDraw(task.Result, null);
+                            e.Session.RoomManager.RoomKV.Add(room.MessageChannel!.Id, room);
+                            
+                            task.Result.SendMessageAsync(
+                                $"Welcome {e.Session.Player.User.Username}!" +
+                                $"\nThese are exciting times in which you're entering Dissonance server, as we have a special event currently taking place!." +
+                                $"\nThe user with the most contributions to our community, will have the privilege to visit *The Cloud*. " +
+                                $"\nOur headquarters where you'll get to me out ambitious crew and have a chance to get to know our cutting edge technology." +
+                                $"\nMake sure to participate! We recommend getting to know each one of our communities and posting relevant content!");
+                        });
+                    
+                    var bodyDMTask = e.Session.BodyBot.GetUser(userId).GetOrCreateDMChannelAsync().ContinueWith(task =>
+                    {
+                        var room = e.Session.RoomManager.BodyDM;
+                        room.LinkToDiscordAndDraw(task.Result, null);
+                        e.Session.RoomManager.RoomKV.Add(room.MessageChannel!.Id, room);
+                    });
+                    
+                    var memeDMTask = e.Session.MemeBot.GetUser(userId).GetOrCreateDMChannelAsync().ContinueWith(task =>
+                    {
+                        var room = e.Session.RoomManager.MemeDM;
+                        room.LinkToDiscord(task.Result, null);
+                        e.Session.RoomManager.RoomKV.Add(room.MessageChannel!.Id, room);
+                    });
+
+                    await dissonanceDMTask;
+                    await bodyDMTask;
+                    await memeDMTask;
                 }
             }
 
-            async Task AttemptVoidAgreement(ReactionResponseEventArgs e)
+            async Task AttemptVoidAgreementAsync(ReactionResponseEventArgs e)
             {
                 if (e.Session.Player?.User.Id == e.User.Id) //player already not null and player is the user who reacted
                 {
@@ -66,7 +95,7 @@ namespace DiscordTextAdventure.Mechanics.Responses
             #endregion
             
             #region sort by triggers and add to static lists
-            var allReactionResponses = Common.ClassMembersToArray<ReactionResponse>(typeof(ReactionResponseTable), null);
+            var allReactionResponses = ReflectionHelpers.ClassMembersToArray<ReactionResponse>(typeof(ReactionResponseTable), null);
             
             OnReactionAddedResponseEvents = new List<ReactionResponse>(allReactionResponses.Length/2);
             OnReactionRemovedResponseEvents = new List<ReactionResponse>(allReactionResponses.Length/2);

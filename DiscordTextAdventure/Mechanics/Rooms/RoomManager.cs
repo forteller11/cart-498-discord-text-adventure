@@ -6,6 +6,8 @@ using chext.Mechanics;
 using Discord;
 using Discord.Rest;
 using Discord.WebSocket;
+using DiscordTextAdventure.Reflection;
+
 //https://www.fileformat.info/info/emoji/white_check_mark/index.htm for emoji unicode representations
 #nullable enable
 namespace DiscordTextAdventure.Mechanics.Rooms
@@ -19,9 +21,10 @@ namespace DiscordTextAdventure.Mechanics.Rooms
         
         #region declaring rooms
 
-        public readonly Room DissonanceDM;
-        public readonly Room BodyDM;
-        public readonly Room MemeDM;
+        //these are set after a new player has joined
+        [ReflectionHelpers.DontIncludeInMembersToArray] public Room DissonanceDM;
+        [ReflectionHelpers.DontIncludeInMembersToArray] public Room BodyDM;
+        [ReflectionHelpers.DontIncludeInMembersToArray] public Room MemeDM;
         
         public readonly Room UserAgreement;
         
@@ -36,12 +39,16 @@ namespace DiscordTextAdventure.Mechanics.Rooms
         public RoomManager(Session session, SocketGuild guild)
         {
             #region dm
-            DissonanceDM = Room.CreateDMRoom();
-            DissonanceDM = Room.CreateDMRoom();
+
             DissonanceDM = Room.CreateDMRoom();
             
-            
+            BodyDM = Room.CreateDMRoom().WithSubtitle("Your body, warts and all").WithObjects(
+                new AdventureObject("arms", "not very strong"),
+                new AdventureObject("legs", "knees ache from being bent so long")
+            );
+            MemeDM = Room.CreateDMRoom();
             #endregion
+            
             Intro = new RoomCategory("Welcome");
             Screen = new RoomCategory("Screens");
             
@@ -65,15 +72,16 @@ namespace DiscordTextAdventure.Mechanics.Rooms
             
             #endregion
             
-            Rooms = Common.ClassMembersToArray<Room>(typeof(RoomManager), this);
-            Categories = Common.ClassMembersToArray<RoomCategory>(typeof(RoomManager), this);
+            Rooms = ReflectionHelpers.ClassMembersToArray<Room>(typeof(RoomManager), this);
+            Categories = ReflectionHelpers.ClassMembersToArray<RoomCategory>(typeof(RoomManager), this);
 
             #region tie channels and categories to their discord entities (by creating them), and put channels in their proper categories
         
             //todo could make this faster by immediately creating the rooms of a category channel when it's done
             //todo instead of wait for ALL the categories to be done and then creating text channels
             
-            //clean slate
+            
+            #region clean slate
             Task [] deleteTasks = new Task[guild.Channels.Count];
             int index = 0;
             foreach (var channel in guild.Channels)
@@ -81,10 +89,8 @@ namespace DiscordTextAdventure.Mechanics.Rooms
                 deleteTasks[index] = channel.DeleteAsync();
                 index++;
             }
+            #endregion
 
-            //Task.WaitAll(deleteTasks);
-
-          
             Task<RestCategoryChannel> [] createCategoriesTasks = new Task<RestCategoryChannel>[Categories.Length];
             for (int i = 0; i < Categories.Length; i++)
                 createCategoriesTasks[i] = guild.CreateCategoryChannelAsync(Categories[i].Name);
@@ -126,7 +132,7 @@ namespace DiscordTextAdventure.Mechanics.Rooms
                     if (guildChannel == null && !Categories[i].Rooms[j].IsDMChannel)
                         throw new Exception("Inconsistent DM usage");
                     
-                    Categories[i].Rooms[j].LinkToDiscord(createChannelTasksArr[createChannelTaskIndex].Result, guildChannel);
+                    Categories[i].Rooms[j].LinkToDiscordAndDraw(createChannelTasksArr[createChannelTaskIndex].Result, guildChannel);
                     createChannelTaskIndex++;
                 }
                 
@@ -134,7 +140,7 @@ namespace DiscordTextAdventure.Mechanics.Rooms
             
             RoomKV = new Dictionary<ulong, Room>(Rooms.Length);
             for (int i = 0; i < Rooms.Length; i++)
-                RoomKV.Add(Rooms[i].GuildChannel!.Id, Rooms[i]);
+                RoomKV.Add(Rooms[i].MessageChannel!.Id, Rooms[i]);
 
             #endregion
             

@@ -1,4 +1,5 @@
 ﻿using DiscordTextAdventure.Parsing.DataStructures;
+using DiscordTextAdventure.Reflection;
 
 namespace DiscordTextAdventure.Parsing.Tables
 {
@@ -9,7 +10,7 @@ namespace DiscordTextAdventure.Parsing.Tables
         public static readonly SynonymCollection[] Prepositions;
         static PrepositionTable()
         {
-            Prepositions = DiscordTextAdventure.Common.ClassMembersToArray<SynonymCollection>(typeof(PrepositionTable), null);
+            Prepositions = ReflectionHelpers.ClassMembersToArray<SynonymCollection>(typeof(PrepositionTable), null);
         }
     }
 }
