@@ -3,16 +3,17 @@ using System.Threading.Tasks;
 using chext.Mechanics;
 using DiscordTextAdventure.Mechanics.Rooms;
 using DiscordTextAdventure.Parsing.DataStructures;
+#nullable enable
 
 namespace DiscordTextAdventure.Mechanics.Responses
 {
     public class LinkResponse 
     {
-        public Action<LinkResponseEventArgs> Action;
-        public Func<LinkResponseEventArgs, Task> ActionAsync;
+        public Action<LinkResponseEventArgs>? Action;
+        public Func<LinkResponseEventArgs, Task>? ActionAsync;
 
 
-        public LinkResponse(Action<LinkResponseEventArgs> action, Func<LinkResponseEventArgs, Task> actionAsync)
+        public LinkResponse(Action<LinkResponseEventArgs>? action, Func<LinkResponseEventArgs, Task>? actionAsync)
         {
             Action = action;
             ActionAsync = actionAsync;

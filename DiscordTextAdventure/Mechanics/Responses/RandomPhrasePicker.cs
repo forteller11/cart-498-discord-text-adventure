@@ -17,6 +17,7 @@ namespace DiscordTextAdventure.Mechanics.Responses
 
         public string GetNextPhrase()
         {
+            //not thread safe but it doesn't matter
             _counter++;
 
             int index = _counter % _phrases.Length;
