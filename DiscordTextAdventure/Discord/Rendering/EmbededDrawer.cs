@@ -27,7 +27,7 @@ namespace DiscordTextAdventure.Discord.Rendering
         }
 
       
-        public async Task DrawRoom()
+        public async Task DrawRoomStateEmbed()
         {
             
             Builder.Title = Room.Subtitle;
@@ -40,10 +40,10 @@ namespace DiscordTextAdventure.Discord.Rendering
             
             Builder.Fields.Add(fieldBuilder);
 
-            await Draw();
+            await DrawCustomEmbed(null, Builder);
         }
 
-        private async Task Draw()
+        public async Task DrawCustomEmbed(string? message, EmbedBuilder? builder)
         {
             if (_hasDrawnBefore && _messageTask == null)
                 throw new Exception("Called draw too soon after initial draw...  task wasn't ready");
@@ -52,12 +52,15 @@ namespace DiscordTextAdventure.Discord.Rendering
             {
                 Program.DebugLog("draw modify start");
                 await _messageTask;
-                _messageTask.Result.ModifyAsync(properties => { properties.Embed = Builder.Build(); });
+                _messageTask.Result.ModifyAsync(properties => { 
+                    properties.Embed = builder?.Build();
+                    properties.Content = message;
+                });
             }
             else
             {
                 Program.DebugLog("draw create start");
-                _messageTask = Channel.SendMessageAsync(null, false, Builder.Build());
+                _messageTask = Channel.SendMessageAsync(message, false, builder?.Build());
                 _hasDrawnBefore = true;
             }
 

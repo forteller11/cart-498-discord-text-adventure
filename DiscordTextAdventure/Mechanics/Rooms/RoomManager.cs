@@ -18,6 +18,10 @@ namespace DiscordTextAdventure.Mechanics.Rooms
 
         
         #region declaring rooms
+
+        public readonly Room DissonanceDM;
+        public readonly Room BodyDM;
+        public readonly Room MemeDM;
         
         public readonly Room UserAgreement;
         
@@ -31,25 +35,32 @@ namespace DiscordTextAdventure.Mechanics.Rooms
 
         public RoomManager(Session session, SocketGuild guild)
         {
+            #region dm
+            DissonanceDM = Room.CreateDMRoom();
+            DissonanceDM = Room.CreateDMRoom();
+            DissonanceDM = Room.CreateDMRoom();
+            
+            
+            #endregion
             Intro = new RoomCategory("Welcome");
             Screen = new RoomCategory("Screens");
             
             #region create rooms
-            UserAgreement = new Room("User Agreement", Intro)
+            UserAgreement = Room.CreateGuildRoom("User Agreement", Intro)
                 .WithStaticDescriptions("don't harm system hardware")
                 .WithReaction(new Emoji("✅"));
             
             
-            DnD = new Room("DnD", Screen)
+            DnD = Room.CreateGuildRoom("DnD", Screen)
                 .WithStaticDescriptions("all stuff DnD, tolken, ttrp!")
                 .WithObjects(
                    
                     );
             
-            Pokemon = new Room("Pokemon", Screen)
+            Pokemon = Room.CreateGuildRoom("Pokemon", Screen)
                 .WithStaticDescriptions("gotta catch em' all");
             
-            Animals = new Room("Cute Animals", Screen)
+            Animals = Room.CreateGuildRoom("Cute Animals", Screen)
                 .WithStaticDescriptions("cats jumping from cucumbers, tiny frogs making impressive noises, we love them all!\nPreferably pictures!");
             
             #endregion

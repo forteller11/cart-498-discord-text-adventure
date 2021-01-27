@@ -21,15 +21,40 @@ namespace DiscordTextAdventure.Mechanics.Rooms
         
         public List<AdventureObject> Objects = new List<AdventureObject>();
         
-        public bool IsDMChannel = false;
+        public readonly bool  IsDMChannel;
         public IMessageChannel? MessageChannel;
+
         public IGuildChannel? GuildChannel;
+        private IGuildChannel? _guildChannel
+        {
+            get => IsDMChannel ? throw new Exception("can't access guild of dm channel") : _guildChannel;
+            set
+            {
+                if (IsDMChannel)
+                    throw new Exception("can't access guild of dm channel");
+                _guildChannel = value;
+            }
+        }
+
+  
         public RoomRenderer? Renderer;
 
-        public Room(string name, RoomCategory category)
+        private Room(bool isDmChannel)
         {
-            Name = name.Replace(' ', '_');
-            category.Rooms.Add(this);
+            IsDMChannel = isDmChannel;
+        }
+
+        public static Room CreateGuildRoom(string name, RoomCategory category)
+        {
+            var room = new Room(false);
+            room.Name = name.Replace(' ', '_');
+            category.Rooms.Add(room);
+            return room;
+        }
+
+        public static Room CreateDMRoom()
+        {
+            return new Room(true);
         }
         
 
@@ -44,7 +69,7 @@ namespace DiscordTextAdventure.Mechanics.Rooms
             GuildChannel = guildChannel;
 
             Renderer = new RoomRenderer(this, channel);
-            Renderer.DrawRoom();
+            Renderer.DrawRoomStateEmbed();
         }
         
         #region builder helpers
