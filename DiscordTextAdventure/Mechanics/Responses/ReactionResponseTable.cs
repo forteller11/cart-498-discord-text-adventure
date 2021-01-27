@@ -33,11 +33,13 @@ namespace DiscordTextAdventure.Mechanics.Responses
             {
                 if (e.Session.Player == null || e.Session?.Player.User.Id != e.User.Id)
                 {
-                    var userId = e.User.Id;
+                    var guildUserId = e.User.Id;
+                    ulong userId = e.SocketReaction.UserId;
                     e.Session.Player = new Player(e.User);
 
                     e.Session.RoomManager.Screen.ChangeRoomVisibilityAsync(e.Session, RoomCategory.ViewAndSendPermission);
                     
+                    var user = e.Session.Guild.GetUser(userId);
                     var dissonanceDMTask = e.Session.DissonanceBot.GetUser(userId).GetOrCreateDMChannelAsync().ContinueWith(
                         task =>
                         {
@@ -52,8 +54,13 @@ namespace DiscordTextAdventure.Mechanics.Responses
                                 $"\nOur headquarters where you'll get to me out ambitious crew and have a chance to get to know our cutting edge technology." +
                                 $"\nMake sure to participate! We recommend getting to know each one of our communities and posting relevant content!");
                         });
+
+                    //requires intents
+                    var guild = e.Session.BodyBot.GetGuild(e.Session.Guild.Id);
+                    var bodyuserFromGuild = guild.GetUser(userId);
+                    var bodyuser = e.Session.BodyBot.GetUser(userId);
                     
-                    var bodyDMTask = e.Session.BodyBot.GetUser(userId).GetOrCreateDMChannelAsync().ContinueWith(task =>
+                    var bodyDMTask = bodyuser.GetOrCreateDMChannelAsync().ContinueWith(task =>
                     {
                         var room = e.Session.RoomManager.BodyDM;
                         room.LinkToDiscordAndDraw(task.Result, null);
