@@ -24,10 +24,7 @@ namespace chext.Mechanics
    
         private Input _input;
         public readonly RoomManager RoomManager;
-        
-        //private List<PhraseResponse> _phraseResponses;
-        //private List<ReactionResponse> _reactionResponses;
-        
+
         public Player? Player;
         public Session(DiscordSocketClient dissonanceBot, DiscordSocketClient memeBot, DiscordSocketClient bodyBot, SocketGuild guild)
         {
@@ -98,7 +95,7 @@ namespace chext.Mechanics
                 var linkResponses = LinkResponseTable.LinkResponses;
                 for (int i = 0; i < linkResponses.Length; i++)
                 {
-                    linkResponses[i].CallResponses(new PhraseResponseEventArgs(parseResult.Item1, socketMessage, RoomManager.RoomKV[socketMessage.Channel.Id], this));
+                    linkResponses[i].CallResponses(new LinkResponseEventArgs(this, parseResult.Item2, RoomManager.RoomKV[socketMessage.Channel.Id]));
                 }
             }
         }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using chext.Math;
 
 namespace DiscordTextAdventure
@@ -25,6 +26,11 @@ namespace DiscordTextAdventure
                     var value = fieldInfos[i].GetValue(parentObject);
                     members.Add((TFieldToFind) value);
                 }
+            }
+
+            if (members.Count == 0)
+            {
+                throw new ArgumentException("couldn't find any items, probably a bug in the arguments");
             }
 
             return members.ToArray();
