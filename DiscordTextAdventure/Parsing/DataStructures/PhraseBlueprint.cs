@@ -1,4 +1,6 @@
-﻿#nullable enable
+﻿using DiscordTextAdventure.Mechanics.Rooms;
+
+#nullable enable
 
 namespace DiscordTextAdventure.Parsing.DataStructures
 {
@@ -8,14 +10,16 @@ namespace DiscordTextAdventure.Parsing.DataStructures
         public SynonymCollection? Noun;
         public SynonymCollection? Preposition;
         public SynonymCollection? IndirectObject;
+        public Room [] ? RoomsFilter; //null == all rooms
 
 
-        public PhraseBlueprint(SynonymCollection? verb, SynonymCollection? noun, SynonymCollection? preposition, SynonymCollection? indirectObject)
+        public PhraseBlueprint(SynonymCollection? verb, SynonymCollection? noun, SynonymCollection? preposition, SynonymCollection? indirectObject, params Room [] roomsFilter)
         {
             Verb = verb;
             Noun = noun;
             Preposition = preposition;
             IndirectObject = indirectObject;
+            RoomsFilter = roomsFilter;
         }
 
         public override string ToString()
@@ -27,8 +31,24 @@ namespace DiscordTextAdventure.Parsing.DataStructures
             return a + " " + b + " " + c + " "+ d;
         }
 
-        public bool MatchesPhrase(Phrase phrase)
+        public bool MatchesPhrase(Phrase phrase, Room room)
         {
+            if (RoomsFilter != null)
+            {
+                bool roomMatches = false;
+                for (int i = 0; i < RoomsFilter.Length; i++)
+                {
+                    if (RoomsFilter[i].MessageChannel!.Id == room.MessageChannel!.Id)
+                    {
+                        roomMatches = true;
+                        break;
+                    }
+                }
+
+                if (!roomMatches)
+                    return false;
+            }
+
             return DoesWordMatch(Verb, phrase.Verb) &&
                    DoesWordMatch(Noun, phrase.Noun) &&
                    DoesWordMatch(Preposition, phrase.Preposition) &&

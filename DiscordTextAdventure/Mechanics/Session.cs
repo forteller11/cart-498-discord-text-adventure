@@ -24,6 +24,7 @@ namespace chext.Mechanics
    
         private Input _input;
         public readonly RoomManager RoomManager;
+        public readonly PhraseResponseTable PhraseResponseManager;
 
         public Player? Player;
         public Session(DiscordSocketClient dissonanceBot, DiscordSocketClient memeBot, DiscordSocketClient bodyBot, SocketGuild guild)
@@ -35,7 +36,10 @@ namespace chext.Mechanics
             
             _input = new Input();
 
+            //must be called in this order
+            PhraseResponseManager = new PhraseResponseTable();
             RoomManager = new RoomManager(this, guild);
+     
             RoomManager.Screen.ChangeRoomVisibilityAsync(this, OverwritePermissions.DenyAll(RoomManager.Screen.Channel));
 
             dissonanceBot.MessageReceived += OnMessageReceived;
@@ -80,12 +84,13 @@ namespace chext.Mechanics
 
             if (parseResult.Item1 != null)
             {
-                var phraseResponses = PhraseResponseTable.PhraseResponses;
-                for (int i = 0; i < phraseResponses.Length; i++)
+                var phraseResponses = PhraseResponseManager.PhraseResponses;
+                for (int i = 0; i < phraseResponses.Count; i++)
                 {
-                    if (phraseResponses[i].PhraseBlueprint.MatchesPhrase(parseResult.Item1))
+                    var roomOfMessage = RoomManager.RoomKV[socketMessage.Channel.Id];
+                    if (phraseResponses[i].PhraseBlueprint.MatchesPhrase(parseResult.Item1, roomOfMessage))
                     {
-                        phraseResponses[i].CallResponses(new PhraseResponseEventArgs(parseResult.Item1, socketMessage, RoomManager.RoomKV[socketMessage.Channel.Id], this));
+                        phraseResponses[i].CallResponses(new PhraseResponseEventArgs(parseResult.Item1, socketMessage, roomOfMessage, this));
                     }
                 }
             }

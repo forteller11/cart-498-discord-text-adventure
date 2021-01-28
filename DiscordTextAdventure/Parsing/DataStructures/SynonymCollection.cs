@@ -8,6 +8,7 @@ namespace DiscordTextAdventure.Parsing.DataStructures
 
     public class SynonymCollection : IEquatable<SynonymCollection>
     {
+   
         public readonly CompoundWord[] Synonyms;
 
         public SynonymCollection(params string[] words)

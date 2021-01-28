@@ -1,12 +1,6 @@
-﻿using System;
+﻿
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using chext;
-using Discord;
-using DiscordTextAdventure.Mechanics.Rooms;
-using DiscordTextAdventure.Mechanics.User;
-using DiscordTextAdventure.Parsing;
 using DiscordTextAdventure.Parsing.DataStructures;
 using DiscordTextAdventure.Parsing.Tables;
 using DiscordTextAdventure.Reflection;
@@ -16,30 +10,24 @@ namespace DiscordTextAdventure.Mechanics.Responses
 {
     public class PhraseResponseTable
     {
-        public readonly static PhraseResponse[] PhraseResponses;
-        public readonly static PhraseResponse GoNorth;
-        public readonly static PhraseResponse HelloMemeBot;
-        
+        public readonly List<PhraseResponse> PhraseResponses = new List<PhraseResponse>();
 
-        static PhraseResponseTable()
+        public PhraseResponseTable()
         {
      
             #region phrase responses
-            GoNorth = new PhraseResponse(
-                new PhraseBlueprint(VerbTable.Move, NounTable.North, null, null),
-                GoNorthAction
-                );
-            
-            HelloMemeBot = new PhraseResponse(
-                new PhraseBlueprint(VerbTable.Salutation, NounTable.DankMemeBot, null, null), MemeBotHelloResponse
-                );
-
-            void GoNorthAction(PhraseResponseEventArgs e) => Program.DebugLog("GO NORTH RESPONSE");
-            
-            void MemeBotHelloResponse(PhraseResponseEventArgs e) => e.RoomOfPhrase.MessageChannel.SendMessageAsync($"Hello {e.Message.Author.Username}, are you a memer aswell?");
+            new PhraseBlueprint(VerbTable.Inspect, NounTable.Arms, null, null);
             #endregion
 
-            PhraseResponses = ReflectionHelpers.ClassMembersToArray<PhraseResponse>(typeof(PhraseResponseTable), null);
+            try
+            {
+                PhraseResponses.AddRange(
+                    ReflectionHelpers.ClassMembersToArray<PhraseResponse>(typeof(PhraseResponseTable), null));
+            }
+            catch (ArgumentException)
+            {
+                //its fine, just no members
+            }
         }
 
     }

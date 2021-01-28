@@ -6,6 +6,7 @@ using chext.Mechanics;
 using Discord;
 using Discord.Rest;
 using Discord.WebSocket;
+using DiscordTextAdventure.Parsing.Tables;
 using DiscordTextAdventure.Reflection;
 
 //https://www.fileformat.info/info/emoji/white_check_mark/index.htm for emoji unicode representations
@@ -45,9 +46,9 @@ namespace DiscordTextAdventure.Mechanics.Rooms
             BodyDM = Room.CreateDMRoom().WithSubtitle("It's yours, warts and all")
                 .WithStaticDescriptions("Things have been better. You should probably drink more water, or go for a walk... pretty much anything is better than sitting at a computer all day.")
                 .WithObjects(
-                new AdventureObject("arms", "All this typing can't be good for your wrists, you should look into getting a better mouse pad or wrist brace or something.", true),
-                new AdventureObject("legs", "Your knees ache from being bent so long", true),
-                new AdventureObject("head", "You can't see your own head, but you do take note of growing pain of your the headphones on its ears. Forcing itself into conscious thought.", true)
+                new AdventureObject(NounTable.Arms, session, "All this typing can't be good for your wrists, you should look into getting a better mouse pad or wrist brace or something.", true),
+                new AdventureObject(NounTable.Legs, session, "Your knees ache from being bent so long", true),
+                new AdventureObject(NounTable.Head, session, "You can't see your own head, but you do take note of growing pain of your the headphones on its ears. Forcing itself into conscious thought.", true)
             );
             
             MemeDM = Room.CreateDMRoom();
@@ -146,6 +147,7 @@ namespace DiscordTextAdventure.Mechanics.Rooms
             for (int i = 0; i < Rooms.Length; i++)
                 RoomKV.Add(Rooms[i].MessageChannel!.Id, Rooms[i]);
 
+            
             #endregion
             
 

@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Threading.Tasks;
+using chext.Mechanics;
+using DiscordTextAdventure.Mechanics.Responses;
 using DiscordTextAdventure.Parsing.DataStructures;
 using DiscordTextAdventure.Parsing.Tables;
 
@@ -8,9 +11,12 @@ namespace DiscordTextAdventure.Mechanics
 {
     public class AdventureObject
     {
-        public readonly string Name;
+        public string Name => Names.Synonyms[0].ToString();
+        public readonly SynonymCollection Names;
         public readonly string Description;
         public readonly bool IsPlural;
+        
+        // public Action<PhraseResponseEventArgs> LookResponse;
         public string Article {
             get
             {
@@ -19,16 +25,19 @@ namespace DiscordTextAdventure.Mechanics
             }
         }
 
-    public AdventureObject(string name, string description, bool isPlural=false)
+    public AdventureObject(SynonymCollection names, Session session, string description, bool isPlural=false)
+    {
+        Names = names;
+        Description = description;
+        IsPlural = isPlural;
+        
+        session.PhraseResponseManager.PhraseResponses.Add(
+            new PhraseResponse(new PhraseBlueprint(VerbTable.Inspect, names, null, null), null, LookAtDefault));
+    }
+        
+        public virtual void OnLook(PhraseResponseEventArgs e)
         {
-            Name = name;
-            Description = description;
-            IsPlural = isPlural;
-        }
-
-        public virtual void OnLook(Phrase phrase)
-        {
-            
+            // if (e.RoomOfPhrase.)
         }
 
         public virtual void OnHit(Phrase phrase)
@@ -36,6 +45,13 @@ namespace DiscordTextAdventure.Mechanics
             // IndirectObjectTable.Axe.ContainsCompoundWord(phrase.IndirectObject);
             // if (phrase.IndirectObject.Equals(IndirectObjectTable.Axe))
         }
+
+        public async Task LookAtDefault(PhraseResponseEventArgs e)
+        {
+            await e.RoomOfPhrase.Renderer.Channel.SendMessageAsync(Description);
+        }
+
+
 
     }
 }
