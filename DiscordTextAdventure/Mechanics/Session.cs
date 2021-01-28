@@ -43,8 +43,7 @@ namespace chext.Mechanics
             //must be called in this order
             PhraseResponseManager = new PhraseResponseTable();
             RoomManager = new RoomManager(this, guild);
-     
-            RoomManager.Screen.ChangeRoomVisibilityAsync(this, OverwritePermissions.DenyAll(RoomManager.Screen.Channel));
+            
 
             dissonanceBot.MessageReceived += OnMessageReceived;
             

@@ -33,8 +33,11 @@ namespace DiscordTextAdventure.Mechanics.Rooms
         public readonly Room Pokemon;
         public readonly Room Animals;
         
+        public readonly Room Office;
+
         public readonly RoomCategory Intro;
         public readonly RoomCategory Screen;
+        public readonly RoomCategory TheCloud;
         #endregion
 
         public RoomManager(Session session, SocketGuild guild)
@@ -56,11 +59,13 @@ namespace DiscordTextAdventure.Mechanics.Rooms
                     .WithCannotPickupDefault(session, false)
             );
             
+            
             MemeDM = Room.CreateDMRoom();
             #endregion
             
             Intro = new RoomCategory("Welcome");
             Screen = new RoomCategory("Screens");
+            TheCloud = new RoomCategory("The Cloud");
             
             #region create rooms
             UserAgreement = Room.CreateGuildRoom("User Agreement", Intro)
@@ -83,6 +88,12 @@ namespace DiscordTextAdventure.Mechanics.Rooms
             
             Animals = Room.CreateGuildRoom("Cute Animals", Screen)
                 .WithStaticDescriptions("Dogs chasing their tails, cucumbers scaring cats, tiny frogs making impressive noises -- we love them all!\nPreferably .gifs, so we can see them in action!");
+
+            
+            Office = Room.CreateGuildRoom("Office", TheCloud)
+                .WithStaticDescriptions("there is a fancy office space")
+                .WithObjects(
+                );
             
             #endregion
             
@@ -152,13 +163,16 @@ namespace DiscordTextAdventure.Mechanics.Rooms
                 
             }
             
+            Screen.ChangeRoomVisibilityAsync(session, OverwritePermissions.DenyAll(Screen.Channel));
+            TheCloud.ChangeRoomVisibilityAsync(session, OverwritePermissions.DenyAll(TheCloud.Channel));
+            
             RoomKV = new Dictionary<ulong, Room>(Rooms.Length);
             for (int i = 0; i < Rooms.Length; i++)
                 RoomKV.Add(Rooms[i].MessageChannel!.Id, Rooms[i]);
-
             
             #endregion
 
+            
             Animals.Renderer.Builder.ImageUrl = "https://miro.medium.com/max/11520/0*pAypSD1ZSCCw0NcL";
             Pokemon.Renderer.Builder.ImageUrl = "https://i.guim.co.uk/img/media/66e444bff77d9c566e53c8da88591e4297df0896/120_0_1800_1080/master/1800.png?width=1200&height=1200&quality=85&auto=format&fit=crop&s=69b22b4292160faf91cb45ad024fc649";
             DnD.Renderer.Builder.ImageUrl = "https://cdn.shopify.com/s/files/1/1634/0113/products/AgedMithiralBoulder_1500x.jpg?v=1602599762";

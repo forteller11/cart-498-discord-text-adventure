@@ -16,21 +16,23 @@ namespace DiscordTextAdventure.Mechanics.Responses
     {
         public readonly static ReactionResponse AcceptUserAgreement;
         public readonly static ReactionResponse AttemptVoidUserAgreement;
+        public readonly static ReactionResponse AcceptInvitation;
         
         public readonly static List<ReactionResponse> OnReactionAddedResponseEvents;
         public readonly static List<ReactionResponse> OnReactionRemovedResponseEvents;
+    
 
         static ReactionResponseTable()
         {
             #region signatures
 
             IEmote checkmark = new Emoji("✅");
-            AcceptUserAgreement = new ReactionResponse(checkmark, ReactionResponse.OnReactionTrigger.OnAdd, null,
-                SetPlayerAndCreateDMChannelsAsync);
-            AttemptVoidUserAgreement = new ReactionResponse(checkmark, ReactionResponse.OnReactionTrigger.OnRemove,
-                null, AttemptVoidAgreementAsync);
-
-            System.Threading.Timer Timer;
+            AcceptUserAgreement = new ReactionResponse(checkmark, ReactionResponse.OnReactionTrigger.OnAdd, null, SetPlayerAndCreateDMChannelsAsync);
+            AttemptVoidUserAgreement = new ReactionResponse(checkmark, ReactionResponse.OnReactionTrigger.OnRemove, null, AttemptVoidAgreementAsync);
+            
+            AcceptInvitation = new ReactionResponse(new Emoji("🎉"), ReactionResponse.OnReactionTrigger.OnAdd, null, AcceptInvitationAction);
+            
+            System.Threading.Timer timer;
 
             #endregion
 
@@ -72,7 +74,7 @@ namespace DiscordTextAdventure.Mechanics.Responses
                         room.LinkToDiscordAndDraw(task.Result, null);
                         e.Session.RoomManager.RoomKV.Add(room.MessageChannel!.Id, room);
 
-                        Timer = new System.Threading.Timer((args) => BodyMessage01(room.MessageChannel), null, 10_000, -1);
+                        timer = new System.Threading.Timer((args) => BodyMessage01(room.MessageChannel), null, 10_000, -1);
 
                         e.Session.BodyBot.MessageReceived += (args) =>
                         {
@@ -102,14 +104,14 @@ namespace DiscordTextAdventure.Mechanics.Responses
                 channel.SendMessageAsync(
                     $"You sit down at the computer, shoulder's slouched forward, neck craned." +
                     $"\nExcitement trickles through your veins, as you begin scrolling...");
-                Timer = new System.Threading.Timer((args) => BodyMessage02(channel), null, 15_000, -1);
+                timer = new System.Threading.Timer((args) => BodyMessage02(channel), null, 15_000, -1);
             }
    
             async Task BodyMessage02(IMessageChannel channel)
             {
                 channel.SendMessageAsync($"You're neck is killing."+
                     "\nGet some rest rest, your vision is blurring");
-                Timer = new System.Threading.Timer((args) => BodyMessage03(channel), null, 20_000, -1);
+                timer = new System.Threading.Timer((args) => BodyMessage03(channel), null, 20_000, -1);
             }
             
             async Task BodyMessage03(IMessageChannel channel)
@@ -120,7 +122,7 @@ namespace DiscordTextAdventure.Mechanics.Responses
                                          $"\nYou have to find a way to get banned, so you can't come back. " +
                                          $"\nI need to go for a walk, we're falling apart." +
                                          $"\nFind a way to get banned.");
-                Timer = null;
+                timer = null;
             }
             
             async Task AttemptVoidAgreementAsync(ReactionResponseEventArgs e)
@@ -141,6 +143,13 @@ namespace DiscordTextAdventure.Mechanics.Responses
                         "\n\n- The Dissonance Legal Team```");
                 }
             }
+            
+            async Task AcceptInvitationAction(ReactionResponseEventArgs e)
+            {
+                e.Session.RoomManager.TheCloud.ChangeRoomVisibilityAsync(e.Session, RoomCategory.ViewAndSendPermission);
+
+            }
+            
             
             #endregion
             

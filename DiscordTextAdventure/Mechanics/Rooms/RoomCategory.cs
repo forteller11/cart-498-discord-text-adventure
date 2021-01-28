@@ -54,27 +54,7 @@ namespace DiscordTextAdventure.Mechanics.Rooms
 
         public async Task ChangeRoomVisibilityAsync(Session session, OverwritePermissions overwritePermissions)
         {
-    
             await Channel.AddPermissionOverwriteAsync(session.Guild.EveryoneRole, overwritePermissions);
-            
-            // if (session.Player == null)
-            // {
-            //     foreach (var user in session.Guild.Users)
-            //     {
-            //         if (!user.IsBot)
-            //         {
-            //             Program.DebugLog("Permission overwrite no player");
-            //             
-            //             await Channel.AddPermissionOverwriteAsync(session.Guild.EveryoneRole, overwritePermissions);
-            //         }
-            //     }
-            // }
-            // else
-            // {
-            //     Program.DebugLog("Permission overwrite category");
-            //     await Channel.AddPermissionOverwriteAsync(session.Guild.EveryoneRole, overwritePermissions);
-            // }
-            
         }
     }
 }
