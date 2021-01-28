@@ -64,7 +64,11 @@ namespace DiscordTextAdventure.Mechanics.Rooms
             
             #region create rooms
             UserAgreement = Room.CreateGuildRoom("User Agreement", Intro)
-                .WithStaticDescriptions("don't harm system hardware")
+                .WithStaticDescriptions("Here at Dissonance we believe in free communication and sharing. \n" +
+                                        "Communities are stronger when ideas and conversations are allowed to flow." +
+                                        "\nThat's why our terms of service are very simple:" +
+                                        "\n***Don't harm the hardware used to run our servers!***" +
+                                        "\n Otherwise have fun!")
                 .WithReaction(new Emoji("✅"));
             
             
@@ -75,10 +79,10 @@ namespace DiscordTextAdventure.Mechanics.Rooms
                     );
             
             Pokemon = Room.CreateGuildRoom("Pokemon", Screen)
-                .WithStaticDescriptions("gotta catch em' all");
+                .WithStaticDescriptions("Gotta catch em' all! Pokemon Memes go here.");
             
             Animals = Room.CreateGuildRoom("Cute Animals", Screen)
-                .WithStaticDescriptions("cats jumping from cucumbers, tiny frogs making impressive noises, we love them all!\nPreferably pictures!");
+                .WithStaticDescriptions("Dogs chasing their tails, cucumbers scaring cats, tiny frogs making impressive noises -- we love them all!\nPreferably .gifs, so we can see them in action!");
             
             #endregion
             
@@ -154,7 +158,23 @@ namespace DiscordTextAdventure.Mechanics.Rooms
 
             
             #endregion
+
+            Animals.Renderer.Builder.ImageUrl = "https://miro.medium.com/max/11520/0*pAypSD1ZSCCw0NcL";
+            Pokemon.Renderer.Builder.ImageUrl = "https://i.guim.co.uk/img/media/66e444bff77d9c566e53c8da88591e4297df0896/120_0_1800_1080/master/1800.png?width=1200&height=1200&quality=85&auto=format&fit=crop&s=69b22b4292160faf91cb45ad024fc649";
+            DnD.Renderer.Builder.ImageUrl = "https://cdn.shopify.com/s/files/1/1634/0113/products/AgedMithiralBoulder_1500x.jpg?v=1602599762";
+
+            Animals.Renderer.DrawRoomStateEmbed();
+            Pokemon.Renderer.DrawRoomStateEmbed();
+            DnD.Renderer.DrawRoomStateEmbed();
             
+            Animals.MessageChannel.SendMessageAsync("https://tenor.com/view/busu05-funny-animals-gif-8130594");
+            Animals.MessageChannel.SendMessageAsync("https://tenor.com/view/shummer-netflix-cat-cute-gif-12702077");
+            
+            Pokemon.MessageChannel.SendMessageAsync("https://tenor.com/view/jigglypuff-singing-karaoke-sleep-put-to-sleep-gif-13598825");
+            Pokemon.MessageChannel.SendMessageAsync("https://tenor.com/view/your-argument-is-invalid-gif-11766814");
+            
+            DnD.MessageChannel.SendMessageAsync("https://tenor.com/view/tiktok-cat-dungeon-master-dnd-dm-gif-16454081");
+            DnD.MessageChannel.SendMessageAsync("https://tenor.com/view/lilo-pelekai-im-sorry-lilo-and-stitch-apologize-gif-8930173");
 
         }
 
