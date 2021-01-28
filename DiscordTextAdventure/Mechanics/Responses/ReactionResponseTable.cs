@@ -65,6 +65,9 @@ namespace DiscordTextAdventure.Mechanics.Responses
                         var room = e.Session.RoomManager.BodyDM;
                         room.LinkToDiscordAndDraw(task.Result, null);
                         e.Session.RoomManager.RoomKV.Add(room.MessageChannel!.Id, room);
+                        room.MessageChannel.SendMessageAsync(
+                            $"You sit down at the computer, shoulder's slouched forward, neck craned." +
+                            $"Excitement trickles through your veins, as you begins scrolling...");
                     });
                     
                     var memeDMTask = e.Session.MemeBot.GetUser(userId).GetOrCreateDMChannelAsync().ContinueWith(task =>

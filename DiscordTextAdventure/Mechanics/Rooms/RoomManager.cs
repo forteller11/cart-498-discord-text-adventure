@@ -42,10 +42,14 @@ namespace DiscordTextAdventure.Mechanics.Rooms
 
             DissonanceDM = Room.CreateDMRoom();
             
-            BodyDM = Room.CreateDMRoom().WithSubtitle("Your body, warts and all").WithObjects(
-                new AdventureObject("arms", "not very strong"),
-                new AdventureObject("legs", "knees ache from being bent so long")
+            BodyDM = Room.CreateDMRoom().WithSubtitle("It's yours, warts and all")
+                .WithStaticDescriptions("Things have been better. You should probably drink more water, or go for a walk... pretty much anything is better than sitting at a computer all day.")
+                .WithObjects(
+                new AdventureObject("arms", "All this typing can't be good for your wrists, you should look into getting a better mouse pad or wrist brace or something.", true),
+                new AdventureObject("legs", "Your knees ache from being bent so long", true),
+                new AdventureObject("head", "You can't see your own head, but you do take note of growing pain of your the headphones on its ears. Forcing itself into conscious thought.", true)
             );
+            
             MemeDM = Room.CreateDMRoom();
             #endregion
             

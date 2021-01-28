@@ -8,14 +8,22 @@ namespace DiscordTextAdventure.Mechanics
 {
     public class AdventureObject
     {
-        public string Name = String.Empty;
-        public string Description = String.Empty;
-        public string Article => Name[0] == 'a' || Name[0] == 'A' ? "an" : "a"; 
+        public readonly string Name;
+        public readonly string Description;
+        public readonly bool IsPlural;
+        public string Article {
+            get
+            {
+                if (IsPlural) return String.Empty;
+                return Name[0] == 'a' || Name[0] == 'A' ? "an" : "a";
+            }
+        }
 
-        public AdventureObject(string name, string description)
+    public AdventureObject(string name, string description, bool isPlural=false)
         {
             Name = name;
             Description = description;
+            IsPlural = isPlural;
         }
 
         public virtual void OnLook(Phrase phrase)

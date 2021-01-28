@@ -17,6 +17,9 @@ namespace DiscordTextAdventure.Mechanics.Rooms
         public string StaticDescription = String.Empty;
         public Func<Room, string> DynamicDescription = DefaultDynamicDescription;
         public Emoji []? Reactions;
+
+        private const string IS = "is";
+        private const string ARE = "are";
         
         
         public List<AdventureObject> Objects = new List<AdventureObject>();
@@ -130,11 +133,12 @@ namespace DiscordTextAdventure.Mechanics.Rooms
                 bool isLastElement = i == room.Objects.Count - 1;
                 
                 if (i == 0)
-                    builder.Append("There is");
+                    builder.Append($"There {(obj.IsPlural ? "are" : "is")}");
                 else if (isLastElement) //else if means that this will only apply if last element and there is MORE than one object
                     builder.Append(", and");
                 else
                     builder.Append(",");
+                
                 
                 builder.Append(" " + obj.Article + " " + room.Objects[i].Name);
                 
