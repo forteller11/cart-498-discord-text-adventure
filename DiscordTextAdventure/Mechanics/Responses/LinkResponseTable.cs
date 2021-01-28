@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using Discord;
 using DiscordTextAdventure.Mechanics.Rooms;
 using DiscordTextAdventure.Parsing.DataStructures;
 using DiscordTextAdventure.Reflection;
@@ -99,19 +100,42 @@ namespace DiscordTextAdventure.Mechanics.Responses
 
             }
 
-            Task InterestingLinkCheck (LinkResponseEventArgs e, string[] relevantWords, Room relevantRoom, 
-                RandomPhrasePicker phraseOnRelevant, RandomPhrasePicker phraseOnNotRelevant, int wordsThatMustMatch)
+            Task InterestingLinkCheck (LinkResponseEventArgs e, string[] relevantWords, Room relevantRoom, RandomPhrasePicker phraseOnRelevant, RandomPhrasePicker phraseOnNotRelevant, int wordsThatMustMatch)
             {
                 if (e.PostedRoom.MessageChannel.Id == relevantRoom.MessageChannel.Id
                     && e.Link.IsValid)
                 {
                     if (ContainsWords(e.Link.Words, relevantWords, wordsThatMustMatch))
+                    {
                         e.PostedRoom.MessageChannel.SendMessageAsync(phraseOnRelevant.GetNextPhrase());
+                        e.Session.SucessfulAnimalPosts++;
+
+                        if (e.Session.SucessfulAnimalPosts >= 3)
+                        {
+                            e.Session.RoomManager.DissonanceDM.MessageChannel.SendMessageAsync(
+                                "Congrats!!!" +
+                                "It's clear that you've made some big contributions to our community here at Dissonance!" +
+                                "\nAs a reward, you're invited to our tech-forward headquarters, in ***The Cloud***!!!" +
+                                "\nReact to the confetti to Accept."
+                                ).ContinueWith(task => { task.Result.AddReactionAsync(new Emoji("🎉")); });
+
+                            e.Session.RoomManager.DissonanceDM.MessageChannel.SendMessageAsync(
+                                ":confetti_ball: :confetti_ball: :confetti_ball:");
+                            
+                            //todo other rooms visible
+                        }
+                        
+                    }
                     else
                         e.PostedRoom.MessageChannel.SendMessageAsync(phraseOnNotRelevant.GetNextPhrase());
                 }
 
                 return Task.CompletedTask;
+            }
+
+            void OnAcceptedToScreen()
+            {
+                
             }
             
 
