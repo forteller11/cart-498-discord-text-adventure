@@ -32,7 +32,7 @@ namespace DiscordTextAdventure.Mechanics
         IsPlural = isPlural;
         
         session.PhraseResponseManager.PhraseResponses.Add(
-            new PhraseResponse(new PhraseBlueprint(VerbTable.Inspect, names, null, null), null, LookAtDefault));
+            new PhraseResponse(new PhraseBlueprint(VerbTable.Inspect, names, null, null, null), null, LookAtDefault));
     }
         
         public virtual void OnLook(PhraseResponseEventArgs e)

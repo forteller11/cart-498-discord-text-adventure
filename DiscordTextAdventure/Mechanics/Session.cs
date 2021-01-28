@@ -43,6 +43,7 @@ namespace chext.Mechanics
             RoomManager.Screen.ChangeRoomVisibilityAsync(this, OverwritePermissions.DenyAll(RoomManager.Screen.Channel));
 
             dissonanceBot.MessageReceived += OnMessageReceived;
+            
             dissonanceBot.ReactionAdded   += OnReactionAdded;
             dissonanceBot.ReactionRemoved += OnReactionRemoved;
         }
@@ -74,7 +75,7 @@ namespace chext.Mechanics
             }
         }
 
-        async Task OnMessageReceived(SocketMessage socketMessage)
+        public async Task OnMessageReceived(SocketMessage socketMessage)
         {
             if (!_input.FilterMessage(socketMessage.Author, socketMessage.Channel, Guild))
                 return;

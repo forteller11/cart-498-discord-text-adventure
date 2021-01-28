@@ -71,5 +71,10 @@ namespace DiscordTextAdventure.Parsing.DataStructures
                     return true;
             return false;
         }
+
+        public override string ToString()
+        {
+            return Synonyms[0].ToString();
+        }
     }
 }

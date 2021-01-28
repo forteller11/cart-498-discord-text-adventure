@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using chext.Mechanics;
 using Discord;
 using Discord.Rest;
 using DiscordTextAdventure.Mechanics.Rooms;
@@ -55,12 +56,9 @@ namespace DiscordTextAdventure.Mechanics.Responses
                                 $"\nMake sure to participate! We recommend getting to know each one of our communities and posting relevant content!");
                         });
 
+    
                     //requires intents
-                    var guild = e.Session.BodyBot.GetGuild(e.Session.Guild.Id);
-                    var bodyuserFromGuild = guild.GetUser(userId);
-                    var bodyuser = e.Session.BodyBot.GetUser(userId);
-                    
-                    var bodyDMTask = bodyuser.GetOrCreateDMChannelAsync().ContinueWith(task =>
+                    var bodyDMTask = e.Session.BodyBot.GetUser(userId).GetOrCreateDMChannelAsync().ContinueWith(task =>
                     {
                         var room = e.Session.RoomManager.BodyDM;
                         room.LinkToDiscordAndDraw(task.Result, null);
@@ -68,6 +66,15 @@ namespace DiscordTextAdventure.Mechanics.Responses
                         room.MessageChannel.SendMessageAsync(
                             $"You sit down at the computer, shoulder's slouched forward, neck craned." +
                             $"Excitement trickles through your veins, as you begins scrolling...");
+
+                        e.Session.BodyBot.MessageReceived += (args) =>
+                        {
+                            //only listen for dm channel
+                            if (args.Channel.Id == e.Session.RoomManager.BodyDM.MessageChannel.Id)
+                                return e.Session.OnMessageReceived(args);
+                            
+                            return Task.CompletedTask;
+                        };
                     });
                     
                     var memeDMTask = e.Session.MemeBot.GetUser(userId).GetOrCreateDMChannelAsync().ContinueWith(task =>
