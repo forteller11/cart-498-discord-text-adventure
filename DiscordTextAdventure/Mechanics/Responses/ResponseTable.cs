@@ -1,6 +1,7 @@
 ﻿
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using DiscordTextAdventure.Parsing.DataStructures;
 using DiscordTextAdventure.Parsing.Tables;
 using DiscordTextAdventure.Reflection;
@@ -12,22 +13,20 @@ namespace DiscordTextAdventure.Mechanics.Responses
     {
         public readonly List<PhraseResponse> PhraseResponses = new List<PhraseResponse>();
 
+        public readonly PhraseResponse LookResponse;
         public PhraseResponseTable()
         {
      
             #region phrase responses
-            new PhraseBlueprint(VerbTable.Inspect, NounTable.Arms, null, null);
+            
+            LookResponse = new PhraseResponse( new PhraseBlueprint(VerbTable.Inspect, null, null, null, null), null, LookResponseActionAsync);
             #endregion
 
-            try
-            {
-                PhraseResponses.AddRange(
-                    ReflectionHelpers.ClassMembersToArray<PhraseResponse>(typeof(PhraseResponseTable), null));
-            }
-            catch (ArgumentException)
-            {
-                //its fine, just no members
-            }
+            Task LookResponseActionAsync(PhraseResponseEventArgs e) =>
+                e.RoomOfPhrase.MessageChannel.SendMessageAsync("Look at what?");
+
+            PhraseResponses.AddRange(ReflectionHelpers.ClassMembersToArray<PhraseResponse>(typeof(PhraseResponseTable), this));
+           
         }
 
     }

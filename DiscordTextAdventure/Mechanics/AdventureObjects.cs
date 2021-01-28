@@ -34,6 +34,25 @@ namespace DiscordTextAdventure.Mechanics
         session.PhraseResponseManager.PhraseResponses.Add(
             new PhraseResponse(new PhraseBlueprint(VerbTable.Inspect, names, null, null, null), null, LookAtDefault));
     }
+
+        public AdventureObject WithCannotPickupDefault(Session session, bool doesPickingUpEvenMakeSenseAsAnAction)
+        {
+
+            if (doesPickingUpEvenMakeSenseAsAnAction)
+            {
+                session.PhraseResponseManager.PhraseResponses.Add(
+                    new PhraseResponse(new PhraseBlueprint(VerbTable.Pickup, Names, null, null, null),
+                        CannotPickupDefault, null));
+            }
+            else
+            {
+                session.PhraseResponseManager.PhraseResponses.Add(
+                    new PhraseResponse(new PhraseBlueprint(VerbTable.Pickup, Names, null, null, null),
+                        NoSensePickupDefault, null));
+            }
+
+            return this;
+        }
         
         public virtual void OnLook(PhraseResponseEventArgs e)
         {
@@ -50,6 +69,16 @@ namespace DiscordTextAdventure.Mechanics
         {
             await e.RoomOfPhrase.Renderer.Channel.SendMessageAsync(Description);
         }
+        
+        public void CannotPickupDefault(PhraseResponseEventArgs e)
+        {
+            e.Message.Channel.SendMessageAsync($"Cannot take {Name}");
+        }
+        public void NoSensePickupDefault(PhraseResponseEventArgs e)
+        {
+            e.Message.Channel.SendMessageAsync("What would that even mean?");
+        }
+        public void CanPickupDefault(Session session) => throw new NotImplementedException();
 
 
 

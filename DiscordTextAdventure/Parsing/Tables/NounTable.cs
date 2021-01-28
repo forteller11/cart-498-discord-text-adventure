@@ -12,7 +12,7 @@ namespace DiscordTextAdventure.Parsing.Tables
 
         public static readonly SynonymCollection Arms = new SynonymCollection("arms", "arm");
         public static readonly SynonymCollection Head = new SynonymCollection("head");
-        public static readonly SynonymCollection Legs = new SynonymCollection("legs, leg");
+        public static readonly SynonymCollection Legs = new SynonymCollection("legs", "leg");
 
         public static readonly SynonymCollection[] Nouns;
         
