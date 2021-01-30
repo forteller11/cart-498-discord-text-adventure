@@ -13,7 +13,7 @@ namespace DiscordTextAdventure.Parsing.DataStructures
         public Room [] ? RoomsFilter; //null == all rooms
 
 
-        public PhraseBlueprint(SynonymCollection? verb, SynonymCollection? noun, SynonymCollection? preposition, SynonymCollection? indirectObject, params Room []? roomsFilter)
+        public PhraseBlueprint(SynonymCollection? verb, SynonymCollection? noun, SynonymCollection? preposition, SynonymCollection? indirectObject, Room []?  roomsFilter)
         {
             Verb = verb;
             Noun = noun;

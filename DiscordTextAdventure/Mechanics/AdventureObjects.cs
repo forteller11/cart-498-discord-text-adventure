@@ -38,11 +38,9 @@ namespace DiscordTextAdventure.Mechanics
         
         
 
-        AdventureObject WithAddAdventureResponse(Action<PhraseResponseEventArgs>? action,
-            Func<PhraseResponseEventArgs, Task>? actionAsync, SynonymCollection verbs, SynonymCollection? preps = null,
-            SynonymCollection? indirectObj = null)
+        AdventureObject WithAddAdventureResponse(Action<PhraseResponseEventArgs>? action, Func<PhraseResponseEventArgs, Task>? actionAsync, SynonymCollection verbs, SynonymCollection? preps = null, SynonymCollection? indirectObj = null)
         {
-            _phraseResponsesBuffer.Add(new PhraseResponse(new PhraseBlueprint(verbs, Names, preps, indirectObj), action,
+            _phraseResponsesBuffer.Add(new PhraseResponse(new PhraseBlueprint(verbs, Names, preps, indirectObj, null), action,
                 actionAsync));
             return this;
         }

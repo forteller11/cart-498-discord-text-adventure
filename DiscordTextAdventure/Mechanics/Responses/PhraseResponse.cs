@@ -29,7 +29,10 @@ namespace DiscordTextAdventure.Mechanics.Responses
             ActionAsync?.Invoke(args);
         }
 
-
+        public override string ToString()
+        {
+            return PhraseBlueprint.ToString();
+        }
     }
 
 

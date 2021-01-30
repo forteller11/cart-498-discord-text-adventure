@@ -55,9 +55,11 @@ namespace DiscordTextAdventure.Mechanics.Rooms
                         .WithPickupNoSense(),
                     
                     new AdventureObject(NounTable.Legs, "Your knees ache from being bent so long", true)
+                        .WithInspectDefault()
                         .WithCannotPickup(),
                 
                     new AdventureObject(NounTable.Head, "You can't see your own head, but you do take note of growing pain of your the headphones on its ears. Forcing itself into conscious thought.", true)
+                        .WithInspectDefault()
                         .WithPickupNoSense()
                 );
 
