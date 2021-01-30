@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using chext.Mechanics;
 using DiscordTextAdventure.Mechanics.Responses;
@@ -15,9 +16,12 @@ namespace DiscordTextAdventure.Mechanics
         public readonly SynonymCollection Names;
         public readonly string Description;
         public readonly bool IsPlural;
-        
+
+        private List<PhraseResponse> _phraseResponsesBuffer = new List<PhraseResponse>();
+
         // public Action<PhraseResponseEventArgs> LookResponse;
-        public string Article {
+        public string Article
+        {
             get
             {
                 if (IsPlural) return String.Empty;
@@ -25,34 +29,58 @@ namespace DiscordTextAdventure.Mechanics
             }
         }
 
-    public AdventureObject(SynonymCollection names, Session session, string description, bool isPlural=false)
-    {
-        Names = names;
-        Description = description;
-        IsPlural = isPlural;
-        
-        session.PhraseResponseManager.PhraseResponses.Add(
-            new PhraseResponse(new PhraseBlueprint(VerbTable.Inspect, names, null, null, null), null, LookAtDefault));
-    }
-
-        public AdventureObject WithCannotPickupDefault(Session session, bool doesPickingUpEvenMakeSenseAsAnAction)
+        public AdventureObject(SynonymCollection names, string description, bool isPlural = false)
         {
+            Names = names;
+            Description = description;
+            IsPlural = isPlural;
+        }
+        
+        
 
-            if (doesPickingUpEvenMakeSenseAsAnAction)
-            {
-                session.PhraseResponseManager.PhraseResponses.Add(
-                    new PhraseResponse(new PhraseBlueprint(VerbTable.Pickup, Names, null, null, null),
-                        CannotPickupDefault, null));
-            }
-            else
-            {
-                session.PhraseResponseManager.PhraseResponses.Add(
-                    new PhraseResponse(new PhraseBlueprint(VerbTable.Pickup, Names, null, null, null),
-                        NoSensePickupDefault, null));
-            }
-
+        AdventureObject WithAddAdventureResponse(Action<PhraseResponseEventArgs>? action,
+            Func<PhraseResponseEventArgs, Task>? actionAsync, SynonymCollection verbs, SynonymCollection? preps = null,
+            SynonymCollection? indirectObj = null)
+        {
+            _phraseResponsesBuffer.Add(new PhraseResponse(new PhraseBlueprint(verbs, Names, preps, indirectObj), action,
+                actionAsync));
             return this;
         }
+
+        public void LinkActions(Session session)
+        {
+            for (int i = 0; i < _phraseResponsesBuffer.Count; i++)
+                session.PhraseResponseTable.PhraseResponses.Add(_phraseResponsesBuffer[i]);
+        }
+
+        #region response helpers
+        public AdventureObject WithInspectDefault()
+        {
+            return WithAddAdventureResponse(e 
+                    => { e.RoomOfPhrase.Renderer.Channel.SendMessageAsync(Description); },
+                null, 
+                VerbTable.Inspect);
+        }
+        public AdventureObject WithPickupNoSense()
+        {
+            return WithAddAdventureResponse(e 
+                => { e.Message.Channel.SendMessageAsync($"What would picking up {Article} {Names} even mean?"); },
+                null, 
+                VerbTable.Pickup);
+        }
+        
+        public AdventureObject WithCannotPickup()
+        {
+            return WithAddAdventureResponse(e 
+                    => { e.Message.Channel.SendMessageAsync($"Cannot take {Name}"); },
+                null, 
+                VerbTable.Pickup);
+        }
+        
+        
+        #endregion
+        
+
         
         public virtual void OnLook(PhraseResponseEventArgs e)
         {

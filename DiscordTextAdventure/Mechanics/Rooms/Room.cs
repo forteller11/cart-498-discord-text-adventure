@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using chext;
+using chext.Mechanics;
 using Discord;
 using Discord.Rest;
 using DiscordTextAdventure.Discord.Rendering;
@@ -61,13 +62,14 @@ namespace DiscordTextAdventure.Mechanics.Rooms
         }
         
 
-        public void LinkToDiscordAndDraw(IMessageChannel channel, IGuildChannel? guildChannel)
+        public void InitAndDraw(Session session, IMessageChannel channel, IGuildChannel? guildChannel)
         {
             LinkToDiscord(channel, guildChannel);
+            LinkActions(session);
             Renderer.DrawRoomStateEmbed();
         }
         
-        public void LinkToDiscord(IMessageChannel channel, IGuildChannel? guildChannel)
+        void LinkToDiscord(IMessageChannel channel, IGuildChannel? guildChannel)
         {
             if (IsDMChannel && guildChannel != null)
                 throw new ArgumentException("This is a DM channel but was fed a guild channel");
@@ -78,6 +80,13 @@ namespace DiscordTextAdventure.Mechanics.Rooms
             GuildChannel = guildChannel;
 
             Renderer = new RoomRenderer(this, channel);
+        }
+
+        void LinkActions(Session session)
+        {
+            for (int i = 0; i < Objects.Count; i++)
+                Objects[i].LinkActions(session);
+
         }
         
         #region builder helpers

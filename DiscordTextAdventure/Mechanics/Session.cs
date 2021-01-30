@@ -28,7 +28,7 @@ namespace chext.Mechanics
    
         private Input _input;
         public readonly RoomManager RoomManager;
-        public readonly PhraseResponseTable PhraseResponseManager;
+        public readonly PhraseResponseTable PhraseResponseTable;
 
         public Player? Player;
         public Session(DiscordSocketClient dissonanceBot, DiscordSocketClient memeBot, DiscordSocketClient bodyBot, SocketGuild guild)
@@ -41,7 +41,7 @@ namespace chext.Mechanics
             _input = new Input();
 
             //must be called in this order
-            PhraseResponseManager = new PhraseResponseTable();
+            PhraseResponseTable = new PhraseResponseTable();
             RoomManager = new RoomManager(this, guild);
             
 
@@ -88,7 +88,7 @@ namespace chext.Mechanics
 
             if (parseResult.Item1 != null)
             {
-                var phraseResponses = PhraseResponseManager.PhraseResponses;
+                var phraseResponses = PhraseResponseTable.PhraseResponses;
                 for (int i = 0; i < phraseResponses.Count; i++)
                 {
                     var roomOfMessage = RoomManager.RoomKV[socketMessage.Channel.Id];

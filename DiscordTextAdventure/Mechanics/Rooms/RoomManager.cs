@@ -45,22 +45,24 @@ namespace DiscordTextAdventure.Mechanics.Rooms
             #region dm
 
             DissonanceDM = Room.CreateDMRoom();
-            
+
             BodyDM = Room.CreateDMRoom().WithSubtitle("It's yours, warts and all")
-                .WithStaticDescriptions("Things have been better. You should probably drink more water, or go for a walk... pretty much anything is better than sitting at a computer all day.")
+                .WithStaticDescriptions(
+                    "Things have been better. You should probably drink more water, or go for a walk... pretty much anything is better than sitting at a computer all day.")
                 .WithObjects(
-                new AdventureObject(NounTable.Arms, session, "All this typing can't be good for your wrists, you should look into getting a better mouse pad or wrist brace or something.", true)
-                    .WithCannotPickupDefault(session, false),
+                    new AdventureObject(NounTable.Arms, "All this typing can't be good for your wrists, you should look into getting a better mouse pad or wrist brace or something.", true)
+                        .WithInspectDefault()
+                        .WithPickupNoSense(),
+                    
+                    new AdventureObject(NounTable.Legs, "Your knees ache from being bent so long", true)
+                        .WithCannotPickup(),
                 
-                new AdventureObject(NounTable.Legs, session, "Your knees ache from being bent so long", true)
-                    .WithCannotPickupDefault(session, false),
-                
-                new AdventureObject(NounTable.Head, session, "You can't see your own head, but you do take note of growing pain of your the headphones on its ears. Forcing itself into conscious thought.", true)
-                    .WithCannotPickupDefault(session, false)
-            );
-            
-            
-            MemeDM = Room.CreateDMRoom();
+                    new AdventureObject(NounTable.Head, "You can't see your own head, but you do take note of growing pain of your the headphones on its ears. Forcing itself into conscious thought.", true)
+                        .WithPickupNoSense()
+                );
+
+
+                MemeDM = Room.CreateDMRoom();
             #endregion
             
             Intro = new RoomCategory("Welcome");
@@ -123,6 +125,7 @@ namespace DiscordTextAdventure.Mechanics.Rooms
             Task.WaitAll(createCategoriesTasks);
             
             
+            //create categories and link them to discord
             List<Task<RestTextChannel>> createChannelTasks = new List<Task<RestTextChannel>>();
             for (int i = 0; i < Categories.Length; i++)
             {
@@ -144,20 +147,25 @@ namespace DiscordTextAdventure.Mechanics.Rooms
                 
             }
 
+            //wait for creation of text channel categories
             var createChannelTasksArr = createChannelTasks.ToArray();
             Task.WaitAll(createChannelTasksArr);
-
+            
+            //init room, tying them to discord and the phrase responses
+            RoomKV = new Dictionary<ulong, Room>(Rooms.Length);
             int createChannelTaskIndex = 0;
             for (int i = 0; i < Categories.Length; i++)
             {
                 for (int j = 0; j < Categories[i].Rooms.Count; j++)
                 {
                     var channel = createChannelTasksArr[createChannelTaskIndex].Result;
-                    RestGuildChannel? guildChannel = channel as RestGuildChannel; //will be null if dm channel
+                    RestGuildChannel? guildChannel = channel; //will be null if dm channel
                     if (guildChannel == null && !Categories[i].Rooms[j].IsDMChannel)
                         throw new Exception("Inconsistent DM usage");
-                    
-                    Categories[i].Rooms[j].LinkToDiscordAndDraw(createChannelTasksArr[createChannelTaskIndex].Result, guildChannel);
+
+                    var room = Categories[i].Rooms[j];
+                    room.InitAndDraw(session, createChannelTasksArr[createChannelTaskIndex].Result, guildChannel);
+                    RoomKV.Add(room.MessageChannel!.Id, room);
                     createChannelTaskIndex++;
                 }
                 
@@ -165,10 +173,6 @@ namespace DiscordTextAdventure.Mechanics.Rooms
             
             Screen.ChangeRoomVisibilityAsync(session, OverwritePermissions.DenyAll(Screen.Channel));
             TheCloud.ChangeRoomVisibilityAsync(session, OverwritePermissions.DenyAll(TheCloud.Channel));
-            
-            RoomKV = new Dictionary<ulong, Room>(Rooms.Length);
-            for (int i = 0; i < Rooms.Length; i++)
-                RoomKV.Add(Rooms[i].MessageChannel!.Id, Rooms[i]);
             
             #endregion
 

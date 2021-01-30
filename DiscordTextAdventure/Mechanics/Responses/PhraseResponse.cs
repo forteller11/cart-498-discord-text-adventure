@@ -16,7 +16,7 @@ namespace DiscordTextAdventure.Mechanics.Responses
         private readonly Func<PhraseResponseEventArgs, Task> ActionAsync;
    
 
-        public PhraseResponse(PhraseBlueprint phraseBlueprint, Action<PhraseResponseEventArgs> action, Func<PhraseResponseEventArgs, Task> actionAsync)
+        public PhraseResponse(PhraseBlueprint phraseBlueprint, Action<PhraseResponseEventArgs>? action, Func<PhraseResponseEventArgs, Task>? actionAsync)
         {
             PhraseBlueprint = phraseBlueprint;
             Action = action;

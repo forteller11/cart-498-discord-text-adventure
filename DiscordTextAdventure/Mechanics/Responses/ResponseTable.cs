@@ -16,7 +16,6 @@ namespace DiscordTextAdventure.Mechanics.Responses
         public readonly PhraseResponse LookResponse;
         public PhraseResponseTable()
         {
-     
             #region phrase responses
             
             LookResponse = new PhraseResponse( new PhraseBlueprint(VerbTable.Inspect, null, null, null, null), null, LookResponseActionAsync);
