@@ -64,12 +64,13 @@ namespace DiscordTextAdventure.Mechanics.Rooms
             IMessageChannel? BodyChannel = null;
             IMessageChannel? memeChannel = null;
          
-            if (IsDMChannel == false)
+            if (!IsDMChannel)
             {
-                disChannel = (IMessageChannel) session.DissonanceBot.GetChannel(channelOwner.Id);
+                disChannel  = (IMessageChannel) session.DissonanceBot.GetChannel(channelOwner.Id);
                 BodyChannel = (IMessageChannel) session.BodyBot.GetChannel(channelOwner.Id);
                 memeChannel = (IMessageChannel) session.MemeBot.GetChannel(channelOwner.Id);
             }
+            
             LinkToDiscord(channelOwner, disChannel, BodyChannel, memeChannel);
             LinkActions(session);
             Renderer.DrawRoomStateEmbed();

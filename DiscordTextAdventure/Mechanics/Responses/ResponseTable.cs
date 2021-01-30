@@ -20,14 +20,14 @@ namespace DiscordTextAdventure.Mechanics.Responses
         {
             #region phrase responses
             
-            LookResponse = new PhraseResponse( new PhraseBlueprint(VerbTable.Inspect, null, null, null, null), LookResponseAction, null);
-            LookResponse = new PhraseResponse( new PhraseBlueprint(VerbTable.Move, NounTable.Legs, null, null, null), MoveResponse, null);
+            MoveResponse = new PhraseResponse( new PhraseBlueprint(VerbTable.Inspect, null, null, null, null), LookResponseAction, null);
+            LookResponse = new PhraseResponse( new PhraseBlueprint(VerbTable.Move, NounTable.Legs, null, null, null), MoveResponseAction, null);
             
             #endregion
 
             void LookResponseAction(PhraseResponseEventArgs e) => e.RoomOfPhrase.MemeChannel.SendMessageAsync("Look at what?");
 
-            void MoveResponse(PhraseResponseEventArgs e)
+            void MoveResponseAction(PhraseResponseEventArgs e)
             {
                 var legs = e.RoomOfPhrase.TryFindFirstObject(NounTable.Legs);
                 if (legs != null)
