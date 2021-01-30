@@ -56,8 +56,8 @@ namespace DiscordTextAdventure.Mechanics.Responses
                             task =>
                             {
                                 var room = e.Session.RoomManager.DissonanceDM;
-                                room.InitAndDraw(e.Session, task.Result, null);
-                                e.Session.RoomManager.RoomKV.Add(room.MessageChannel!.Id, room);
+                                room.InitAndDraw(e.Session, task.Result);
+                                e.Session.RoomManager.RoomKV.Add(room.RoomOwnerChannel!.Id, room);
                                 task.Result.SendMessageAsync(
                                     $"Welcome {e.Session.Player.User.Username}!" +
                                     $"\nThese are exciting times in which you're entering Dissonance server, as we have a special event currently taking place!." +
@@ -71,15 +71,15 @@ namespace DiscordTextAdventure.Mechanics.Responses
                     var bodyDMTask = e.Session.BodyBot.GetUser(userId).GetOrCreateDMChannelAsync().ContinueWith(task =>
                     {
                         var room = e.Session.RoomManager.BodyDM;
-                        room.InitAndDraw(e.Session, task.Result, null);
-                        e.Session.RoomManager.RoomKV.Add(room.MessageChannel!.Id, room);
+                        room.InitAndDraw(e.Session, task.Result);
+                        e.Session.RoomManager.RoomKV.Add(room.RoomOwnerChannel!.Id, room);
 
-                        timer = new System.Threading.Timer((args) => BodyMessage01(room.MessageChannel), null, 10_000, -1);
+                        timer = new System.Threading.Timer((args) => BodyMessage01(room.RoomOwnerChannel), null, 10_000, -1);
 
                         e.Session.BodyBot.MessageReceived += (args) =>
                         {
                             //only listen for dm channel
-                            if (args.Channel.Id == e.Session.RoomManager.BodyDM.MessageChannel.Id)
+                            if (args.Channel.Id == e.Session.RoomManager.BodyDM.RoomOwnerChannel.Id)
                                 return e.Session.OnMessageReceived(args);
 
                             return Task.CompletedTask;
@@ -89,8 +89,8 @@ namespace DiscordTextAdventure.Mechanics.Responses
                     var memeDMTask = e.Session.MemeBot.GetUser(userId).GetOrCreateDMChannelAsync().ContinueWith(task =>
                     {
                         var room = e.Session.RoomManager.MemeDM;
-                        room.InitAndDraw(e.Session, task.Result, null);
-                        e.Session.RoomManager.RoomKV.Add(room.MessageChannel!.Id, room);
+                        room.InitAndDraw(e.Session, task.Result);
+                        e.Session.RoomManager.RoomKV.Add(room.RoomOwnerChannel!.Id, room);
                     });
 
                     await dissonanceDMTask;

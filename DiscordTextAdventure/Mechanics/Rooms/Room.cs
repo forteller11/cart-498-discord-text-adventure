@@ -27,21 +27,13 @@ namespace DiscordTextAdventure.Mechanics.Rooms
         public List<AdventureObject> Objects = new List<AdventureObject>();
         
         public readonly bool  IsDMChannel;
-        public IMessageChannel? MessageChannel;
+        public IMessageChannel? RoomOwnerChannel;
 
-        public IGuildChannel? GuildChannel;
-        private IGuildChannel? _guildChannel
-        {
-            get => IsDMChannel ? throw new Exception("can't access guild of dm channel") : _guildChannel;
-            set
-            {
-                if (IsDMChannel)
-                    throw new Exception("can't access guild of dm channel");
-                _guildChannel = value;
-            }
-        }
+        public IMessageChannel? DissoanceChannel;
+        public IMessageChannel? BodyChannel;
+        public IMessageChannel? MemeChannel;
 
-  
+
         public RoomRenderer? Renderer;
 
         private Room(bool isDmChannel)
@@ -51,6 +43,7 @@ namespace DiscordTextAdventure.Mechanics.Rooms
 
         public static Room CreateGuildRoom(string name, RoomCategory category)
         {
+        
             var room = new Room(false);
             room.Name = name.Replace(' ', '_');
             category.Rooms.Add(room);
@@ -63,24 +56,39 @@ namespace DiscordTextAdventure.Mechanics.Rooms
         }
         
 
-        public void InitAndDraw(Session session, IMessageChannel channel, IGuildChannel? guildChannel)
+        public void InitAndDraw(Session session, IMessageChannel channelOwner)
         {
-            LinkToDiscord(channel, guildChannel);
+            
+            //get channel from each bots perspective (if not dm channel) so a room can send message from whatever bot it wants
+            IMessageChannel? disChannel = null;
+            IMessageChannel? BodyChannel = null;
+            IMessageChannel? memeChannel = null;
+         
+            if (IsDMChannel == false)
+            {
+                disChannel = (IMessageChannel) session.DissonanceBot.GetChannel(channelOwner.Id);
+                BodyChannel = (IMessageChannel) session.BodyBot.GetChannel(channelOwner.Id);
+                memeChannel = (IMessageChannel) session.MemeBot.GetChannel(channelOwner.Id);
+            }
+            LinkToDiscord(channelOwner, disChannel, BodyChannel, memeChannel);
             LinkActions(session);
             Renderer.DrawRoomStateEmbed();
         }
         
-        void LinkToDiscord(IMessageChannel channel, IGuildChannel? guildChannel)
+        void LinkToDiscord(IMessageChannel ownerOfRoom, IMessageChannel? dissonanceBot, IMessageChannel? bodyBot, IMessageChannel? memeBot)
         {
-            if (IsDMChannel && guildChannel != null)
-                throw new ArgumentException("This is a DM channel but was fed a guild channel");
-            if (!IsDMChannel && guildChannel == null)
-                throw new ArgumentException("This is a guild channel but was NOT fed a guild channel");
+            // if (IsDMChannel && guildChannel != null)
+            //     throw new ArgumentException("This is a DM channel but was fed a guild channel");
+            // if (!IsDMChannel && guildChannel == null)
+            //     throw new ArgumentException("This is a guild channel but was NOT fed a guild channel");
             
-            MessageChannel = channel;
-            GuildChannel = guildChannel;
+            RoomOwnerChannel = ownerOfRoom;
+            
+            DissoanceChannel = dissonanceBot;
+            BodyChannel = bodyBot;
+            MemeChannel = memeBot;
 
-            Renderer = new RoomRenderer(this, channel);
+            Renderer = new RoomRenderer(this, ownerOfRoom);
         }
 
         void LinkActions(Session session)

@@ -25,7 +25,7 @@ namespace DiscordTextAdventure.Mechanics.Responses
             
             #endregion
 
-            void LookResponseAction(PhraseResponseEventArgs e) => e.RoomOfPhrase.MessageChannel.SendMessageAsync("Look at what?");
+            void LookResponseAction(PhraseResponseEventArgs e) => e.RoomOfPhrase.MemeChannel.SendMessageAsync("Look at what?");
 
             void MoveResponse(PhraseResponseEventArgs e)
             {
@@ -37,7 +37,7 @@ namespace DiscordTextAdventure.Mechanics.Responses
 
                     e.RoomOfPhrase.Renderer.DrawRoomStateEmbed();
                     e.Session.RoomManager.Animals.Renderer.DrawRoomStateEmbed();
-                    e.RoomOfPhrase.MessageChannel.SendMessageAsync("moved leg.");
+                    e.RoomOfPhrase.RoomOwnerChannel.SendMessageAsync("moved leg.");
 
                 }
   

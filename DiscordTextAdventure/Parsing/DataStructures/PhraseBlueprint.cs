@@ -38,7 +38,7 @@ namespace DiscordTextAdventure.Parsing.DataStructures
                 bool roomMatches = false;
                 for (int i = 0; i < RoomsFilter.Length; i++)
                 {
-                    if (RoomsFilter[i].MessageChannel!.Id == room.MessageChannel!.Id)
+                    if (RoomsFilter[i].RoomOwnerChannel!.Id == room.RoomOwnerChannel!.Id)
                     {
                         roomMatches = true;
                         break;

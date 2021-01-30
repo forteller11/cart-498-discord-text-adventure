@@ -151,9 +151,9 @@ namespace DiscordTextAdventure.Mechanics.Rooms
             }
 
             //wait for creation of text channel categories
-            var createChannelTasksArr = createChannelTasks.ToArray();
+            Task<RestTextChannel> [] createChannelTasksArr = createChannelTasks.ToArray();
             Task.WaitAll(createChannelTasksArr);
-            
+
             //init room, tying them to discord and the phrase responses
             RoomKV = new Dictionary<ulong, Room>(Rooms.Length);
             int createChannelTaskIndex = 0;
@@ -167,8 +167,8 @@ namespace DiscordTextAdventure.Mechanics.Rooms
                         throw new Exception("Inconsistent DM usage");
 
                     var room = Categories[i].Rooms[j];
-                    room.InitAndDraw(session, createChannelTasksArr[createChannelTaskIndex].Result, guildChannel);
-                    RoomKV.Add(room.MessageChannel!.Id, room);
+                    room.InitAndDraw(session, createChannelTasksArr[createChannelTaskIndex].Result);
+                    RoomKV.Add(room.RoomOwnerChannel!.Id, room);
                     createChannelTaskIndex++;
                 }
                 
@@ -188,14 +188,14 @@ namespace DiscordTextAdventure.Mechanics.Rooms
             Pokemon.Renderer.DrawRoomStateEmbed();
             DnD.Renderer.DrawRoomStateEmbed();
             
-            Animals.MessageChannel.SendMessageAsync("https://tenor.com/view/busu05-funny-animals-gif-8130594");
-            Animals.MessageChannel.SendMessageAsync("https://tenor.com/view/shummer-netflix-cat-cute-gif-12702077");
+            Animals.RoomOwnerChannel.SendMessageAsync("https://tenor.com/view/busu05-funny-animals-gif-8130594");
+            Animals.RoomOwnerChannel.SendMessageAsync("https://tenor.com/view/shummer-netflix-cat-cute-gif-12702077");
             
-            Pokemon.MessageChannel.SendMessageAsync("https://tenor.com/view/jigglypuff-singing-karaoke-sleep-put-to-sleep-gif-13598825");
-            Pokemon.MessageChannel.SendMessageAsync("https://tenor.com/view/your-argument-is-invalid-gif-11766814");
+            Pokemon.RoomOwnerChannel.SendMessageAsync("https://tenor.com/view/jigglypuff-singing-karaoke-sleep-put-to-sleep-gif-13598825");
+            Pokemon.RoomOwnerChannel.SendMessageAsync("https://tenor.com/view/your-argument-is-invalid-gif-11766814");
             
-            DnD.MessageChannel.SendMessageAsync("https://tenor.com/view/tiktok-cat-dungeon-master-dnd-dm-gif-16454081");
-            DnD.MessageChannel.SendMessageAsync("https://tenor.com/view/lilo-pelekai-im-sorry-lilo-and-stitch-apologize-gif-8930173");
+            DnD.RoomOwnerChannel.SendMessageAsync("https://tenor.com/view/tiktok-cat-dungeon-master-dnd-dm-gif-16454081");
+            DnD.RoomOwnerChannel.SendMessageAsync("https://tenor.com/view/lilo-pelekai-im-sorry-lilo-and-stitch-apologize-gif-8930173");
 
         }
 
