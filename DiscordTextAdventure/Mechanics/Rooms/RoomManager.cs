@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using chext;
 using chext.Mechanics;
@@ -196,6 +197,18 @@ namespace DiscordTextAdventure.Mechanics.Rooms
             DnD.MessageChannel.SendMessageAsync("https://tenor.com/view/tiktok-cat-dungeon-master-dnd-dm-gif-16454081");
             DnD.MessageChannel.SendMessageAsync("https://tenor.com/view/lilo-pelekai-im-sorry-lilo-and-stitch-apologize-gif-8930173");
 
+        }
+
+        public void MoveAdventureObject(AdventureObject obj, Room target)
+        {
+            // bool removed = RoomKV.Remove(obj.CurrentRoom.MessageChannel.Id);
+            // if (!removed)
+            //     Program.DebugLog("no room removed from moveadventureobject, probably a bug");
+            
+            //RoomKV.ad
+            obj.CurrentRoom.Objects.Remove(obj);
+            obj.CurrentRoom = target;
+            target.Objects.Add(obj);
         }
 
         // public void ConnectRoomsToMessageChannels(SocketGuild guild)

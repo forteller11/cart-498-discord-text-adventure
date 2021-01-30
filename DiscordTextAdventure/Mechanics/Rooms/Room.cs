@@ -7,6 +7,7 @@ using chext.Mechanics;
 using Discord;
 using Discord.Rest;
 using DiscordTextAdventure.Discord.Rendering;
+using DiscordTextAdventure.Parsing.DataStructures;
 
 #nullable enable
 namespace DiscordTextAdventure.Mechanics.Rooms
@@ -110,7 +111,9 @@ namespace DiscordTextAdventure.Mechanics.Rooms
         
         public Room WithObjects(params AdventureObject[] objects)
         {
-            Objects = objects.ToList();
+            for (int i = 0; i < objects.Length; i++)
+                objects[i].CurrentRoom = this;
+            Objects.AddRange(objects);
             return this;
         }
 
@@ -126,7 +129,19 @@ namespace DiscordTextAdventure.Mechanics.Rooms
 
         #endregion
         
-        
+        public AdventureObject? TryFindFirstObject(SynonymCollection synonyms)
+        {
+            foreach (var obj in Objects)
+            {
+                if (obj.Names == synonyms)
+                {
+                    return obj;
+                }
+            }
+
+            Program.DebugLog("maybe equality check on memory position should be replaced with .Equals() on value?");
+            return null;
+        }
 
         static string DefaultDynamicDescription(Room room)
         {

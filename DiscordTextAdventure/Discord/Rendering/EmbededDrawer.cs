@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Reflection.Emit;
 using System.Threading.Tasks;
 using chext;
 using Discord;
@@ -12,6 +13,7 @@ namespace DiscordTextAdventure.Discord.Rendering
     public class RoomRenderer
     {
         public readonly EmbedBuilder Builder;
+        public readonly EmbedFieldBuilder FieldBuilder;
         public readonly IMessageChannel Channel;
         public readonly Room Room;
         
@@ -24,6 +26,8 @@ namespace DiscordTextAdventure.Discord.Rendering
             Room = room;
             
             Builder = new EmbedBuilder();
+            FieldBuilder = new EmbedFieldBuilder();
+            Builder.AddField(FieldBuilder);
         }
 
       
@@ -33,13 +37,11 @@ namespace DiscordTextAdventure.Discord.Rendering
             Builder.Title = Room.Subtitle;
             Builder.Description = Room.StaticDescription;
             
-            EmbedFieldBuilder fieldBuilder = new EmbedFieldBuilder();
-            fieldBuilder.Name = "contains";
-            fieldBuilder.Value = Room.DynamicDescription.Invoke(Room);
-            fieldBuilder.IsInline = true;
             
-            Builder.Fields.Add(fieldBuilder);
-
+            FieldBuilder.Name = "contains";
+            FieldBuilder.Value = Room.DynamicDescription.Invoke(Room);
+            FieldBuilder.IsInline = true;
+            
             await DrawCustomEmbed(null, Builder);
         }
 

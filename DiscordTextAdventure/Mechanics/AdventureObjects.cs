@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using chext.Mechanics;
 using DiscordTextAdventure.Mechanics.Responses;
+using DiscordTextAdventure.Mechanics.Rooms;
 using DiscordTextAdventure.Parsing.DataStructures;
 using DiscordTextAdventure.Parsing.Tables;
 
@@ -16,6 +17,7 @@ namespace DiscordTextAdventure.Mechanics
         public readonly SynonymCollection Names;
         public readonly string Description;
         public readonly bool IsPlural;
+        public Room? CurrentRoom; //todo
 
         private List<PhraseResponse> _phraseResponsesBuffer = new List<PhraseResponse>();
 
