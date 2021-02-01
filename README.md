@@ -12,9 +12,9 @@ Written from scratch using the discord.Net library in .Net Core
  
  - [x] player login via user-agreement
  - [x] room visibility dynamic
- - [ ] player roles
+ - [x] player roles
  - [x] dm support
  - [x] multiple bots support
  - [x] emoji support
  - [ ] custom emote support
- - [ ] gif and image reading support
+ - [x] gif and image reading support
