@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using chext;
 using chext.Mechanics;
 using Discord;
@@ -181,6 +182,12 @@ namespace DiscordTextAdventure.Mechanics.Rooms
             }
 
             return builder.ToString();
+        }
+        
+        public async Task ChangeRoomVisibilityAsync(Session session, OverwritePermissions overwritePermissions) //only use on guild channels
+        {
+            var channel = RoomOwnerChannel as IGuildChannel;
+            channel.AddPermissionOverwriteAsync(session.Guild.EveryoneRole, overwritePermissions);
         }
     }
 }

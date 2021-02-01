@@ -41,7 +41,7 @@ namespace DiscordTextAdventure.Mechanics.Responses
 
             CatRole = new ReactionResponse(new ReactionBlueprint(new Emoji( "🐱"), ReactionBlueprint.OnReactionTriggerBoth), AddRoleCat, null);
             DwarfRole = new ReactionResponse(new ReactionBlueprint(new Emoji( "🪓"), ReactionBlueprint.OnReactionTriggerBoth), AddRoleDwarf, null);
-            MagikarpRole = new ReactionResponse(new ReactionBlueprint(new Emoji( "🐠"), ReactionBlueprint.OnReactionTriggerBoth), AddRoleMagikarp, null);
+            MagikarpRole = new ReactionResponse(new ReactionBlueprint(new Emoji( "🐠"), ReactionBlueprint.OnReactionTriggerBoth), null, AddRoleMagikarp);
 
             #endregion
 
@@ -209,18 +209,34 @@ namespace DiscordTextAdventure.Mechanics.Responses
                     "\nWe're a dwarf.");
             }
             
-            void AddRoleMagikarp(ReactionResponseEventArgs e)
+            async Task AddRoleMagikarp(ReactionResponseEventArgs e)
             {
                 if (!ShouldContinueWithAddRole(e, e.Session.RoomManager.Pokemon))
+                {
+                    e.Session.RoomManager.Intro.ChangeRoomVisibilityAsync(session, OverwritePermissions.AllowAll( e.Session.RoomManager.Intro.Channel));
+                    
+                    e.Session.RoomManager.DnD.ChangeRoomVisibilityAsync(session, OverwritePermissions.AllowAll(e.Session.RoomManager.DnD.RoomOwnerChannel));
+                    e.Session.RoomManager.Animals.ChangeRoomVisibilityAsync(session, OverwritePermissions.AllowAll(e.Session.RoomManager.Animals.RoomOwnerChannel));
                     return;
-                
+                }
+
                 e.Session.Player.Role = Player.RoleTypes.Magikarp;
-                e.PostedRoom.BodyChannel.SendMessageAsync(
+                await e.PostedRoom.BodyChannel.SendMessageAsync(
                     "Smooth red scales shoot up from the skin" +
-                    "\n We fall onto the floor as legs dissolve into a fin." +
+                    "\nWe fall onto the floor as legs dissolve into a fin." +
                     "\nLips fade into bone" +
-                    "\nWe're a Magikarp.");
-                //todo room visbility
+                    "\nWe flop uselessly on the floor, breaths become painful, and mobility is hopeless." +
+                    "\nWe're a Magikarp");
+                
+                e.PostedRoom.DissoanceChannel.SendMessageAsync("It's not very effective!");
+                
+                
+                e.Session.RoomManager.Intro.ChangeRoomVisibilityAsync(session, OverwritePermissions.DenyAll( e.Session.RoomManager.Intro.Channel));
+                
+                e.Session.RoomManager.DnD.ChangeRoomVisibilityAsync(session, OverwritePermissions.DenyAll(e.Session.RoomManager.DnD.RoomOwnerChannel));
+                e.Session.RoomManager.Animals.ChangeRoomVisibilityAsync(session, OverwritePermissions.DenyAll(e.Session.RoomManager.Animals.RoomOwnerChannel));
+            
+                
             }
 
             
