@@ -14,35 +14,34 @@ namespace DiscordTextAdventure.Mechanics.Responses
 {
     public class ReactionResponseTable
     {
-        public readonly static ReactionResponse AcceptUserAgreement;
-        public readonly static ReactionResponse AttemptVoidUserAgreement;
-        public readonly static ReactionResponse AcceptInvitation;
+        public readonly ReactionResponse AcceptUserAgreement;
+        public readonly ReactionResponse AttemptVoidUserAgreement;
+        public readonly ReactionResponse AcceptInvitation;
         
-        public readonly static List<ReactionResponse> OnReactionAddedResponseEvents;
-        public readonly static List<ReactionResponse> OnReactionRemovedResponseEvents;
-        
-        public readonly static ReactionResponse CatRole;
-        public readonly static ReactionResponse DwarfRole;
-        public readonly static ReactionResponse MagikarpRole;
+        public readonly ReactionResponse[] ReactionResponses;
+
+        public readonly ReactionResponse CatRole;
+        public readonly ReactionResponse DwarfRole;
+        public readonly ReactionResponse MagikarpRole;
         
     
 
-        static ReactionResponseTable()
+        public ReactionResponseTable(Session session)
         {
             System.Threading.Timer timer;
             
             #region intro
             IEmote checkmark = new Emoji("✅");
-            AcceptUserAgreement = new ReactionResponse(checkmark, ReactionResponse.OnReactionTrigger.OnAdd, null, SetPlayerAndCreateDMChannelsAsync);
-            AttemptVoidUserAgreement = new ReactionResponse(checkmark, ReactionResponse.OnReactionTrigger.OnRemove, null, AttemptVoidAgreementAsync);
-            AcceptInvitation = new ReactionResponse(new Emoji("🎉"), ReactionResponse.OnReactionTrigger.OnAdd, null, AcceptInvitationAction);
+            AcceptUserAgreement = new ReactionResponse(new ReactionBlueprint(checkmark, ReactionBlueprint.OnReactionTrigger.OnAdd), null, SetPlayerAndCreateDMChannelsAsync);
+            AttemptVoidUserAgreement = new ReactionResponse(new ReactionBlueprint(checkmark, ReactionBlueprint.OnReactionTrigger.OnRemove), null, AttemptVoidAgreementAsync);
+            AcceptInvitation = new ReactionResponse(new ReactionBlueprint(new Emoji("🎉"), ReactionBlueprint.OnReactionTrigger.OnAdd), null, AcceptInvitationAction);
             #endregion
 
             #region the screens
 
-            CatRole = new ReactionResponse(new Emoji("🐱"), ReactionResponse.OnReactionTriggerBoth, AddRoleCat, null);
-            DwarfRole = new ReactionResponse(new Emoji("🪓"), ReactionResponse.OnReactionTriggerBoth, AddRoleDwarf, null);
-            MagikarpRole = new ReactionResponse(new Emoji("🐠"), ReactionResponse.OnReactionTriggerBoth, AddRoleMagikarp, null);
+            CatRole = new ReactionResponse(new ReactionBlueprint(new Emoji( "🐱"), ReactionBlueprint.OnReactionTriggerBoth), AddRoleCat, null);
+            DwarfRole = new ReactionResponse(new ReactionBlueprint(new Emoji( "🪓"), ReactionBlueprint.OnReactionTriggerBoth), AddRoleDwarf, null);
+            MagikarpRole = new ReactionResponse(new ReactionBlueprint(new Emoji( "🐠"), ReactionBlueprint.OnReactionTriggerBoth), AddRoleMagikarp, null);
 
             #endregion
 
@@ -235,21 +234,9 @@ namespace DiscordTextAdventure.Mechanics.Responses
             }
             #endregion
             #region sort by triggers and add to static lists
-            var allReactionResponses = ReflectionHelpers.ClassMembersToArray<ReactionResponse>(typeof(ReactionResponseTable), null);
+            ReactionResponses = ReflectionHelpers.ClassMembersToArray<ReactionResponse>(typeof(ReactionResponseTable), this);
             
-            OnReactionAddedResponseEvents = new List<ReactionResponse>(allReactionResponses.Length/2);
-            OnReactionRemovedResponseEvents = new List<ReactionResponse>(allReactionResponses.Length/2);
             
-            for (int i = 0; i < allReactionResponses.Length; i++)
-            {
-                var s = allReactionResponses[i].Trigger & ReactionResponse.OnReactionTrigger.OnAdd;
-                if ((allReactionResponses[i].Trigger & ReactionResponse.OnReactionTrigger.OnAdd) == ReactionResponse.OnReactionTrigger.OnAdd)
-                
-                    OnReactionAddedResponseEvents.Add(allReactionResponses[i]);
-
-                if ((allReactionResponses[i].Trigger & ReactionResponse.OnReactionTrigger.OnRemove) == ReactionResponse.OnReactionTrigger.OnRemove)
-                    OnReactionRemovedResponseEvents.Add(allReactionResponses[i]);
-            }
             
             #endregion
         }

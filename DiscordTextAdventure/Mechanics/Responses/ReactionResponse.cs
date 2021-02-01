@@ -11,34 +11,18 @@ namespace DiscordTextAdventure.Mechanics.Responses
 {
     public class ReactionResponse : IResponse
     {
-        public readonly IEmote ReactionBlueprint;
+        public readonly ReactionBlueprint ReactionBlueprint;
         private readonly Action<ReactionResponseEventArgs>? Action;
         private readonly Func<ReactionResponseEventArgs, Task>? ActionAsync;
         public Room[] RoomFilter { get; set; }
 
-        [Flags]
-        public enum OnReactionTrigger
-        {
-            OnAdd    = 0b_0001,
-            OnRemove = 0b_0010
-        }
-        public static OnReactionTrigger OnReactionTriggerBoth = OnReactionTrigger.OnAdd | OnReactionTrigger.OnRemove;
-        public readonly OnReactionTrigger Trigger;
-
-        public ReactionResponse(IEmote reactionBlueprint, OnReactionTrigger trigger, Action<ReactionResponseEventArgs> action, Func<ReactionResponseEventArgs, Task> actionAsync)
+        public ReactionResponse(ReactionBlueprint reactionBlueprint, Action<ReactionResponseEventArgs> action, Func<ReactionResponseEventArgs, Task> actionAsync)
         {
             ReactionBlueprint = reactionBlueprint;
-            Trigger = trigger;
             Action = action;
             ActionAsync = actionAsync;
         }
-        
-        public ReactionResponse WithRoomFilters(params Room[] filter)
-        {
-            RoomFilter = filter;
-            return this;
-        }
-        
+
         public void CallResponses(ReactionResponseEventArgs args)
         {
             Action?.Invoke(args);
@@ -56,6 +40,7 @@ namespace DiscordTextAdventure.Mechanics.Responses
         public readonly Room PostedRoom;
         public readonly IUser User;
         public readonly bool IsAdd;
+        public readonly ReactionBlueprint.OnReactionTrigger TriggerFilter;
 
         public ReactionResponseEventArgs(Session session, SocketReaction socketReaction, IUser user, Room postedRoom, bool isAdd)
         {

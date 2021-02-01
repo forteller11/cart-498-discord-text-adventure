@@ -28,6 +28,7 @@ namespace chext.Mechanics
    
         private Input _input;
         public readonly RoomManager RoomManager;
+        public readonly ReactionResponseTable ReactionTable;
         public readonly PhraseResponseTable PhraseResponseTable;
 
         public Player? Player;
@@ -40,10 +41,10 @@ namespace chext.Mechanics
             
             _input = new Input();
 
-            //must be called in this order
-            PhraseResponseTable = new PhraseResponseTable();
+            //must be called in this order.... as responsetables rely on room manager being static info
             RoomManager = new RoomManager(this, guild);
-            
+            PhraseResponseTable = new PhraseResponseTable();
+            ReactionTable = new ReactionResponseTable(this);
 
             dissonanceBot.MessageReceived += OnMessageReceived;
             
@@ -53,15 +54,15 @@ namespace chext.Mechanics
 
         private async Task OnReactionAdded(Cacheable<IUserMessage, ulong> potentialMessage, ISocketMessageChannel channel, SocketReaction reaction)
         {
-            OnReactionChanged(ReactionResponseTable.OnReactionAddedResponseEvents, potentialMessage, channel, reaction, true);
+            OnReactionChanged(potentialMessage, channel, reaction, true, ReactionBlueprint.OnReactionTrigger.OnAdd);
         }
         
         private async Task OnReactionRemoved(Cacheable<IUserMessage, ulong> potentialMessage, ISocketMessageChannel channel, SocketReaction reaction)
         {
-            OnReactionChanged(ReactionResponseTable.OnReactionRemovedResponseEvents, potentialMessage, channel, reaction, false);
+            OnReactionChanged(potentialMessage, channel, reaction, false, ReactionBlueprint.OnReactionTrigger.OnRemove);
         }
         
-        private async Task OnReactionChanged(List<ReactionResponse> reactionResponses, Cacheable<IUserMessage, ulong> potentialMessage, ISocketMessageChannel channel, SocketReaction reaction, bool isOnAdd)
+        private async Task OnReactionChanged(Cacheable<IUserMessage, ulong> potentialMessage, ISocketMessageChannel channel, SocketReaction reaction, bool isOnAdd, ReactionBlueprint.OnReactionTrigger triggerType)
         {
             //var userMessage = await potentialMessage.GetOrDownloadAsync();
             IUser user = reaction.User.IsSpecified ? reaction.User.Value : Guild.GetUser(reaction.UserId);
@@ -71,10 +72,10 @@ namespace chext.Mechanics
             
             var eventArgs = new ReactionResponseEventArgs(this, reaction, user, RoomManager.RoomKV[channel.Id], isOnAdd);
             
-            for (int i = 0; i < reactionResponses.Count; i++)
+            for (int i = 0; i < ReactionTable.ReactionResponses.Length; i++)
             {
-                if (reactionResponses[i].ReactionBlueprint.Name == reaction.Emote.Name)
-                    reactionResponses[i].CallResponses(eventArgs);
+                if (ReactionTable.ReactionResponses[i].ReactionBlueprint.Matches(eventArgs))
+                    ReactionTable.ReactionResponses[i].CallResponses(eventArgs);
             }
         }
 
