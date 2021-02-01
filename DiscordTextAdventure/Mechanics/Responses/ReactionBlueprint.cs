@@ -12,6 +12,7 @@ namespace DiscordTextAdventure.Mechanics.Responses
         [Flags]
         public enum OnReactionTrigger
         {
+            Never    = 0b_0000,
             OnAdd    = 0b_0001,
             OnRemove = 0b_0010
         }
@@ -50,7 +51,7 @@ namespace DiscordTextAdventure.Mechanics.Responses
             }
             
             OnReactionTrigger combined = e.TriggerFilter & this.TriggerFilter;
-            if (combined != this.TriggerFilter)
+            if (combined != e.TriggerFilter)
                 return false;
             
             if (e.SocketReaction.Emote.Name != Emoji.Name)

@@ -70,7 +70,7 @@ namespace chext.Mechanics
             if (!_input.FilterMessage(user, channel, Guild))
                 return;
             
-            var eventArgs = new ReactionResponseEventArgs(this, reaction, user, RoomManager.RoomKV[channel.Id], isOnAdd);
+            var eventArgs = new ReactionResponseEventArgs(this, reaction, user, RoomManager.RoomKV[channel.Id], isOnAdd, triggerType);
             
             for (int i = 0; i < ReactionTable.ReactionResponses.Length; i++)
             {
@@ -112,12 +112,6 @@ namespace chext.Mechanics
                 }
             }
         }
-        
-        
-        
-        
-      
-        
-        
+
     }
 }

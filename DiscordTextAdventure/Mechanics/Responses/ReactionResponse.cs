@@ -42,12 +42,14 @@ namespace DiscordTextAdventure.Mechanics.Responses
         public readonly bool IsAdd;
         public readonly ReactionBlueprint.OnReactionTrigger TriggerFilter;
 
-        public ReactionResponseEventArgs(Session session, SocketReaction socketReaction, IUser user, Room postedRoom, bool isAdd)
+        public ReactionResponseEventArgs(Session session, SocketReaction socketReaction, IUser user, Room postedRoom, bool isAdd, ReactionBlueprint.OnReactionTrigger triggerFilter)
         {
             Session = session;
             SocketReaction = socketReaction;
             User = user;
             PostedRoom = postedRoom;
+            IsAdd = isAdd;
+            TriggerFilter = triggerFilter;
         }
     }
 }

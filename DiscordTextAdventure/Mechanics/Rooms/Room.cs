@@ -127,7 +127,7 @@ namespace DiscordTextAdventure.Mechanics.Rooms
             return this;
         }
 
-        public Room WithReaction(params Emoji[] reactions)
+        public Room WithReactions(params Emoji[] reactions)
         {
             for (int i = 0; i < reactions.Length; i++)
             {

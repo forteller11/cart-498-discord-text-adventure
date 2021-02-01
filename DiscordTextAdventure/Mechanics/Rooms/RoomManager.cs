@@ -79,12 +79,12 @@ namespace DiscordTextAdventure.Mechanics.Rooms
                                         "\nThat's why our terms of service are very simple:" +
                                         "\n***Don't harm the hardware used to run our servers!***" +
                                         "\n Otherwise have fun!")
-                .WithReaction(new Emoji("✅"));
+                .WithReactions(new Emoji("✅"));
             
             
             DnD = Room.CreateGuildRoom("DnD", Screen)
                 .WithStaticDescriptions("All stuff DnD, TTRP, and high fantasy.\nGrab a beer a join us at the pub!\nYour quest awaits!")
-                .WithReaction(new Emoji("🪓"))
+                .WithReactions(new Emoji("🪓"))
                 .WithObjects(
                    
                     )
@@ -92,14 +92,13 @@ namespace DiscordTextAdventure.Mechanics.Rooms
 
             Pokemon = Room.CreateGuildRoom("Pokemon", Screen)
                     .WithStaticDescriptions("Gotta catch em' all!\nWe mean the memes, give us your Poké memes now.")
-                    .WithReaction(new Emoji("🐠"))
-                    .WithReaction(new Emoji("🤢"))
+                    .WithReactions(new Emoji("🐠"), new Emoji("🤢"))
                 ;
 
             Animals = Room.CreateGuildRoom("Cute Animals", Screen)
                     .WithStaticDescriptions(
                         "Dogs chasing their tails, cucumbers scaring cats, tiny frogs making impressive noises -- we love them all!\nPreferably .gifs, so we can see them in action!")
-                    .WithReaction(new Emoji("🐱"))
+                    .WithReactions(new Emoji("🐱"))
                 ;
             
             Office = Room.CreateGuildRoom("Office", TheCloud)
