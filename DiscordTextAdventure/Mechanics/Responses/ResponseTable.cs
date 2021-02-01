@@ -25,7 +25,7 @@ namespace DiscordTextAdventure.Mechanics.Responses
             
             #endregion
 
-            void LookResponseAction(PhraseResponseEventArgs e) => e.RoomOfPhrase.MemeChannel.SendMessageAsync("Look at what?");
+            void LookResponseAction(PhraseResponseEventArgs e) => e.RoomOfPhrase.RoomOwnerChannel.SendMessageAsync("Look at what?");
 
             void MoveResponseAction(PhraseResponseEventArgs e)
             {

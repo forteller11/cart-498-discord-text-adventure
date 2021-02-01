@@ -55,8 +55,9 @@ namespace DiscordTextAdventure.Mechanics.Responses
         //public IUserMessage UserMessage;
         public readonly Room PostedRoom;
         public readonly IUser User;
+        public readonly bool IsAdd;
 
-        public ReactionResponseEventArgs(Session session, SocketReaction socketReaction, IUser user, Room postedRoom)
+        public ReactionResponseEventArgs(Session session, SocketReaction socketReaction, IUser user, Room postedRoom, bool isAdd)
         {
             Session = session;
             SocketReaction = socketReaction;

@@ -20,24 +20,34 @@ namespace DiscordTextAdventure.Mechanics.Responses
         
         public readonly static List<ReactionResponse> OnReactionAddedResponseEvents;
         public readonly static List<ReactionResponse> OnReactionRemovedResponseEvents;
+        
+        public readonly static ReactionResponse CatRole;
+        public readonly static ReactionResponse DwarfRole;
+        public readonly static ReactionResponse MagikarpRole;
+        
     
 
         static ReactionResponseTable()
         {
-            #region signatures
-
+            System.Threading.Timer timer;
+            
+            #region intro
             IEmote checkmark = new Emoji("✅");
             AcceptUserAgreement = new ReactionResponse(checkmark, ReactionResponse.OnReactionTrigger.OnAdd, null, SetPlayerAndCreateDMChannelsAsync);
             AttemptVoidUserAgreement = new ReactionResponse(checkmark, ReactionResponse.OnReactionTrigger.OnRemove, null, AttemptVoidAgreementAsync);
-            
             AcceptInvitation = new ReactionResponse(new Emoji("🎉"), ReactionResponse.OnReactionTrigger.OnAdd, null, AcceptInvitationAction);
-            
-            System.Threading.Timer timer;
+            #endregion
+
+            #region the screens
+
+            CatRole = new ReactionResponse(new Emoji("🐱"), ReactionResponse.OnReactionTriggerBoth, AddRoleCat, null);
+            DwarfRole = new ReactionResponse(new Emoji("🪓"), ReactionResponse.OnReactionTriggerBoth, AddRoleDwarf, null);
+            MagikarpRole = new ReactionResponse(new Emoji("🐠"), ReactionResponse.OnReactionTriggerBoth, AddRoleMagikarp, null);
 
             #endregion
 
 
-            #region response logic
+            #region response intro
 
             async Task SetPlayerAndCreateDMChannelsAsync(ReactionResponseEventArgs e)
             {
@@ -99,6 +109,7 @@ namespace DiscordTextAdventure.Mechanics.Responses
                 }
             }
             
+            #region body intro messages
             async Task BodyMessage01(IMessageChannel channel)
             {
                 channel.SendMessageAsync(
@@ -124,6 +135,8 @@ namespace DiscordTextAdventure.Mechanics.Responses
                                          $"\nFind a way to get banned.");
                 timer = null;
             }
+            
+            #endregion
             
             async Task AttemptVoidAgreementAsync(ReactionResponseEventArgs e)
             {
@@ -153,6 +166,74 @@ namespace DiscordTextAdventure.Mechanics.Responses
             
             #endregion
             
+            #region response screen
+
+            bool ShouldContinueWithAddRole(ReactionResponseEventArgs e, Room roomFilter)
+            {
+                if (!e.IsAdd)
+                {
+                    AddRoleHuman(e);
+                    return false;
+                }
+
+                if (e.PostedRoom != roomFilter)
+                {
+                    return false;
+                }
+
+                return true;
+            }
+            void AddRoleCat(ReactionResponseEventArgs e)
+            {
+                if (!ShouldContinueWithAddRole(e, e.Session.RoomManager.Animals))
+                    return;
+                
+                e.Session.Player.Role = Player.RoleTypes.Cat;
+                e.PostedRoom.BodyChannel.SendMessageAsync(
+                    "The back is brought forward, spine extending into a tail." +
+                    "\nSkin enveloped in fur" +
+                    "\nSenses become clearer." +
+                    "\nA sudden urge for a bowl of milk." +
+                    "\nWe're a cat.");
+            }
+            
+            void AddRoleDwarf(ReactionResponseEventArgs e)
+            {
+                if (!ShouldContinueWithAddRole(e, e.Session.RoomManager.DnD))
+                    return;
+                
+                e.Session.Player.Role = Player.RoleTypes.Dwarf;
+                e.PostedRoom.BodyChannel.SendMessageAsync(
+                    "A red braid emerges from the chin." +
+                    "\nAn axe appears in the dominant hand." +
+                    "\nA huge snoz dominates your visage" +
+                    "\nWe're a dwarf.");
+            }
+            
+            void AddRoleMagikarp(ReactionResponseEventArgs e)
+            {
+                if (!ShouldContinueWithAddRole(e, e.Session.RoomManager.Pokemon))
+                    return;
+                
+                e.Session.Player.Role = Player.RoleTypes.Magikarp;
+                e.PostedRoom.BodyChannel.SendMessageAsync(
+                    "Smooth red scales shoot up from the skin" +
+                    "\n We fall onto the floor as legs dissolve into a fin." +
+                    "\nLips fade into bone" +
+                    "\nWe're a Magikarp.");
+                //todo room visbility
+            }
+
+            
+
+            void AddRoleHuman(ReactionResponseEventArgs e)
+            {
+                e.Session.Player.Role = Player.RoleTypes.Human;
+                e.PostedRoom.BodyChannel.SendMessageAsync(
+                    "A refreshing sense of normalcy has returned, but many aches with it." +
+                    "\nWe are human again.");
+            }
+            #endregion
             #region sort by triggers and add to static lists
             var allReactionResponses = ReflectionHelpers.ClassMembersToArray<ReactionResponse>(typeof(ReactionResponseTable), null);
             

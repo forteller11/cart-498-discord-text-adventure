@@ -53,23 +53,23 @@ namespace chext.Mechanics
 
         private async Task OnReactionAdded(Cacheable<IUserMessage, ulong> potentialMessage, ISocketMessageChannel channel, SocketReaction reaction)
         {
-            OnReactionChanged(ReactionResponseTable.OnReactionAddedResponseEvents, potentialMessage, channel, reaction);
+            OnReactionChanged(ReactionResponseTable.OnReactionAddedResponseEvents, potentialMessage, channel, reaction, true);
         }
         
         private async Task OnReactionRemoved(Cacheable<IUserMessage, ulong> potentialMessage, ISocketMessageChannel channel, SocketReaction reaction)
         {
-            OnReactionChanged(ReactionResponseTable.OnReactionRemovedResponseEvents, potentialMessage, channel, reaction);
+            OnReactionChanged(ReactionResponseTable.OnReactionRemovedResponseEvents, potentialMessage, channel, reaction, false);
         }
         
-        private async Task OnReactionChanged(List<ReactionResponse> reactionResponses, Cacheable<IUserMessage, ulong> potentialMessage, ISocketMessageChannel channel, SocketReaction reaction)
+        private async Task OnReactionChanged(List<ReactionResponse> reactionResponses, Cacheable<IUserMessage, ulong> potentialMessage, ISocketMessageChannel channel, SocketReaction reaction, bool isOnAdd)
         {
             //var userMessage = await potentialMessage.GetOrDownloadAsync();
             IUser user = reaction.User.IsSpecified ? reaction.User.Value : Guild.GetUser(reaction.UserId);
 
             if (!_input.FilterMessage(user, channel, Guild))
                 return;
-
-            var eventArgs = new ReactionResponseEventArgs(this, reaction, user, RoomManager.RoomKV[channel.Id]);
+            
+            var eventArgs = new ReactionResponseEventArgs(this, reaction, user, RoomManager.RoomKV[channel.Id], isOnAdd);
             
             for (int i = 0; i < reactionResponses.Count; i++)
             {

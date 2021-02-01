@@ -10,6 +10,16 @@ namespace DiscordTextAdventure.Mechanics.User
         public SocketUser SocketUser;
         public IUser User;
         public readonly DateTime AcceptUserAgreement;
+        public RoleTypes Role;
+
+        public enum RoleTypes
+        {
+            Human=default,
+            Dwarf,
+            Magikarp,
+            Koffing,
+            Cat
+        }
         //public SocketGuildUser GuildUser;
         //public DiscordSocketClient Client;
 
@@ -20,9 +30,6 @@ namespace DiscordTextAdventure.Mechanics.User
             SocketUser = (SocketUser) user;
             User = user;
             AcceptUserAgreement = DateTime.Now;
-
-
-            //user.
         }
         public void OnLogOut()
         {

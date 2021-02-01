@@ -29,6 +29,7 @@ namespace DiscordTextAdventure.Mechanics.Rooms
         public readonly bool  IsDMChannel;
         public IMessageChannel? RoomOwnerChannel;
 
+        //These are only guaranteed to be not null if the room is NOT a DM channel
         public IMessageChannel? DissoanceChannel;
         public IMessageChannel? BodyChannel;
         public IMessageChannel? MemeChannel;
@@ -40,7 +41,7 @@ namespace DiscordTextAdventure.Mechanics.Rooms
         {
             IsDMChannel = isDmChannel;
         }
-
+ 
         public static Room CreateGuildRoom(string name, RoomCategory category)
         {
         

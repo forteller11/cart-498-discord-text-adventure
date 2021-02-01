@@ -74,8 +74,8 @@ namespace DiscordTextAdventure.Mechanics.Rooms
             
             #region create rooms
             UserAgreement = Room.CreateGuildRoom("User Agreement", Intro)
-                .WithStaticDescriptions("Here at Dissonance we believe in free communication and sharing. \n" +
-                                        "Communities are stronger when ideas and conversations are allowed to flow." +
+                .WithStaticDescriptions("Here at Dissonance we believe in free communication and sharing." +
+                                        "\nCommunities are stronger when ideas and conversations are allowed to flow." +
                                         "\nThat's why our terms of service are very simple:" +
                                         "\n***Don't harm the hardware used to run our servers!***" +
                                         "\n Otherwise have fun!")
@@ -83,17 +83,24 @@ namespace DiscordTextAdventure.Mechanics.Rooms
             
             
             DnD = Room.CreateGuildRoom("DnD", Screen)
-                .WithStaticDescriptions("all stuff DnD, tolken, ttrp!")
+                .WithStaticDescriptions("All stuff DnD, TTRP, and high fantasy.\nGrab a beer a join us at the pub!\nYour quest awaits!")
+                .WithReaction(new Emoji("🪓"))
                 .WithObjects(
                    
-                    );
-            
-            Pokemon = Room.CreateGuildRoom("Pokemon", Screen)
-                .WithStaticDescriptions("Gotta catch em' all! Pokemon Memes go here.");
-            
-            Animals = Room.CreateGuildRoom("Cute Animals", Screen)
-                .WithStaticDescriptions("Dogs chasing their tails, cucumbers scaring cats, tiny frogs making impressive noises -- we love them all!\nPreferably .gifs, so we can see them in action!");
+                    )
+                ;
 
+            Pokemon = Room.CreateGuildRoom("Pokemon", Screen)
+                    .WithStaticDescriptions("Gotta catch em' all!\nWe mean the memes, give us your Poké memes now.")
+                    .WithReaction(new Emoji("🐠"))
+                    .WithReaction(new Emoji("🤢"))
+                ;
+
+            Animals = Room.CreateGuildRoom("Cute Animals", Screen)
+                    .WithStaticDescriptions(
+                        "Dogs chasing their tails, cucumbers scaring cats, tiny frogs making impressive noises -- we love them all!\nPreferably .gifs, so we can see them in action!")
+                    .WithReaction(new Emoji("🐱"))
+                ;
             
             Office = Room.CreateGuildRoom("Office", TheCloud)
                 .WithStaticDescriptions("there is a fancy office space")
