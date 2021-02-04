@@ -8,6 +8,7 @@ using chext.Mechanics;
 using Discord;
 using Discord.Rest;
 using DiscordTextAdventure.Discord.Rendering;
+using DiscordTextAdventure.Mechanics.Responses;
 using DiscordTextAdventure.Parsing.DataStructures;
 
 #nullable enable
@@ -58,7 +59,7 @@ namespace DiscordTextAdventure.Mechanics.Rooms
         }
         
 
-        public void InitAndDraw(Session session, IMessageChannel channelOwner)
+        public void InitAndDraw(Session session, IMessageChannel channelOwner, RoomManager roomManager)
         {
             
             //get channel from each bots perspective (if not dm channel) so a room can send message from whatever bot it wants
@@ -74,7 +75,7 @@ namespace DiscordTextAdventure.Mechanics.Rooms
             }
             
             LinkToDiscord(channelOwner, disChannel, BodyChannel, memeChannel);
-            LinkActions(session);
+            LinkActions(session, roomManager);
             Renderer.DrawRoomStateEmbed();
         }
         
@@ -94,10 +95,10 @@ namespace DiscordTextAdventure.Mechanics.Rooms
             Renderer = new RoomRenderer(this, ownerOfRoom);
         }
 
-        void LinkActions(Session session)
+        void LinkActions(Session session, RoomManager roomManager)
         {
             for (int i = 0; i < Objects.Count; i++)
-                Objects[i].LinkActions(session);
+                Objects[i].LinkActions(session, roomManager);
 
         }
         

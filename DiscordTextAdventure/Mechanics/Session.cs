@@ -45,6 +45,7 @@ namespace chext.Mechanics
             //must be called in this order.... as responsetables rely on room manager being static info
             RoomManager = new RoomManager(this, guild);
             PhraseResponseTable = new PhraseResponseTable(RoomManager);
+            PhraseResponseTable.PhraseResponses.AddRange(RoomManager.ResponsesToAddToResponseTable);
             ReactionTable = new ReactionResponseTable(this);
 
             dissonanceBot.MessageReceived += OnMessageReceived;

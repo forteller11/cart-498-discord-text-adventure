@@ -65,7 +65,7 @@ namespace DiscordTextAdventure.Mechanics.Responses
                             task =>
                             {
                                 var room = e.Session.RoomManager.DissonanceDM;
-                                room.InitAndDraw(e.Session, task.Result);
+                                room.InitAndDraw(e.Session, task.Result, e.Session.RoomManager);
                                 e.Session.RoomManager.RoomKV.Add(room.RoomOwnerChannel!.Id, room);
                                 task.Result.SendMessageAsync(
                                     $"Welcome {e.Session.Player.User.Username}!" +
@@ -80,7 +80,7 @@ namespace DiscordTextAdventure.Mechanics.Responses
                     var bodyDMTask = e.Session.BodyBot.GetUser(userId).GetOrCreateDMChannelAsync().ContinueWith(task =>
                     {
                         var room = e.Session.RoomManager.BodyDM;
-                        room.InitAndDraw(e.Session, task.Result);
+                        room.InitAndDraw(e.Session, task.Result, e.Session.RoomManager);
                         e.Session.RoomManager.RoomKV.Add(room.RoomOwnerChannel!.Id, room);
 
                         timer = new System.Threading.Timer((args) => BodyMessage01(room.RoomOwnerChannel), null, 10_000, -1);
@@ -98,7 +98,7 @@ namespace DiscordTextAdventure.Mechanics.Responses
                     var memeDMTask = e.Session.MemeBot.GetUser(userId).GetOrCreateDMChannelAsync().ContinueWith(task =>
                     {
                         var room = e.Session.RoomManager.MemeDM;
-                        room.InitAndDraw(e.Session, task.Result);
+                        room.InitAndDraw(e.Session, task.Result, e.Session.RoomManager);
                         e.Session.RoomManager.RoomKV.Add(room.RoomOwnerChannel!.Id, room);
                     });
 

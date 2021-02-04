@@ -17,7 +17,8 @@ namespace DiscordTextAdventure.Mechanics
         public readonly SynonymCollection Names;
         public readonly string Description;
         public readonly bool IsPlural;
-        public Room? CurrentRoom; //todo
+        public Room? CurrentRoom;
+        public object State;
 
         private List<PhraseResponse> _phraseResponsesBuffer = new List<PhraseResponse>();
 
@@ -47,10 +48,10 @@ namespace DiscordTextAdventure.Mechanics
             return this;
         }
 
-        public void LinkActions(Session session)
+        public void LinkActions(Session session, RoomManager roomManager)
         {
             for (int i = 0; i < _phraseResponsesBuffer.Count; i++)
-                session.PhraseResponseTable.PhraseResponses.Add(_phraseResponsesBuffer[i]);
+                roomManager.ResponsesToAddToResponseTable.Add(_phraseResponsesBuffer[i]);
         }
 
         #region response helpers

@@ -7,6 +7,7 @@ using chext.Mechanics;
 using Discord;
 using Discord.Rest;
 using Discord.WebSocket;
+using DiscordTextAdventure.Mechanics.Responses;
 using DiscordTextAdventure.Parsing.DataStructures;
 using DiscordTextAdventure.Parsing.Tables;
 using DiscordTextAdventure.Reflection;
@@ -20,6 +21,7 @@ namespace DiscordTextAdventure.Mechanics.Rooms
         public Room [] Rooms;
         public Dictionary<ulong, Room> RoomKV;
         public RoomCategory [] Categories;
+        public List<PhraseResponse> ResponsesToAddToResponseTable = new List<PhraseResponse>();
 
         
         #region declaring rooms
@@ -113,11 +115,13 @@ namespace DiscordTextAdventure.Mechanics.Rooms
                 .WithObjects(
                     new AdventureObject(
                         NounTable.Tarp,
-                        "The tarp is clearly over top of something. Odd that a Pepe meme is printed on the fabric..."),
+                        "The tarp is clearly over top of something. Odd that a Pepe meme is printed on the fabric...")
+                        .WithInspectDefault(),
                     
                     new AdventureObject(
                             NounTable.NameTags, 
                             "they're strewn carelessly on the floor", true )
+                        .WithInspectDefault()
                 )
                 ;
 
@@ -129,8 +133,7 @@ namespace DiscordTextAdventure.Mechanics.Rooms
                 .WithObjects(
                     new AdventureObject(
                         NounTable.Megan,
-                        "So you must be the lucky contest winner! The names, Megan, I’m the senior and chief managing, administrative and creative director in training at *Dissonance*. We really value our customers time, is there anything you want to ask me about?")
-
+                        "I feel awkward staring, I should say something to break the silence.")
                 );
 
             #endregion
@@ -200,7 +203,7 @@ namespace DiscordTextAdventure.Mechanics.Rooms
                         throw new Exception("Inconsistent DM usage");
 
                     var room = Categories[i].Rooms[j];
-                    room.InitAndDraw(session, createChannelTasksArr[createChannelTaskIndex].Result);
+                    room.InitAndDraw(session, createChannelTasksArr[createChannelTaskIndex].Result, this);
                     RoomKV.Add(room.RoomOwnerChannel!.Id, room);
                     createChannelTaskIndex++;
                 }
