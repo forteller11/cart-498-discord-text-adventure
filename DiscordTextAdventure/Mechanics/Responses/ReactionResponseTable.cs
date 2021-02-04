@@ -74,9 +74,9 @@ namespace DiscordTextAdventure.Mechanics.Responses
                                     $"\nOur headquarters where you'll get to me out ambitious crew and have a chance to get to know our cutting edge technology." +
                                     $"\nMake sure to participate! We recommend getting to know each one of our communities and posting relevant content!");
                             });
+                    
 
-
-                    //requires intents
+                //requires intents
                     var bodyDMTask = e.Session.BodyBot.GetUser(userId).GetOrCreateDMChannelAsync().ContinueWith(task =>
                     {
                         var room = e.Session.RoomManager.BodyDM;
@@ -100,6 +100,7 @@ namespace DiscordTextAdventure.Mechanics.Responses
                         var room = e.Session.RoomManager.MemeDM;
                         room.InitAndDraw(e.Session, task.Result, e.Session.RoomManager);
                         e.Session.RoomManager.RoomKV.Add(room.RoomOwnerChannel!.Id, room);
+                        Program.DebugLog("Meme task");
                     });
 
                     await dissonanceDMTask;

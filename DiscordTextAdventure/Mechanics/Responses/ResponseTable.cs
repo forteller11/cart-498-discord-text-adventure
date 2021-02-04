@@ -130,8 +130,8 @@ namespace DiscordTextAdventure.Mechanics.Responses
                     return;
                     
                 e.RoomOfPhrase.MemeChannel.SendMessageAsync($"❓");
-                e.Session.RoomManager.MemeDM.MemeChannel.SendMessageAsync(
-                    "🤫🤫🤫\n\n > 🚶 -> 🐈 -> 🌐 -> 🖥️ -> 💔 -> 🚫 -> 💪");
+                e.Session.RoomManager.MemeDM.RoomOwnerChannel.SendMessageAsync(
+                    "🤫🤫🤫🤫🤫🤫🤫🤫🤫\n > 🚶 -> 🐈 -> 🌐 -> 🖥️ -> 💔 -> 🚫 -> 💪");
             }
             PhraseResponses.AddRange(ReflectionHelpers.ClassMembersToArray<PhraseResponse>(typeof(PhraseResponseTable), this));
            
