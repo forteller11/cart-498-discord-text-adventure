@@ -77,6 +77,11 @@ namespace DiscordTextAdventure.Mechanics
                 null, 
                 VerbTable.Pickup);
         }
+
+        public AdventureObject OnPickup(Action<PhraseResponseEventArgs> action)
+        {
+            return WithAddAdventureResponse(action, null, VerbTable.Pickup);
+        }
         
         
         #endregion

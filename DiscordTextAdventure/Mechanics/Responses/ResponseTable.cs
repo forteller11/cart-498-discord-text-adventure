@@ -17,8 +17,7 @@ namespace DiscordTextAdventure.Mechanics.Responses
 
         public readonly PhraseResponse LookResponse;
         public readonly PhraseResponse MoveResponse;
-
-        public readonly PhraseResponse MeganInspect;
+        
         public readonly PhraseResponse MeganSpeak;
         public readonly PhraseResponse MeganSpeakTo;
         public readonly PhraseResponse MeganTags;
@@ -27,6 +26,12 @@ namespace DiscordTextAdventure.Mechanics.Responses
         public readonly PhraseResponse MeganFlags;
         public readonly PhraseResponse MeganSlide;
         public readonly PhraseResponse MeganBot;
+        
+        // public readonly PhraseResponse MemeNotUnderstood;
+        // public readonly PhraseResponse NeedCat;
+        public readonly PhraseResponse BotSpeak;
+        public readonly PhraseResponse BotSpeakTo;
+        
         
         public PhraseResponseTable(RoomManager roomManager)
         {
@@ -58,14 +63,6 @@ namespace DiscordTextAdventure.Mechanics.Responses
             
             #region megan speak
 
-            MeganInspect = new PhraseResponse(
-                new PhraseBlueprint(VerbTable.Inspect, NounTable.Megan, null, null, new[] {roomManager.Megan}),
-                e =>
-                {
-                    e.RoomOfPhrase.DissoanceChannel.SendMessageAsync(
-                        "So you must be the lucky contest winner! The names, Megan, I’m the senior and chief managing, administrative and creative director in training at *Dissonance*. We really value our customers time, is there anything you want to ask me about?");
-                }, null);
-            
             MeganSpeakTo = new PhraseResponse(
                 new PhraseBlueprint(VerbTable.Speak, NounTable.Megan, null, null, new[] {roomManager.Megan}),
                 e =>
@@ -77,7 +74,7 @@ namespace DiscordTextAdventure.Mechanics.Responses
                 MeganSpeak = new PhraseResponse(new PhraseBlueprint(VerbTable.Speak, null, null, null, new []{roomManager.Megan}),
                 e =>
                 {
-                    e.RoomOfPhrase.DissoanceChannel.SendMessageAsync("I'm listening, ask me about something!");
+                    e.RoomOfPhrase.DissoanceChannel.SendMessageAsync("So you must be the lucky contest winner! The names, Megan, I’m the senior and chief managing, administrative and creative director in training at *Dissonance*. We really value our customers time, is there anything you want to ask me about?");
                 }, null);
            
             MeganSlide = new PhraseResponse(new PhraseBlueprint(null, NounTable.Slide, null, null, new []{roomManager.Megan}),
@@ -116,11 +113,26 @@ namespace DiscordTextAdventure.Mechanics.Responses
                 {
                     e.RoomOfPhrase.DissoanceChannel.SendMessageAsync($"We aspire to bring persons' from all walks of life together for the common goal of increasing *Dissonance's* market value.");
                 }, null);
-            
-            
-            
             #endregion
 
+
+            BotSpeak = new PhraseResponse(
+                new PhraseBlueprint(VerbTable.Speak, null, null, null, new[] {roomManager.Office}),
+                BotSpeakAction, null);
+            
+            BotSpeakTo = new PhraseResponse(
+                new PhraseBlueprint(VerbTable.Speak, NounTable.MemeBot, null, null, new[] {roomManager.Office}),
+                BotSpeakAction, null);
+
+            void BotSpeakAction(PhraseResponseEventArgs e)
+            {
+                if (e.RoomOfPhrase.TryFindFirstObject(NounTable.MemeBot) == null)
+                    return;
+                    
+                e.RoomOfPhrase.MemeChannel.SendMessageAsync($"❓");
+                e.Session.RoomManager.MemeDM.MemeChannel.SendMessageAsync(
+                    "🤫🤫🤫\n\n > 🚶 -> 🐈 -> 🌐 -> 🖥️ -> 💔 -> 🚫 -> 💪");
+            }
             PhraseResponses.AddRange(ReflectionHelpers.ClassMembersToArray<PhraseResponse>(typeof(PhraseResponseTable), this));
            
         }

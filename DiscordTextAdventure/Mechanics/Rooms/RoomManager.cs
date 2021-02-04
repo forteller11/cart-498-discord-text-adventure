@@ -83,7 +83,7 @@ namespace DiscordTextAdventure.Mechanics.Rooms
                 .WithStaticDescriptions("Here at Dissonance we believe in free communication and sharing." +
                                         "\nCommunities are stronger when ideas and conversations are allowed to flow." +
                                         "\nThat's why our terms of service are very simple:" +
-                                        "\n > ***Don't harm the hardware used to run our servers!***" +
+                                        "\n > ***Don't damage the hardware used to run our servers and store our user data!***" +
                                         "\n Otherwise have fun!")
                 .WithReactions(new Emoji("✅"));
             #endregion
@@ -116,7 +116,29 @@ namespace DiscordTextAdventure.Mechanics.Rooms
                     new AdventureObject(
                         NounTable.Tarp,
                         "The tarp is clearly over top of something. Odd that a Pepe meme is printed on the fabric...")
-                        .WithInspectDefault(),
+                        .WithInspectDefault()
+                        .OnPickup(e =>
+                        {
+                            var room = e.RoomOfPhrase;
+                            room.DissoanceChannel.SendMessageAsync(
+                                "You take off the tarp to reveal a metal box with a small screen, engraved on its chassis: \"The Meme Machine, by Dissonance R&D\"");        
+                            room.MemeChannel.SendMessageAsync("👋");
+
+                            var tarp = room.TryFindFirstObject(NounTable.Tarp);
+                            if (tarp != null)
+                            {
+                                room.Objects.Remove(tarp);
+                            }
+                            
+                            room.Objects.Add(new AdventureObject(NounTable.MemeBot, 
+                                "A small box with a small screen")
+                                .WithCannotPickup()
+                                .WithInspectDefault());
+                            
+                            room.Renderer.DrawRoomStateEmbed();
+
+                        })
+                    ,
                     
                     new AdventureObject(
                             NounTable.NameTags, 
