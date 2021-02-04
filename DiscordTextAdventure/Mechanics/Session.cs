@@ -94,9 +94,7 @@ namespace chext.Mechanics
                 for (int i = 0; i < phraseResponses.Count; i++)
                 {
                     var roomOfMessage = RoomManager.RoomKV[socketMessage.Channel.Id];
-                    var response = phraseResponses[i].PhraseBlueprint;
-                    var parseResults = parseResult;
-                    
+
                     if (phraseResponses[i].PhraseBlueprint.MatchesPhrase(parseResult.Item1, roomOfMessage))
                     {
                         phraseResponses[i].CallResponses(new PhraseResponseEventArgs(parseResult.Item1, socketMessage, roomOfMessage, this));

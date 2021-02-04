@@ -20,10 +20,12 @@ namespace DiscordTextAdventure.Mechanics.Responses
 
         public readonly PhraseResponse MeganSpeak;
         public readonly PhraseResponse MeganTags;
+        public readonly PhraseResponse MeganTarp;
         public readonly PhraseResponse MeganFridge;
         public readonly PhraseResponse MeganFlags;
         public readonly PhraseResponse MeganSlide;
         public readonly PhraseResponse MeganBot;
+        
         public PhraseResponseTable(RoomManager roomManager)
         {
             #region phrase responses
@@ -59,24 +61,44 @@ namespace DiscordTextAdventure.Mechanics.Responses
                     e.RoomOfPhrase.DissoanceChannel.SendMessageAsync("I'm listening, ask me about something!");
                 }, null);
            
-            MeganSlide = new PhraseResponse(new PhraseBlueprint(NounTable.Slide, null, null, null, new []{roomManager.Megan}),
+            MeganSlide = new PhraseResponse(new PhraseBlueprint(null, NounTable.Slide, null, null, new []{roomManager.Megan}),
                 e =>
                 {
                     e.RoomOfPhrase.DissoanceChannel.SendMessageAsync($"The slide... yeah, well we used to own the entire upstairs floor before everything moved to the ***server farm***. So a slide was a fun, innovative way to encourage interdisciplinary communication.");
                 }, null);
             
             
-            MeganTags = new PhraseResponse(new PhraseBlueprint(NounTable.MemeBot, null, null, null, new []{roomManager.Megan}),
+            MeganTags = new PhraseResponse(new PhraseBlueprint(null, NounTable.NameTags, null, null, new []{roomManager.Megan}),
                 e =>
                 {
                     e.RoomOfPhrase.DissoanceChannel.SendMessageAsync($"The name tags were from our former team of engineers. We used to own more of this space and have hundreds of workers, but when everything moved to the cloud, we were able to operate with a fraction of the staff. Now all the brains of the Disonance are housed in the ***Server Farm***, or just ***Farm*** as we call it around the office. This place’s main purpose is PR now, but we have a couple of Engineers still working on the ***Meme Machine***.");
                 }, null);
             
-            MeganBot = new PhraseResponse(new PhraseBlueprint(NounTable.MemeBot, null, null, null, new []{roomManager.Megan}),
+            MeganBot = new PhraseResponse(new PhraseBlueprint(null, NounTable.MemeBot, null, null, new []{roomManager.Megan}),
                 e =>
                 {
                     e.RoomOfPhrase.DissoanceChannel.SendMessageAsync($"I’m glad you asked! The ***Meme-Machine*** is a project we’re developing to reimagine advertising in a new digital, interconnected age. Memes spread across international and economic borders, we’re trying to harness that potential to communicate to, and expand our client base. The only problem is that it’s hard to transform products into original, viral memes. So, we’re developing a bot that will be able to intelligently do that for us! The only problem is right now it can only understand and communicate in emojis, and it only currently works on cats and cat-related products. If only Dissonance had access to kitty litter supply chains!");
                 }, null);
+            
+            MeganTarp = new PhraseResponse(new PhraseBlueprint(null, NounTable.Tarp, null, null, new []{roomManager.Megan}),
+                e =>
+                {
+                    e.RoomOfPhrase.DissoanceChannel.SendMessageAsync($"The tarp is to protect what’s underneath it from dust and coffee spills.");
+                }, null);
+            
+            MeganFridge = new PhraseResponse(new PhraseBlueprint(null, NounTable.Fridge, null, null, new []{roomManager.Megan}),
+                e =>
+                {
+                    e.RoomOfPhrase.DissoanceChannel.SendMessageAsync($"The transparent fridge is to keep people accountable to drink and eat organic and healthy!");
+                }, null);
+            
+            MeganFlags = new PhraseResponse(new PhraseBlueprint(null, NounTable.Flags, null, null, new []{roomManager.Megan}),
+                e =>
+                {
+                    e.RoomOfPhrase.DissoanceChannel.SendMessageAsync($"We aspire to bring persons' from all walks of life together for the common goal of increasing *Dissonance's* market value.");
+                }, null);
+            
+            
             
             #endregion
 

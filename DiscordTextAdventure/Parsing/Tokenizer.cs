@@ -21,8 +21,11 @@ namespace DiscordTextAdventure.Parsing
             //remove articles
             for (int i = 0; i < words.Count; i++)
             {
-                if (ArticleTable.Articles.Contains(words[i]))
+                if (ArticleTable.WordsIgnore.Contains(words[i]))
+                {
                     words.RemoveAt(i);
+                    i--;
+                }
             }
             
             var tokens = new List<Token>(words.Count);

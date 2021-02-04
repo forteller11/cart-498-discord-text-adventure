@@ -205,7 +205,7 @@ namespace DiscordTextAdventure.Mechanics.Rooms
             }
             
             Screen.ChangeRoomVisibilityAsync(session, OverwritePermissions.DenyAll(Screen.Channel));
-            TheCloud.ChangeRoomVisibilityAsync(session, OverwritePermissions.DenyAll(TheCloud.Channel));
+            //TheCloud.ChangeRoomVisibilityAsync(session, OverwritePermissions.DenyAll(TheCloud.Channel));
             
             #endregion
 

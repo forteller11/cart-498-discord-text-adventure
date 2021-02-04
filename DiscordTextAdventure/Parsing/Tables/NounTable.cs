@@ -19,9 +19,10 @@ namespace DiscordTextAdventure.Parsing.Tables
         public static readonly SynonymCollection Tarp = new SynonymCollection("tarp", "cover","blanket");
         public static readonly SynonymCollection MemeBot = new SynonymCollection("meme bot", "bot", "memer","meme machine", "meme-machine");
         public static readonly SynonymCollection Slide = new SynonymCollection("slide");
+        public static readonly SynonymCollection Fridge = new SynonymCollection("fridge", "refrigerator");
 
         public static readonly SynonymCollection[] Nouns;
-        
+
         static NounTable()
         {
             Nouns = ReflectionHelpers.ClassMembersToArray<SynonymCollection>(typeof(NounTable), null);
