@@ -123,7 +123,11 @@ namespace DiscordTextAdventure.Mechanics.Responses
                         };
 
                         e.Session.BodyBot.MessageReceived += onMsgReceived;
-                        e.Session.SessionReset += args =>  args.BodyBot.MessageReceived -= onMsgReceived;
+                        e.Session.SessionReset += args =>
+                        {
+                            Program.DebugLog("minus message received ");
+                            args.BodyBot.MessageReceived -= onMsgReceived;
+                        };
                     });
 
                     var memeDMTask = e.Session.MemeBot.GetUser(userId).GetOrCreateDMChannelAsync().ContinueWith(task =>

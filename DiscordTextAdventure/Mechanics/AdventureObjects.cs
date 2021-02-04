@@ -51,7 +51,12 @@ namespace DiscordTextAdventure.Mechanics
         public void LinkActions(Session session, RoomManager roomManager)
         {
             for (int i = 0; i < _phraseResponsesBuffer.Count; i++)
-                roomManager.ResponsesToAddToResponseTable.Add(_phraseResponsesBuffer[i]);
+            {
+                if (session.Player == null)
+                    roomManager.ResponsesToAddToResponseTable.Add(_phraseResponsesBuffer[i]);
+                else //for dm servers who are lazy initalized
+                    session.PhraseResponseTable.PhraseResponses.Add(_phraseResponsesBuffer[i]);
+            }
         }
 
         #region response helpers
