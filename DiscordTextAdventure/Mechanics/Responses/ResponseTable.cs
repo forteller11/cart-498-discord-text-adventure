@@ -35,6 +35,8 @@ namespace DiscordTextAdventure.Mechanics.Responses
         public readonly PhraseResponse BotSpeakTo;
         public readonly PhraseResponse FarmTravel;
         
+        public readonly PhraseResponse FarmNoRoom;
+        
         
         public PhraseResponseTable(RoomManager roomManager)
         {
@@ -42,6 +44,18 @@ namespace DiscordTextAdventure.Mechanics.Responses
             
             MoveResponse = new PhraseResponse( new PhraseBlueprint(VerbTable.Inspect, null, null, null, null), LookResponseAction, null);
             LookResponse = new PhraseResponse( new PhraseBlueprint(VerbTable.Move, NounTable.Legs, null, null, null), MoveResponseAction, null);
+            
+            FarmNoRoom = new PhraseResponse(new PhraseBlueprint(null, NounTable.TheFarm, null, null, null), e =>
+            {
+                if (e.RoomOfPhrase == e.Session.RoomManager.Office)
+                    return;
+                
+                if (!e.RoomOfPhrase.IsDMChannel)
+                {
+                    e.Session.RoomManager.DissonanceDM.RoomOwnerChannel.SendMessageAsync(
+                        "I've seen you've noticed our custom ***\"the_farm\"***, I'm glad! We're very proud of The (server) Farm at Dissonance, it's how we manage to run all our tech and store all our user data!");
+                }
+            }, null);
             
             #endregion
 
@@ -75,7 +89,7 @@ namespace DiscordTextAdventure.Mechanics.Responses
                 {
                     if (e.Session.Player.Role == Player.RoleTypes.Cat)
                     {
-                        e.RoomOfPhrase.RoomOwnerChannel.SendMessageAsync("cannedCatResponse");
+                        e.RoomOfPhrase.RoomOwnerChannel.SendMessageAsync(cannedCatResponse);
                         return;
                     }
 
@@ -88,7 +102,7 @@ namespace DiscordTextAdventure.Mechanics.Responses
                 {
                     if (e.Session.Player.Role == Player.RoleTypes.Cat)
                     {
-                        e.RoomOfPhrase.RoomOwnerChannel.SendMessageAsync("cannedCatResponse");
+                        e.RoomOfPhrase.RoomOwnerChannel.SendMessageAsync(cannedCatResponse);
                         return;
                     }
 
@@ -100,7 +114,7 @@ namespace DiscordTextAdventure.Mechanics.Responses
                 {
                     if (e.Session.Player.Role == Player.RoleTypes.Cat)
                     {
-                        e.RoomOfPhrase.RoomOwnerChannel.SendMessageAsync("cannedCatResponse");
+                        e.RoomOfPhrase.RoomOwnerChannel.SendMessageAsync(cannedCatResponse);
                         return;
                     }
 
@@ -113,7 +127,7 @@ namespace DiscordTextAdventure.Mechanics.Responses
                 {
                     if (e.Session.Player.Role == Player.RoleTypes.Cat)
                     {
-                        e.RoomOfPhrase.RoomOwnerChannel.SendMessageAsync("cannedCatResponse");
+                        e.RoomOfPhrase.RoomOwnerChannel.SendMessageAsync(cannedCatResponse);
                         return;
                     }
                     
@@ -125,7 +139,7 @@ namespace DiscordTextAdventure.Mechanics.Responses
                 {
                     if (e.Session.Player.Role == Player.RoleTypes.Cat)
                     {
-                        e.RoomOfPhrase.RoomOwnerChannel.SendMessageAsync("cannedCatResponse");
+                        e.RoomOfPhrase.RoomOwnerChannel.SendMessageAsync(cannedCatResponse);
                         return;
                     }
                     
@@ -138,7 +152,7 @@ namespace DiscordTextAdventure.Mechanics.Responses
                 {
                     if (e.Session.Player.Role == Player.RoleTypes.Cat)
                     {
-                        e.RoomOfPhrase.RoomOwnerChannel.SendMessageAsync("cannedCatResponse");
+                        e.RoomOfPhrase.RoomOwnerChannel.SendMessageAsync(cannedCatResponse);
                         return;
                     }
 
@@ -150,7 +164,7 @@ namespace DiscordTextAdventure.Mechanics.Responses
                 {
                     if (e.Session.Player.Role == Player.RoleTypes.Cat)
                     {
-                        e.RoomOfPhrase.RoomOwnerChannel.SendMessageAsync("cannedCatResponse");
+                        e.RoomOfPhrase.RoomOwnerChannel.SendMessageAsync(cannedCatResponse);
                         return;
                     }
 
@@ -162,7 +176,7 @@ namespace DiscordTextAdventure.Mechanics.Responses
                 {
                     if (e.Session.Player.Role == Player.RoleTypes.Cat)
                     {
-                        e.RoomOfPhrase.RoomOwnerChannel.SendMessageAsync("cannedCatResponse");
+                        e.RoomOfPhrase.RoomOwnerChannel.SendMessageAsync(cannedCatResponse);
                         return;
                     }
 
