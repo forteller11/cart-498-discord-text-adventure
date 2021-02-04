@@ -18,7 +18,9 @@ namespace DiscordTextAdventure.Mechanics.Responses
         public readonly PhraseResponse LookResponse;
         public readonly PhraseResponse MoveResponse;
 
+        public readonly PhraseResponse MeganInspect;
         public readonly PhraseResponse MeganSpeak;
+        public readonly PhraseResponse MeganSpeakTo;
         public readonly PhraseResponse MeganTags;
         public readonly PhraseResponse MeganTarp;
         public readonly PhraseResponse MeganFridge;
@@ -55,7 +57,24 @@ namespace DiscordTextAdventure.Mechanics.Responses
             }
             
             #region megan speak
-            MeganSpeak = new PhraseResponse(new PhraseBlueprint(VerbTable.Speak, null, null, null, new []{roomManager.Megan}),
+
+            MeganInspect = new PhraseResponse(
+                new PhraseBlueprint(VerbTable.Inspect, NounTable.Megan, null, null, new[] {roomManager.Megan}),
+                e =>
+                {
+                    e.RoomOfPhrase.DissoanceChannel.SendMessageAsync(
+                        "So you must be the lucky contest winner! The names, Megan, I’m the senior and chief managing, administrative and creative director in training at *Dissonance*. We really value our customers time, is there anything you want to ask me about?");
+                }, null);
+            
+            MeganSpeakTo = new PhraseResponse(
+                new PhraseBlueprint(VerbTable.Speak, NounTable.Megan, null, null, new[] {roomManager.Megan}),
+                e =>
+                {
+                    e.RoomOfPhrase.DissoanceChannel.SendMessageAsync(
+                        "I can small talk all day, but if I were you i'd some time to collect my thoughts and ask about something specific!");
+                }, null);
+                
+                MeganSpeak = new PhraseResponse(new PhraseBlueprint(VerbTable.Speak, null, null, null, new []{roomManager.Megan}),
                 e =>
                 {
                     e.RoomOfPhrase.DissoanceChannel.SendMessageAsync("I'm listening, ask me about something!");

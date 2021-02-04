@@ -112,22 +112,25 @@ namespace DiscordTextAdventure.Mechanics.Rooms
                     "The feng shui of space is decided by a full sized, tubular slide which protrudes through the myriad of pipes and vents on the ceiling, coming to rest in the center of the room. On one side of the room, a glass fridge with a big cursive label \"Organic\" houses mason jars with green juices and smoothies. Another wall is covered in flags, all of them national, except for a larger flag in the center which wields the company logo instead. Bean bag chairs litter the hardwood. A tarp with *Pepe The Frog* printed on it is draped over a pedestal next to the slide’s entrance.")
                 .WithObjects(
                     new AdventureObject(
-                        new SynonymCollection("tarp", "blanket", "cover"),
+                        NounTable.Tarp,
                         "The tarp is clearly over top of something. Odd that a Pepe meme is printed on the fabric..."),
                     
                     new AdventureObject(
-                            new SynonymCollection("name-tags", "tags"), 
+                            NounTable.NameTags, 
                             "they're strewn carelessly on the floor", true )
                 )
                 ;
 
+
+            
             Megan = Room.CreateGuildRoom("Megan's Office", TheCloud)
                 .WithStaticDescriptions(
                     "A person in a striped suit is working on a macbook in the center of a small office space. They're forced awkwardly into a fetus position by a overly spongy beanbag chair.")
                 .WithObjects(
                     new AdventureObject(
-                        new SynonymCollection("morgan, creative-director, director, employee"),
-                        "So you must be the lucky contest winner! The names, Morgan, I’m the senior and chief managing, administrative and creative director in training at *Dissonance*. We really value our customers time, is there anything you want to ask me about?")
+                        NounTable.Megan,
+                        "So you must be the lucky contest winner! The names, Megan, I’m the senior and chief managing, administrative and creative director in training at *Dissonance*. We really value our customers time, is there anything you want to ask me about?")
+
                 );
 
             #endregion
