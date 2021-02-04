@@ -36,6 +36,7 @@ namespace DiscordTextAdventure.Mechanics.Rooms
         public readonly Room Animals;
         
         public readonly Room Office;
+        public readonly Room Megan;
 
         public readonly RoomCategory Intro;
         public readonly RoomCategory Screen;

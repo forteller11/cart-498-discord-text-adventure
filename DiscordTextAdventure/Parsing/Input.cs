@@ -62,6 +62,7 @@ namespace DiscordTextAdventure.Parsing
                return new Tuple<Phrase?, Link?>(_parser.Parse(tokens), null);
             }
         }
+        
 
         async Task<bool> IsValidLink(Uri uri)
         {

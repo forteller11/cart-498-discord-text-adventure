@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Discord;
 using Discord.WebSocket;
 using DiscordTextAdventure;
+using DiscordTextAdventure.Mechanics;
 using DiscordTextAdventure.Mechanics.Responses;
 using DiscordTextAdventure.Mechanics.Rooms;
 using DiscordTextAdventure.Mechanics.User;
@@ -30,6 +31,8 @@ namespace chext.Mechanics
         public readonly RoomManager RoomManager;
         public readonly ReactionResponseTable ReactionTable;
         public readonly PhraseResponseTable PhraseResponseTable;
+        
+        public AdventureObject? SpeakingTo = null; //if not null, input does not parse in same way
 
         public Player? Player;
         public Session(DiscordSocketClient dissonanceBot, DiscordSocketClient memeBot, DiscordSocketClient bodyBot, SocketGuild guild)
