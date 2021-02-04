@@ -57,15 +57,18 @@ namespace DiscordTextAdventure.Mechanics.Rooms
                 .WithObjects(
                     new AdventureObject(NounTable.Arms, "All this typing can't be good for the wrists, we should look into getting a better mouse pad or wrist brace.", true)
                         .WithInspectDefault()
-                        .WithPickupNoSense(),
+                        .WithPickupNoSense()
+                        .WithCannotDamage("We smash the arms on the table, the sharp pain on impact fades into a dull ache."),
                     
                     new AdventureObject(NounTable.Legs, "The knees ache from being bent so long", true)
                         .WithInspectDefault()
-                        .WithCannotPickup(),
+                        .WithCannotPickup()
+                        .WithCannotDamage("We punch our thighs, it leaves a bruise."),
                 
                     new AdventureObject(NounTable.Head, "We can't see the head, but we do take note of growing pain of the headphones on its ears. Forcing itself into conscious thought.", true)
                         .WithInspectDefault()
                         .WithPickupNoSense()
+                        .WithCannotDamage("We're not going to do that. We really do need the head, and that is not a sincere solution to our problems.")
                 );
 
 
@@ -117,6 +120,7 @@ namespace DiscordTextAdventure.Mechanics.Rooms
                         NounTable.Tarp,
                         "The tarp is clearly over top of something. Odd that a Pepe meme is printed on the fabric...")
                         .WithInspectDefault()
+                        .WithCannotDamage("Let's not be violent needlessly")
                         .OnPickup(e =>
                         {
                             var room = e.RoomOfPhrase;
@@ -137,7 +141,8 @@ namespace DiscordTextAdventure.Mechanics.Rooms
                             room.Objects.Add(new AdventureObject(NounTable.MemeBot, 
                                 "A small box with a small screen")
                                 .WithCannotPickup()
-                                .WithInspectDefault());
+                                .WithInspectDefault()
+                                .WithCannotDamage("This isn't where user data is stored, this won't get us banned... it seems pretty strong either way.\n"));
                             
                             room.Renderer.DrawRoomStateEmbed();
 
@@ -148,6 +153,7 @@ namespace DiscordTextAdventure.Mechanics.Rooms
                             NounTable.NameTags, 
                             "they're strewn carelessly on the floor", true )
                         .WithInspectDefault()
+                        .WithCannotDamage("Let's not going waste our time")
                 )
                 ;
 
@@ -160,6 +166,8 @@ namespace DiscordTextAdventure.Mechanics.Rooms
                     new AdventureObject(
                         NounTable.Megan,
                         "I feel awkward staring, I should say something to break the silence.")
+                        .WithCannotDamage("I'm not going to hurt a person... It wouldn't even break the user-agreement")
+               
                 );
 
             #endregion

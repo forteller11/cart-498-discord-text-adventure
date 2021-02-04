@@ -7,9 +7,6 @@ namespace DiscordTextAdventure.Parsing.Tables
 {
     public static class NounTable
     {
-        public static readonly SynonymCollection South = new SynonymCollection("south");
-        public static readonly SynonymCollection North = new SynonymCollection("north");
-
         public static readonly SynonymCollection Arms = new SynonymCollection("arms", "arm");
         public static readonly SynonymCollection Head = new SynonymCollection("head");
         public static readonly SynonymCollection Legs = new SynonymCollection("legs", "leg");
@@ -22,6 +19,7 @@ namespace DiscordTextAdventure.Parsing.Tables
         public static readonly SynonymCollection Fridge = new SynonymCollection("fridge", "refrigerator");
         public static readonly SynonymCollection Megan = new SynonymCollection("megan", "creative director", "director", "employee");
         public static readonly SynonymCollection TheFarm = new SynonymCollection("<:the_farm:806894562320449566>");
+
 
         public static readonly SynonymCollection[] Nouns;
 

@@ -9,10 +9,14 @@ namespace DiscordTextAdventure.Parsing.Tables
         public static readonly SynonymCollection Move = new SynonymCollection("go", "travel", "walk", "run", "move");
         public static readonly SynonymCollection Inspect = new SynonymCollection("look", "inspect", "observe");
         public static readonly SynonymCollection Pickup = new SynonymCollection("pick up", "grab", "take");
-        public static readonly SynonymCollection Salutation = new SynonymCollection("hello", "hey", "bonjour", "salut", "what's up", "hi", "howdy");
-        public static readonly SynonymCollection Legs = new SynonymCollection("hello", "hey", "bonjour", "salut", "what's up", "hi", "howdy");
+
+        public static readonly SynonymCollection Salutation =
+            new SynonymCollection("hello", "hey", "bonjour", "salut", "what's up", "hi", "howdy");
         public static readonly SynonymCollection Speak = new SynonymCollection("speak", "talk", "converse");
+        
         public static readonly SynonymCollection SessionReset = new SynonymCollection("__reset__");
+        
+        public static readonly SynonymCollection Destroy = new SynonymCollection("destroy", "hit", "damage", "strike", "cut", "punch", "damage", "break");
 
         public readonly static SynonymCollection[] Verbs;
 

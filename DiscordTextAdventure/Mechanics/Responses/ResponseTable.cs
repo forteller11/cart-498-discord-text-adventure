@@ -20,6 +20,7 @@ namespace DiscordTextAdventure.Mechanics.Responses
         public readonly PhraseResponse SessionResetResponse;
         
         public readonly PhraseResponse LookResponse;
+        public readonly PhraseResponse DestroyResponse;
         public readonly PhraseResponse MoveResponse;
         
         public readonly PhraseResponse MeganSpeak;
@@ -43,7 +44,11 @@ namespace DiscordTextAdventure.Mechanics.Responses
         public PhraseResponseTable(RoomManager roomManager)
         {
             #region phrase responses
-            
+            DestroyResponse = new PhraseResponse( new PhraseBlueprint(VerbTable.Destroy, null, null, null, null), e =>
+            {
+                e.RoomOfPhrase.RoomOwnerChannel.SendMessageAsync($"{e.Message.Content} what?");
+
+            }, null);
             SessionResetResponse = new PhraseResponse( new PhraseBlueprint(VerbTable.SessionReset, null, null, null, null), e =>
             {
                 e.Session.SessionReset.Invoke(e.Session);

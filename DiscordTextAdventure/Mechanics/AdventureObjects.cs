@@ -83,6 +83,25 @@ namespace DiscordTextAdventure.Mechanics
                 VerbTable.Pickup);
         }
 
+        public AdventureObject WithDamageCustom(Action<PhraseResponseEventArgs> action)
+        {
+            return WithAddAdventureResponse(action, null, VerbTable.Destroy);
+        }
+        
+        public AdventureObject WithCannotDamage(string message="I don't want to do that")
+        {
+            return WithAddAdventureResponse(CannotDamage, null, VerbTable.Destroy);
+
+            void CannotDamage(PhraseResponseEventArgs e)
+            {
+                if (e.RoomOfPhrase.IsDMChannel)
+                    e.RoomOfPhrase.RoomOwnerChannel.SendMessageAsync(message);
+                else
+                    e.RoomOfPhrase.BodyChannel.SendMessageAsync(message);
+            }
+        }
+        
+
         public AdventureObject OnPickup(Action<PhraseResponseEventArgs> action)
         {
             return WithAddAdventureResponse(action, null, VerbTable.Pickup);
