@@ -31,8 +31,6 @@ namespace chext.Mechanics
         public readonly RoomManager RoomManager;
         public readonly ReactionResponseTable ReactionTable;
         public readonly PhraseResponseTable PhraseResponseTable;
-        
-        public AdventureObject? SpeakingTo = null; //if not null, input does not parse in same way
 
         public Player? Player;
         public Session(DiscordSocketClient dissonanceBot, DiscordSocketClient memeBot, DiscordSocketClient bodyBot, SocketGuild guild)
@@ -46,7 +44,7 @@ namespace chext.Mechanics
 
             //must be called in this order.... as responsetables rely on room manager being static info
             RoomManager = new RoomManager(this, guild);
-            PhraseResponseTable = new PhraseResponseTable();
+            PhraseResponseTable = new PhraseResponseTable(RoomManager);
             ReactionTable = new ReactionResponseTable(this);
 
             dissonanceBot.MessageReceived += OnMessageReceived;

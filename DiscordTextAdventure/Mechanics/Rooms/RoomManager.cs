@@ -109,12 +109,8 @@ namespace DiscordTextAdventure.Mechanics.Rooms
 
             Office = Room.CreateGuildRoom("Office", TheCloud)
                 .WithStaticDescriptions(
-                    "The office seems a distillation of every tech-startups fantasy, just forcibly condensed into a single room. The feng shui of space is decided by a full sized, tubular slide which protrudes through the myriad of pipes and vents on the ceiling, coming to rest in the center of the room. On one side of the room, a glass fridge with a big cursive label \"Organic\" houses mason jars with green juices and smoothies. Another wall is covered in flags, all of them national, except for a larger flag in the center which has printed the Dissonance company logo. There is an employee present, with the name tag \"Morgan\". In the corner there is a standing desk with a large green tarp with a Pepe meme stretched across an object beneath it.")
+                    "The feng shui of space is decided by a full sized, tubular slide which protrudes through the myriad of pipes and vents on the ceiling, coming to rest in the center of the room. On one side of the room, a glass fridge with a big cursive label \"Organic\" houses mason jars with green juices and smoothies. Another wall is covered in flags, all of them national, except for a larger flag in the center which wields the company logo instead. Bean bag chairs litter the hardwood. A tarp with *Pepe The Frog* printed on it is draped over a pedestal next to the slide’s entrance.")
                 .WithObjects(
-                    new AdventureObject(
-                        new SynonymCollection("morgan, creative-director, director, employee"),
-                        "Morgan is forced awkwardly into a sort of fetus positions by overly spongy bean bag chairs. They're typing on a macbook."
-                    ),
                     new AdventureObject(
                         new SynonymCollection("tarp", "blanket", "cover"),
                         "The tarp is clearly over top of something. Odd that a Pepe meme is printed on the fabric..."),
@@ -124,8 +120,16 @@ namespace DiscordTextAdventure.Mechanics.Rooms
                             "they're strewn carelessly on the floor", true )
                 )
                 ;
-                
-            
+
+            Megan = Room.CreateGuildRoom("Megan's Office", TheCloud)
+                .WithStaticDescriptions(
+                    "A person in a striped suit is working on a macbook in the center of a small office space. They're forced awkwardly into a fetus position by a overly spongy beanbag chair.")
+                .WithObjects(
+                    new AdventureObject(
+                        new SynonymCollection("morgan, creative-director, director, employee"),
+                        "So you must be the lucky contest winner! The names, Morgan, I’m the senior and chief managing, administrative and creative director in training at *Dissonance*. We really value our customers time, is there anything you want to ask me about?")
+                );
+
             #endregion
             
             Rooms = ReflectionHelpers.ClassMembersToArray<Room>(typeof(RoomManager), this);

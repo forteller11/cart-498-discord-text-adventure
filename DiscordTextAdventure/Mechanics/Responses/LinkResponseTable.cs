@@ -22,7 +22,9 @@ namespace DiscordTextAdventure.Mechanics.Responses
             "tolken", "orc", "orcs", "elves", "elf", "elvish", "gnome", "dnd", "dungeon", "dungeons", "dragons", 
                 "lord", "ring", "sword", "swords", "axe", "battle", "war", "skill", "dice", "d20", "skillcheck", "gnome", 
                 "gnomes", "bar", "drink", "quest", "quests", "gold", "tolken", "fantasy", "druid", "magic", "spells", "table", 
-                "top", "tabletop", "ttrp", "role", "playing", "game", "games"};
+                "top", "tabletop", "ttrp", "role", "playing", "game", "games", "dwarf", "rogue", "dwarfs", "rogues", "paladin", "summoner", "warlock",
+                "bard", "tale"
+        };
         
         private static readonly string[] PokemonRelatedWords = {"pokemon", "pokeball", "greninja", "lucario", "mimikyu", "charizard", "umbreon", "sylveon", "pikachu", "squirtle",
                 "ash", "catch", "gym", "trainer", "red", "blue", "mew", "mewtwo", "team", "rocket", "koffing", "ivysaur", "poke", "choose", "detective", "snorlax", 
