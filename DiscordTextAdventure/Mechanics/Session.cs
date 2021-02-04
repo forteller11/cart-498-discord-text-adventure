@@ -17,6 +17,8 @@ namespace chext.Mechanics
 {
     public class Session
     {
+        public Action<Session> SessionReset;
+        
         public readonly DiscordSocketClient DissonanceBot;
         public readonly DiscordSocketClient MemeBot;
         public readonly DiscordSocketClient BodyBot;
@@ -33,12 +35,13 @@ namespace chext.Mechanics
         public readonly PhraseResponseTable PhraseResponseTable;
 
         public Player? Player;
-        public Session(DiscordSocketClient dissonanceBot, DiscordSocketClient memeBot, DiscordSocketClient bodyBot, SocketGuild guild)
+        public Session(DiscordSocketClient dissonanceBot, DiscordSocketClient memeBot, DiscordSocketClient bodyBot, SocketGuild guild, Action<Session> sessionReset)
         {
             DissonanceBot = dissonanceBot;
             MemeBot = memeBot;
             BodyBot = bodyBot;
             Guild = guild;
+            SessionReset += sessionReset;
             
             _input = new Input();
 
@@ -48,18 +51,18 @@ namespace chext.Mechanics
             PhraseResponseTable.PhraseResponses.AddRange(RoomManager.ResponsesToAddToResponseTable);
             ReactionTable = new ReactionResponseTable(this);
 
-            dissonanceBot.MessageReceived += OnMessageReceived;
+            DissonanceBot.MessageReceived += OnMessageReceived;
             
-            dissonanceBot.ReactionAdded   += OnReactionAdded;
-            dissonanceBot.ReactionRemoved += OnReactionRemoved;
+            DissonanceBot.ReactionAdded   += OnReactionAdded;
+            DissonanceBot.ReactionRemoved += OnReactionRemoved;
         }
 
-        private async Task OnReactionAdded(Cacheable<IUserMessage, ulong> potentialMessage, ISocketMessageChannel channel, SocketReaction reaction)
+        public async Task OnReactionAdded(Cacheable<IUserMessage, ulong> potentialMessage, ISocketMessageChannel channel, SocketReaction reaction)
         {
             OnReactionChanged(potentialMessage, channel, reaction, true, ReactionBlueprint.OnReactionTrigger.OnAdd);
         }
-        
-        private async Task OnReactionRemoved(Cacheable<IUserMessage, ulong> potentialMessage, ISocketMessageChannel channel, SocketReaction reaction)
+
+        public async Task OnReactionRemoved(Cacheable<IUserMessage, ulong> potentialMessage, ISocketMessageChannel channel, SocketReaction reaction)
         {
             OnReactionChanged(potentialMessage, channel, reaction, false, ReactionBlueprint.OnReactionTrigger.OnRemove);
         }

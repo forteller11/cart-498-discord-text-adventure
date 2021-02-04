@@ -12,6 +12,7 @@ namespace DiscordTextAdventure.Parsing.Tables
         public static readonly SynonymCollection Salutation = new SynonymCollection("hello", "hey", "bonjour", "salut", "what's up", "hi", "howdy");
         public static readonly SynonymCollection Legs = new SynonymCollection("hello", "hey", "bonjour", "salut", "what's up", "hi", "howdy");
         public static readonly SynonymCollection Speak = new SynonymCollection("speak", "talk", "converse");
+        public static readonly SynonymCollection SessionReset = new SynonymCollection("__reset__");
 
         public readonly static SynonymCollection[] Verbs;
 

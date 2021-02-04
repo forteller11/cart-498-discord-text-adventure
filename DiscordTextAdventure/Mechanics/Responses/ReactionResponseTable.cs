@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using chext.Mechanics;
 using Discord;
 using Discord.Rest;
+using Discord.WebSocket;
 using DiscordTextAdventure.Mechanics.Rooms;
 using DiscordTextAdventure.Mechanics.User;
 using DiscordTextAdventure.Reflection;
@@ -112,7 +113,7 @@ namespace DiscordTextAdventure.Mechanics.Responses
 
                         timer = new System.Threading.Timer((args) => BodyMessage01(room.RoomOwnerChannel), null, 10_000, -1);
 
-                        e.Session.BodyBot.MessageReceived += (args) =>
+                        Func<SocketMessage, Task> onMsgReceived = (args) =>
                         {
                             //only listen for dm channel
                             if (args.Channel.Id == e.Session.RoomManager.BodyDM.RoomOwnerChannel.Id)
@@ -120,6 +121,9 @@ namespace DiscordTextAdventure.Mechanics.Responses
 
                             return Task.CompletedTask;
                         };
+
+                        e.Session.BodyBot.MessageReceived += onMsgReceived;
+                        e.Session.SessionReset += args =>  args.BodyBot.MessageReceived -= onMsgReceived;
                     });
 
                     var memeDMTask = e.Session.MemeBot.GetUser(userId).GetOrCreateDMChannelAsync().ContinueWith(task =>

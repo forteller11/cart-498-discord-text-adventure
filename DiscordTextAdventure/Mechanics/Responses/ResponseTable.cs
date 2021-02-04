@@ -17,6 +17,8 @@ namespace DiscordTextAdventure.Mechanics.Responses
     {
         public readonly List<PhraseResponse> PhraseResponses = new List<PhraseResponse>();
 
+        public readonly PhraseResponse SessionResetResponse;
+        
         public readonly PhraseResponse LookResponse;
         public readonly PhraseResponse MoveResponse;
         
@@ -41,6 +43,15 @@ namespace DiscordTextAdventure.Mechanics.Responses
         public PhraseResponseTable(RoomManager roomManager)
         {
             #region phrase responses
+            
+            SessionResetResponse = new PhraseResponse( new PhraseBlueprint(VerbTable.SessionReset, null, null, null, null), e =>
+            {
+                e.Session.SessionReset.Invoke(e.Session);
+                e.Session.DissonanceBot.MessageReceived -= e.Session.OnMessageReceived;
+                e.Session.DissonanceBot.ReactionAdded   -= e.Session.OnReactionAdded;
+                e.Session.DissonanceBot.ReactionRemoved -= e.Session.OnReactionRemoved;
+
+            }, null);
             
             MoveResponse = new PhraseResponse( new PhraseBlueprint(VerbTable.Inspect, null, null, null, null), LookResponseAction, null);
             LookResponse = new PhraseResponse( new PhraseBlueprint(VerbTable.Move, NounTable.Legs, null, null, null), MoveResponseAction, null);
