@@ -70,7 +70,7 @@ namespace DiscordTextAdventure.Mechanics.Responses
                                 task.Result.SendMessageAsync(
                                     $"Welcome {e.Session.Player.User.Username}!" +
                                     $"\nThese are exciting times in which you're entering Dissonance server, as we have a special event currently taking place!." +
-                                    $"\nThe user with the most contributions to our community, will have the privilege to visit *The Cloud*. " +
+                                    $"\nThe user with the most contributions to our community, will have the privilege to visit ***The Cloud***. " +
                                     $"\nOur headquarters where you'll get to me out ambitious crew and have a chance to get to know our cutting edge technology." +
                                     $"\nMake sure to participate! We recommend getting to know each one of our communities and posting relevant content!");
                             });
@@ -134,7 +134,7 @@ namespace DiscordTextAdventure.Mechanics.Responses
                                          $"\nWe have to find a way to get banned, so we can't come back. " +
                                          $"\nWe need to go for a walk, we're falling apart." +
                                          "\n" +
-                                         $"\n > > **Find a way to get banned.**");
+                                         $"\n > **Find a way to get banned.**");
                 
                 timer = null;
             }

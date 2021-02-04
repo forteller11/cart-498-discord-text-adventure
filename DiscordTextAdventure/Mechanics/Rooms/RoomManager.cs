@@ -7,6 +7,7 @@ using chext.Mechanics;
 using Discord;
 using Discord.Rest;
 using Discord.WebSocket;
+using DiscordTextAdventure.Parsing.DataStructures;
 using DiscordTextAdventure.Parsing.Tables;
 using DiscordTextAdventure.Reflection;
 
@@ -43,7 +44,7 @@ namespace DiscordTextAdventure.Mechanics.Rooms
 
         public RoomManager(Session session, SocketGuild guild)
         {
-            #region dm
+            #region dms
 
             DissonanceDM = Room.CreateDMRoom();
 
@@ -73,15 +74,18 @@ namespace DiscordTextAdventure.Mechanics.Rooms
             TheCloud = new RoomCategory("The Cloud");
             
             #region create rooms
+            
+            #region useragreement
             UserAgreement = Room.CreateGuildRoom("User Agreement", Intro)
                 .WithStaticDescriptions("Here at Dissonance we believe in free communication and sharing." +
                                         "\nCommunities are stronger when ideas and conversations are allowed to flow." +
                                         "\nThat's why our terms of service are very simple:" +
-                                        "\n***Don't harm the hardware used to run our servers!***" +
+                                        "\n > ***Don't harm the hardware used to run our servers!***" +
                                         "\n Otherwise have fun!")
                 .WithReactions(new Emoji("✅"));
+            #endregion
             
-            
+            #region the screens
             DnD = Room.CreateGuildRoom("DnD", Screen)
                 .WithStaticDescriptions("All stuff DnD, TTRP, and high fantasy.\nGrab a beer a join us at the pub!\nYour quest awaits!")
                 .WithReactions(new Emoji("🪓"))
@@ -100,11 +104,26 @@ namespace DiscordTextAdventure.Mechanics.Rooms
                         "Dogs chasing their tails, cucumbers scaring cats, tiny frogs making impressive noises -- we love them all!\nPreferably .gifs, so we can see them in action!")
                     .WithReactions(new Emoji("🐱"))
                 ;
-            
+            #endregion
+
             Office = Room.CreateGuildRoom("Office", TheCloud)
-                .WithStaticDescriptions("there is a fancy office space")
+                .WithStaticDescriptions(
+                    "The office seems a distillation of every tech-startups fantasy, just forcibly condensed into a single room. The feng shui of space is decided by a full sized, tubular slide which protrudes through the myriad of pipes and vents on the ceiling, coming to rest in the center of the room. On one side of the room, a glass fridge with a big cursive label \"Organic\" houses mason jars with green juices and smoothies. Another wall is covered in flags, all of them national, except for a larger flag in the center which has printed the Dissonance company logo. There is an employee present, with the name tag \"Morgan\". In the corner there is a standing desk with a large green tarp with a Pepe meme stretched across an object beneath it.")
                 .WithObjects(
-                );
+                    new AdventureObject(
+                        new SynonymCollection("morgan, creative-director, director, employee"),
+                        "Morgan is forced awkwardly into a sort of fetus positions by overly spongy bean bag chairs. They're typing on a macbook."
+                    ),
+                    new AdventureObject(
+                        new SynonymCollection("tarp", "blanket", "cover"),
+                        "The tarp is clearly over top of something. Odd that a Pepe meme is printed on the fabric..."),
+                    
+                    new AdventureObject(
+                            new SynonymCollection("name-tags", "tags"), 
+                            "they're strewn carelessly on the floor", true )
+                )
+                ;
+                
             
             #endregion
             
