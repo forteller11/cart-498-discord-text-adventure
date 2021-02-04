@@ -47,19 +47,19 @@ namespace DiscordTextAdventure.Mechanics.Rooms
 
             DissonanceDM = Room.CreateDMRoom();
 
-            BodyDM = Room.CreateDMRoom().WithSubtitle("It's yours, warts and all")
+            BodyDM = Room.CreateDMRoom().WithSubtitle("It's ours, warts and all")
                 .WithStaticDescriptions(
-                    "Things have been better. You should probably drink more water, or go for a walk... pretty much anything is better than sitting at a computer all day.")
+                    "Things have been better. We should probably drink more water, or go for a walk... pretty much anything is better than sitting at a computer all day.")
                 .WithObjects(
-                    new AdventureObject(NounTable.Arms, "All this typing can't be good for your wrists, you should look into getting a better mouse pad or wrist brace or something.", true)
+                    new AdventureObject(NounTable.Arms, "All this typing can't be good for the wrists, we should look into getting a better mouse pad or wrist brace.", true)
                         .WithInspectDefault()
                         .WithPickupNoSense(),
                     
-                    new AdventureObject(NounTable.Legs, "Your knees ache from being bent so long", true)
+                    new AdventureObject(NounTable.Legs, "The knees ache from being bent so long", true)
                         .WithInspectDefault()
                         .WithCannotPickup(),
                 
-                    new AdventureObject(NounTable.Head, "You can't see your own head, but you do take note of growing pain of your the headphones on its ears. Forcing itself into conscious thought.", true)
+                    new AdventureObject(NounTable.Head, "We can't see the head, but we do take note of growing pain of the headphones on its ears. Forcing itself into conscious thought.", true)
                         .WithInspectDefault()
                         .WithPickupNoSense()
                 );

@@ -112,26 +112,30 @@ namespace DiscordTextAdventure.Mechanics.Responses
             async Task BodyMessage01(IMessageChannel channel)
             {
                 channel.SendMessageAsync(
-                    $"You sit down at the computer, shoulder's slouched forward, neck craned." +
-                    $"\nExcitement trickles through your veins, as you begin scrolling...");
-                timer = new System.Threading.Timer((args) => BodyMessage02(channel), null, 15_000, -1);
+                    $"We sit down at the computer, shoulder's slouched forward, neck craned." +
+                    $"\nExcitement trickles through your veins, as we begin scrolling...");
+                timer = new System.Threading.Timer((args) => BodyMessage02(channel), null, 20_000, -1);
             }
    
             async Task BodyMessage02(IMessageChannel channel)
             {
-                channel.SendMessageAsync($"You're neck is killing."+
-                    "\nGet some rest rest, your vision is blurring");
+                channel.SendMessageAsync($". . ." +
+                                         $"\nThe neck is killing."+
+                    "\nGet some rest rest, vision is blurring");
                 timer = new System.Threading.Timer((args) => BodyMessage03(channel), null, 20_000, -1);
             }
             
             async Task BodyMessage03(IMessageChannel channel)
             {
-                channel.SendMessageAsync($"You have to find a way off of this server." +
-                                         $"\nLeaving won't be enough, I know you, and I know that you'll become addicted, you are addicted." +
-                                         $"\nLeaving won't even be enough, you won't be able to help but come back, for your daily dose of DnD memes, funny animal content, and news on the upcoming Pokemon games." +
-                                         $"\nYou have to find a way to get banned, so you can't come back. " +
-                                         $"\nI need to go for a walk, we're falling apart." +
-                                         $"\nFind a way to get banned.");
+                channel.SendMessageAsync($". . ." +
+                                         $"\nYou have to find a way off of this server." +
+                                         $"\nLeaving won't be enough, I know us, we'll become addicted, we are addicted." +
+                                         $"\nLeaving won't even be enough, we won't be able to help but come back, for our daily dose of DnD memes, funny animal content, and news on the upcoming Pokemon games." +
+                                         $"\nWe have to find a way to get banned, so we can't come back. " +
+                                         $"\nWe need to go for a walk, we're falling apart." +
+                                         "\n" +
+                                         $"\n > > **Find a way to get banned.**");
+                
                 timer = null;
             }
             
@@ -205,7 +209,7 @@ namespace DiscordTextAdventure.Mechanics.Responses
                 e.PostedRoom.BodyChannel.SendMessageAsync(
                     "A red braid emerges from the chin." +
                     "\nAn axe appears in the dominant hand." +
-                    "\nA huge snoz dominates your visage" +
+                    "\nA huge snoz dominates our visage" +
                     "\nWe're a dwarf.");
             }
             
