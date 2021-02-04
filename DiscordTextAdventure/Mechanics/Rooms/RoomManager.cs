@@ -99,7 +99,7 @@ namespace DiscordTextAdventure.Mechanics.Rooms
 
             Pokemon = Room.CreateGuildRoom("Pokemon", Screen)
                     .WithStaticDescriptions("Gotta catch em' all!\nWe mean the memes, give us your Poké memes now.")
-                    .WithReactions(new Emoji("🐠"), new Emoji("🤢"))
+                    .WithReactions(new Emoji("🐠"))
                 ;
 
             Animals = Room.CreateGuildRoom("Cute Animals", Screen)
@@ -237,7 +237,7 @@ namespace DiscordTextAdventure.Mechanics.Rooms
             }
             
             Screen.ChangeRoomVisibilityAsync(session, OverwritePermissions.DenyAll(Screen.Channel));
-            //TheCloud.ChangeRoomVisibilityAsync(session, OverwritePermissions.DenyAll(TheCloud.Channel));
+            TheCloud.ChangeRoomVisibilityAsync(session, OverwritePermissions.DenyAll(TheCloud.Channel));
             
             #endregion
 
