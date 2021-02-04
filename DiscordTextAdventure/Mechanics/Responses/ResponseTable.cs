@@ -193,14 +193,15 @@ namespace DiscordTextAdventure.Mechanics.Responses
                 // e.Session.RoomManager.MemeDM.RoomOwnerChannel.SendMessageAsync($"<:{farm.Name}:{farm.Id}");
             }
             FarmTravel= new PhraseResponse(
-                new PhraseBlueprint(NounTable.TheFarm, NounTable.TheFarm, null, null, new[] {roomManager.Office}),
+                new PhraseBlueprint(null, NounTable.TheFarm, null, null, new[] {roomManager.Office}),
                 (e) =>
                 {
                     if (e.RoomOfPhrase.TryFindFirstObject(NounTable.MemeBot) != null)
                     {
                         if (e.Session.Player.Role == Player.RoleTypes.Cat)
                         {
-                            e.RoomOfPhrase.MemeChannel.SendMessageAsync("‼️‼️‼️‼️‼️");
+                            e.RoomOfPhrase.MemeChannel.SendMessageAsync("https://tenor.com/view/basher756-gif-20147055");
+                            e.RoomOfPhrase.BodyChannel.SendMessageAsync("The feline body has disappeared, but its spirit is not lost. Transcending the physical world, the machine has turned us into a cat meme itself.");
                         }
                         else 
                             e.RoomOfPhrase.MemeChannel.SendMessageAsync("🧍 ➡ 🐱");

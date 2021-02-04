@@ -72,8 +72,13 @@ namespace DiscordTextAdventure.Mechanics
         
         public AdventureObject WithCannotPickup()
         {
-            return WithAddAdventureResponse(e 
-                    => { e.Message.Channel.SendMessageAsync($"Cannot take {Name}"); },
+            return WithAddAdventureResponse(e =>
+                {
+                    if (e.RoomOfPhrase != CurrentRoom)
+                        return;
+                    
+                    e.Message.Channel.SendMessageAsync($"Cannot take {Name}");
+                },
                 null, 
                 VerbTable.Pickup);
         }

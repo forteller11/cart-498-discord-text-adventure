@@ -120,6 +120,10 @@ namespace DiscordTextAdventure.Mechanics.Rooms
                         .OnPickup(e =>
                         {
                             var room = e.RoomOfPhrase;
+                            
+                            if (room.TryFindFirstObject(NounTable.Tarp) == null)
+                                return;
+                            
                             room.DissoanceChannel.SendMessageAsync(
                                 "You take off the tarp to reveal a metal box with a small screen, engraved on its chassis: \"The Meme Machine, by Dissonance R&D\"");        
                             room.MemeChannel.SendMessageAsync("👋");
