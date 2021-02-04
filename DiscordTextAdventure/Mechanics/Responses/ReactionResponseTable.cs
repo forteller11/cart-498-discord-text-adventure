@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Threading;
 using System.Threading.Tasks;
 using chext.Mechanics;
@@ -23,13 +24,39 @@ namespace DiscordTextAdventure.Mechanics.Responses
         public readonly ReactionResponse CatRole;
         public readonly ReactionResponse DwarfRole;
         public readonly ReactionResponse MagikarpRole;
-        
-    
 
+        public GuildEmote FarmEmote { get; private set; }
+        
         public ReactionResponseTable(Session session)
         {
             System.Threading.Timer timer;
             
+            
+            #region get or create emote
+
+            bool isThereAFarmEmote = false;
+            foreach (var emote in session.Guild.Emotes)
+            {
+
+                if (emote.Name == "the_farm")
+                {
+                    isThereAFarmEmote = true;
+                    FarmEmote = emote;
+                    break;
+                }
+            }
+
+            if (!isThereAFarmEmote)
+            {
+                throw new DataException("Must upload the_farm emote to server!!!!");
+                // var image = new Image(Program.AssetsPath + "/farm_emote.png");
+                // session.Guild.CreateEmoteAsync("the_farm", image).ContinueWith(
+                //     task =>
+                //     {
+                //         FarmEmote = task.Result;
+                //     });
+            }
+            #endregion
             #region intro
             IEmote checkmark = new Emoji("✅");
             AcceptUserAgreement = new ReactionResponse(new ReactionBlueprint(checkmark, ReactionBlueprint.OnReactionTrigger.OnAdd), null, SetPlayerAndCreateDMChannelsAsync);

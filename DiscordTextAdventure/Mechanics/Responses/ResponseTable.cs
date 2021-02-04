@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using chext.Mechanics;
+using Discord;
 using DiscordTextAdventure.Mechanics.Rooms;
 using DiscordTextAdventure.Parsing.DataStructures;
 using DiscordTextAdventure.Parsing.Tables;
@@ -128,10 +129,13 @@ namespace DiscordTextAdventure.Mechanics.Responses
             {
                 if (e.RoomOfPhrase.TryFindFirstObject(NounTable.MemeBot) == null)
                     return;
-                    
-                e.RoomOfPhrase.MemeChannel.SendMessageAsync($"❓");
+                // var farm = e.Session.ReactionTable.FarmEmote;
+                 e.RoomOfPhrase.MemeChannel.SendMessageAsync($"❓");
+                // e.RoomOfPhrase.MemeChannel.SendMessageAsync($"<:{farm.Name}:{farm.Id}");
                 e.Session.RoomManager.MemeDM.RoomOwnerChannel.SendMessageAsync(
                     "🤫🤫🤫🤫🤫🤫🤫🤫🤫\n > 🚶 -> 🐈 -> 🌐 -> 🖥️ -> 💔 -> 🚫 -> 💪");
+         
+                // e.Session.RoomManager.MemeDM.RoomOwnerChannel.SendMessageAsync($"<:{farm.Name}:{farm.Id}");
             }
             PhraseResponses.AddRange(ReflectionHelpers.ClassMembersToArray<PhraseResponse>(typeof(PhraseResponseTable), this));
            

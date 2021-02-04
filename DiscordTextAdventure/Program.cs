@@ -23,13 +23,16 @@ namespace DiscordTextAdventure
         
         public static readonly string BinPath;
         public static readonly string ProjectPath;
+        public static readonly string AssetsPath;
 
         
         static Program()
         {
             BinPath = Directory.GetCurrentDirectory();
             ProjectPath = Directory.GetParent(BinPath).Parent.Parent.FullName;
-            
+            AssetsPath = Directory.GetParent(ProjectPath).FullName + "/assets";
+            DebugLog(AssetsPath);
+
         }
 
         public Program()
