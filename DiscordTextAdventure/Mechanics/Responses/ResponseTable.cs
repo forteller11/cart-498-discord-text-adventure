@@ -23,6 +23,14 @@ namespace DiscordTextAdventure.Mechanics.Responses
         public readonly PhraseResponse DestroyResponse;
         public readonly PhraseResponse MoveResponse;
         
+        public readonly PhraseResponse DnDResponse;
+        public readonly PhraseResponse AnimalReponse;
+        public readonly PhraseResponse PokemonResponse;
+        
+        public readonly PhraseResponse BodyDMResponse;
+        public readonly PhraseResponse DissonanceDMResponse;
+        public readonly PhraseResponse MemeGeneratorResponse;
+        
         public readonly PhraseResponse MeganSpeak;
         public readonly PhraseResponse MeganDissonance;
         public readonly PhraseResponse MeganHi01;
@@ -46,7 +54,7 @@ namespace DiscordTextAdventure.Mechanics.Responses
         
         public PhraseResponseTable(RoomManager roomManager)
         {
-            #region phrase responses
+            #region general responses
             DestroyResponse = new PhraseResponse( new PhraseBlueprint(VerbTable.Destroy, null, null, null, null), e =>
             {
                 e.RoomOfPhrase.RoomOwnerChannel.SendMessageAsync($"{e.Message.Content} what?");
@@ -76,7 +84,6 @@ namespace DiscordTextAdventure.Mechanics.Responses
                 }
             }, null);
             
-            #endregion
 
             void LookResponseAction(PhraseResponseEventArgs e)
             {
@@ -100,12 +107,21 @@ namespace DiscordTextAdventure.Mechanics.Responses
                     e.RoomOfPhrase.RoomOwnerChannel.SendMessageAsync("moved leg.");
 
                 }
-  
-
             }
+            #endregion
+            
+            #region the screens
+            string boringResponse = "the message seems to dissolve in the sea of moving images.";
+            DnDResponse     = new PhraseResponse(new PhraseBlueprint(new [] {roomManager.DnD}), e => e.RoomOfPhrase.RoomOwnerChannel.SendMessageAsync(boringResponse), null);
+            AnimalReponse   = new PhraseResponse(new PhraseBlueprint(new [] {roomManager.DnD}), e => e.RoomOfPhrase.RoomOwnerChannel.SendMessageAsync(boringResponse), null);
+            PokemonResponse = new PhraseResponse(new PhraseBlueprint(new [] {roomManager.DnD}), e => e.RoomOfPhrase.RoomOwnerChannel.SendMessageAsync(boringResponse), null);
+            #endregion
+            
+            #region dms
+            
+            #endregion
             
             #region megan speak
-
             string cannedCatResponse =
                 "From your throat comes a lot of dramatic meowing and whining which Megan sympathetically listens to, but unfortunately can't understand";
 

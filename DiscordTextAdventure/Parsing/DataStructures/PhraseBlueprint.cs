@@ -1,4 +1,5 @@
-﻿using DiscordTextAdventure.Mechanics.Rooms;
+﻿using System;
+using DiscordTextAdventure.Mechanics.Rooms;
 
 #nullable enable
 
@@ -6,7 +7,14 @@ namespace DiscordTextAdventure.Parsing.DataStructures
 {
     public class PhraseBlueprint
     {
-        public readonly bool ContainsTypeBlueprint;
+        public enum BlueprintType
+        {
+            Phrase,
+            MustContains,
+            AnythingInChannel
+        }
+
+        public readonly BlueprintType Type;
         public readonly SynonymCollection? MustContain;
         
         public readonly SynonymCollection? Verb;
@@ -18,7 +26,8 @@ namespace DiscordTextAdventure.Parsing.DataStructures
 
         public PhraseBlueprint(SynonymCollection? verb, SynonymCollection? noun, SynonymCollection? preposition, SynonymCollection? indirectObject, Room []?  roomsFilter)
         {
-            ContainsTypeBlueprint = false;
+            Type = BlueprintType.Phrase;
+            
             MustContain = null;
             
             Verb = verb;
@@ -31,9 +40,23 @@ namespace DiscordTextAdventure.Parsing.DataStructures
         
         public PhraseBlueprint(SynonymCollection mustContain, Room []?  roomsFilter)
         {
-            ContainsTypeBlueprint = true;
+            Type = BlueprintType.MustContains;
+            
             MustContain = mustContain;
             
+            Verb = null;
+            Noun = null;
+            Preposition = null;
+            IndirectObject = null;
+            
+            RoomsFilter = roomsFilter;
+        }
+        
+        public PhraseBlueprint(Room []?  roomsFilter)
+        {
+            Type = BlueprintType.AnythingInChannel;
+            
+            MustContain = null;
             Verb = null;
             Noun = null;
             Preposition = null;
@@ -69,20 +92,28 @@ namespace DiscordTextAdventure.Parsing.DataStructures
                     return false;
             }
 
-            if (ContainsTypeBlueprint)
+            switch (Type)
             {
-                return
-                    DoesWordMatch(MustContain, phrase.Verb) &&
-                    DoesWordMatch(MustContain, phrase.Noun) &&
-                    DoesWordMatch(MustContain, phrase.Preposition) &&
-                    DoesWordMatch(MustContain, phrase.IndirectObject);
+               case BlueprintType.AnythingInChannel:
+                   return true;
+               case BlueprintType.MustContains:
+                   return
+                       DoesWordMatch(MustContain, phrase.Verb) ||
+                       DoesWordMatch(MustContain, phrase.Noun) ||
+                       DoesWordMatch(MustContain, phrase.Preposition) ||
+                       DoesWordMatch(MustContain, phrase.IndirectObject);
+               
+               case BlueprintType.Phrase:
+                   return
+                       DoesWordMatch(Verb, phrase.Verb) &&
+                       DoesWordMatch(Noun, phrase.Noun) &&
+                       DoesWordMatch(Preposition, phrase.Preposition) &&
+                       DoesWordMatch(IndirectObject, phrase.IndirectObject);
+               
+               default:
+                   throw new Exception("No Type specefied");
+                   
             }
-            
-            return 
-                DoesWordMatch(Verb, phrase.Verb) &&
-                   DoesWordMatch(Noun, phrase.Noun) &&
-                   DoesWordMatch(Preposition, phrase.Preposition) &&
-                   DoesWordMatch(IndirectObject, phrase.IndirectObject);
             
             bool DoesWordMatch(SynonymCollection? blueprint, CompoundWord? word)
             {
