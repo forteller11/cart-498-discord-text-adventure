@@ -18,6 +18,7 @@ namespace DiscordTextAdventure.Parsing.Tables
         public static readonly SynonymCollection Slide = new SynonymCollection("slide");
         public static readonly SynonymCollection Fridge = new SynonymCollection("fridge", "refrigerator");
         public static readonly SynonymCollection Megan = new SynonymCollection("megan", "creative director", "director", "employee");
+        public static readonly SynonymCollection Dissonance = new SynonymCollection("dissonance");
         public static readonly SynonymCollection TheFarm = new SynonymCollection("<:the_farm:806894562320449566>");
 
 

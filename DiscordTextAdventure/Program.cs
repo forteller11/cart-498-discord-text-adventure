@@ -40,6 +40,7 @@ namespace DiscordTextAdventure
             _dissonanceBot = new DiscordSocketClient();
             _dankMemeBot   = new DiscordSocketClient();
             _bodyBot       = new DiscordSocketClient();
+
         }
         
         static void Main(string[] args) => new Program().MainAsync().Wait();

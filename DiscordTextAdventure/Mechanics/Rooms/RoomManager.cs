@@ -147,13 +147,7 @@ namespace DiscordTextAdventure.Mechanics.Rooms
                             room.Renderer.DrawRoomStateEmbed();
 
                         })
-                    ,
                     
-                    new AdventureObject(
-                            NounTable.NameTags, 
-                            "they're strewn carelessly on the floor", true )
-                        .WithInspectDefault()
-                        .WithCannotDamage("Let's not going waste our time")
                 )
                 ;
 
@@ -249,7 +243,7 @@ namespace DiscordTextAdventure.Mechanics.Rooms
             
             #endregion
 
-            
+            #region static gifs
             Animals.Renderer.Builder.ImageUrl = "https://miro.medium.com/max/11520/0*pAypSD1ZSCCw0NcL";
             Pokemon.Renderer.Builder.ImageUrl = "https://i.guim.co.uk/img/media/66e444bff77d9c566e53c8da88591e4297df0896/120_0_1800_1080/master/1800.png?width=1200&height=1200&quality=85&auto=format&fit=crop&s=69b22b4292160faf91cb45ad024fc649";
             DnD.Renderer.Builder.ImageUrl = "https://cdn.shopify.com/s/files/1/1634/0113/products/AgedMithiralBoulder_1500x.jpg?v=1602599762";
@@ -266,6 +260,9 @@ namespace DiscordTextAdventure.Mechanics.Rooms
             
             DnD.RoomOwnerChannel.SendMessageAsync("https://tenor.com/view/tiktok-cat-dungeon-master-dnd-dm-gif-16454081");
             DnD.RoomOwnerChannel.SendMessageAsync("https://tenor.com/view/lilo-pelekai-im-sorry-lilo-and-stitch-apologize-gif-8930173");
+            #endregion
+            
+            TheCloud.ChangeRoomVisibilityAsync(session, OverwritePermissions.AllowAll(TheCloud.Channel));
 
         }
 

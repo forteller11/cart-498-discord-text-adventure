@@ -6,19 +6,39 @@ namespace DiscordTextAdventure.Parsing.DataStructures
 {
     public class PhraseBlueprint
     {
-        public SynonymCollection? Verb;
-        public SynonymCollection? Noun;
-        public SynonymCollection? Preposition;
-        public SynonymCollection? IndirectObject;
-        public Room [] ? RoomsFilter; //null == all rooms
+        public readonly bool ContainsTypeBlueprint;
+        public readonly SynonymCollection? MustContain;
+        
+        public readonly SynonymCollection? Verb;
+        public readonly SynonymCollection? Noun;
+        public readonly SynonymCollection? Preposition;
+        public readonly SynonymCollection? IndirectObject;
+        public readonly Room [] ? RoomsFilter; //null == all rooms
 
 
         public PhraseBlueprint(SynonymCollection? verb, SynonymCollection? noun, SynonymCollection? preposition, SynonymCollection? indirectObject, Room []?  roomsFilter)
         {
+            ContainsTypeBlueprint = false;
+            MustContain = null;
+            
             Verb = verb;
             Noun = noun;
             Preposition = preposition;
             IndirectObject = indirectObject;
+            
+            RoomsFilter = roomsFilter;
+        }
+        
+        public PhraseBlueprint(SynonymCollection mustContain, Room []?  roomsFilter)
+        {
+            ContainsTypeBlueprint = true;
+            MustContain = mustContain;
+            
+            Verb = null;
+            Noun = null;
+            Preposition = null;
+            IndirectObject = null;
+            
             RoomsFilter = roomsFilter;
         }
 
@@ -49,7 +69,17 @@ namespace DiscordTextAdventure.Parsing.DataStructures
                     return false;
             }
 
-            return DoesWordMatch(Verb, phrase.Verb) &&
+            if (ContainsTypeBlueprint)
+            {
+                return
+                    DoesWordMatch(MustContain, phrase.Verb) &&
+                    DoesWordMatch(MustContain, phrase.Noun) &&
+                    DoesWordMatch(MustContain, phrase.Preposition) &&
+                    DoesWordMatch(MustContain, phrase.IndirectObject);
+            }
+            
+            return 
+                DoesWordMatch(Verb, phrase.Verb) &&
                    DoesWordMatch(Noun, phrase.Noun) &&
                    DoesWordMatch(Preposition, phrase.Preposition) &&
                    DoesWordMatch(IndirectObject, phrase.IndirectObject);
