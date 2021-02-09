@@ -49,9 +49,9 @@ namespace DiscordTextAdventure.Mechanics.Rooms
         {
             #region dms
 
-            DissonanceDM = Room.CreateDMRoom();
+            DissonanceDM = Room.CreateDMRoom(true);
 
-            BodyDM = Room.CreateDMRoom().WithSubtitle("It's ours, warts and all")
+            BodyDM = Room.CreateDMRoom(true).WithSubtitle("It's ours, warts and all")
                 .WithStaticDescriptions(
                     "Things have been better. We should probably drink more water, or go for a walk... pretty much anything is better than sitting at a computer all day.")
                 .WithObjects(
@@ -72,7 +72,7 @@ namespace DiscordTextAdventure.Mechanics.Rooms
                 );
 
 
-                MemeDM = Room.CreateDMRoom();
+                MemeDM = Room.CreateDMRoom(false);
             #endregion
             
             Intro = new RoomCategory("Welcome");

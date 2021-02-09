@@ -112,7 +112,7 @@ namespace DiscordTextAdventure.Mechanics.Responses
                         room.InitAndDraw(e.Session, task.Result, e.Session.RoomManager);
                         e.Session.RoomManager.RoomKV.Add(room.RoomOwnerChannel!.Id, room);
 
-                        timer = new System.Threading.Timer((args) => BodyMessage01(room.RoomOwnerChannel), null, 10_000, -1);
+                        timer = new System.Threading.Timer((args) => BodyMessage01(room.RoomOwnerChannel), null, 15_000, -1);
 
                         Func<SocketMessage, Task> onMsgReceived = (args) =>
                         {
@@ -136,6 +136,23 @@ namespace DiscordTextAdventure.Mechanics.Responses
                         var room = e.Session.RoomManager.MemeDM;
                         room.InitAndDraw(e.Session, task.Result, e.Session.RoomManager);
                         e.Session.RoomManager.RoomKV.Add(room.RoomOwnerChannel!.Id, room);
+                        
+                        Func<SocketMessage, Task> onMsgReceived = (args) =>
+                        {
+                            //only listen for dm channel
+                            if (args.Channel.Id == e.Session.RoomManager.MemeDM.RoomOwnerChannel.Id)
+                                return e.Session.OnMessageReceived(args);
+
+                            return Task.CompletedTask;
+                        };
+
+                        e.Session.MemeBot.MessageReceived += onMsgReceived;
+                        e.Session.SessionReset += args =>
+                        {
+                            Program.DebugLog("minus message received ");
+                            args.MemeBot.MessageReceived -= onMsgReceived;
+                        };
+                        
                         Program.DebugLog("Meme task");
                     });
 
@@ -151,7 +168,7 @@ namespace DiscordTextAdventure.Mechanics.Responses
                 channel.SendMessageAsync(
                     $"We sit down at the computer, shoulder's slouched forward, neck craned." +
                     $"\nExcitement trickles through your veins, as we begin scrolling...");
-                timer = new System.Threading.Timer((args) => BodyMessage02(channel), null, 20_000, -1);
+                timer = new System.Threading.Timer((args) => BodyMessage02(channel), null, 25_000, -1);
             }
    
             async Task BodyMessage02(IMessageChannel channel)

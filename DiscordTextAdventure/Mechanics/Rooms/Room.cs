@@ -27,6 +27,8 @@ namespace DiscordTextAdventure.Mechanics.Rooms
         
         
         public List<AdventureObject> Objects = new List<AdventureObject>();
+
+        public readonly bool DrawOnLink;
         
         public readonly bool  IsDMChannel;
         public IMessageChannel? RoomOwnerChannel;
@@ -39,23 +41,24 @@ namespace DiscordTextAdventure.Mechanics.Rooms
 
         public RoomRenderer? Renderer;
 
-        private Room(bool isDmChannel)
+        private Room(bool isDmChannel, bool drawOnLink)
         {
             IsDMChannel = isDmChannel;
+            DrawOnLink = drawOnLink;
         }
  
         public static Room CreateGuildRoom(string name, RoomCategory category)
         {
         
-            var room = new Room(false);
+            var room = new Room(false, true);
             room.Name = name.Replace(' ', '_');
             category.Rooms.Add(room);
             return room;
         }
 
-        public static Room CreateDMRoom()
+        public static Room CreateDMRoom(bool drawOnStart)
         {
-            return new Room(true);
+            return new Room(true, drawOnStart);
         }
         
 
@@ -76,7 +79,8 @@ namespace DiscordTextAdventure.Mechanics.Rooms
             
             LinkToDiscord(channelOwner, disChannel, BodyChannel, memeChannel);
             LinkActions(session, roomManager);
-            Renderer.DrawRoomStateEmbed();
+            if (DrawOnLink)
+                Renderer.DrawRoomStateEmbed();
         }
         
         void LinkToDiscord(IMessageChannel ownerOfRoom, IMessageChannel? dissonanceBot, IMessageChannel? bodyBot, IMessageChannel? memeBot)

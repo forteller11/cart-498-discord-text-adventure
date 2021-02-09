@@ -27,7 +27,7 @@ namespace DiscordTextAdventure.Mechanics.Responses
         public readonly PhraseResponse AnimalReponse;
         public readonly PhraseResponse PokemonResponse;
         
-        public readonly PhraseResponse BodyDMResponse;
+        //public readonly PhraseResponse BodyDMResponse;
         public readonly PhraseResponse DissonanceDMResponse;
         public readonly PhraseResponse MemeGeneratorResponse;
         
@@ -112,13 +112,17 @@ namespace DiscordTextAdventure.Mechanics.Responses
             
             #region the screens
             string boringResponse = "the message seems to dissolve in the sea of moving images.";
-            DnDResponse     = new PhraseResponse(new PhraseBlueprint(new [] {roomManager.DnD}), e => e.RoomOfPhrase.RoomOwnerChannel.SendMessageAsync(boringResponse), null);
-            AnimalReponse   = new PhraseResponse(new PhraseBlueprint(new [] {roomManager.DnD}), e => e.RoomOfPhrase.RoomOwnerChannel.SendMessageAsync(boringResponse), null);
-            PokemonResponse = new PhraseResponse(new PhraseBlueprint(new [] {roomManager.DnD}), e => e.RoomOfPhrase.RoomOwnerChannel.SendMessageAsync(boringResponse), null);
+            DnDResponse     = new PhraseResponse(new PhraseBlueprint(new [] {roomManager.DnD}),     e => e.RoomOfPhrase.RoomOwnerChannel.SendMessageAsync(boringResponse), null);
+            AnimalReponse   = new PhraseResponse(new PhraseBlueprint(new [] {roomManager.Animals}), e => e.RoomOfPhrase.RoomOwnerChannel.SendMessageAsync(boringResponse), null);
+            PokemonResponse = new PhraseResponse(new PhraseBlueprint(new [] {roomManager.Pokemon}), e => e.RoomOfPhrase.RoomOwnerChannel.SendMessageAsync(boringResponse), null);
             #endregion
             
             #region dms
-            
+            DissonanceDMResponse = new PhraseResponse(new PhraseBlueprint(new [] {roomManager.DissonanceDM}),     e => 
+                e.RoomOfPhrase.RoomOwnerChannel.SendMessageAsync("This is a No-Reply Channel."), 
+                null);
+           // BodyDMResponse   = new PhraseResponse(new PhraseBlueprint(new [] {roomManager.BodyDM}), e => e.RoomOfPhrase.RoomOwnerChannel.SendMessageAsync(boringResponse), null);
+            MemeGeneratorResponse = new PhraseResponse(new PhraseBlueprint(new [] {roomManager.MemeDM}), e => e.RoomOfPhrase.RoomOwnerChannel.SendMessageAsync("🔇"), null);
             #endregion
             
             #region megan speak
