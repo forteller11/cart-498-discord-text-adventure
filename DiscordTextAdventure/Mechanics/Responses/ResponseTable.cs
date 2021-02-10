@@ -42,6 +42,7 @@ namespace DiscordTextAdventure.Mechanics.Responses
         public PhraseResponse MeganFridge;
         public PhraseResponse MeganFlags;
         public PhraseResponse MeganSlide;
+        public PhraseResponse MeganPepe;
         public PhraseResponse MeganBot;
         
         public PhraseResponse BotResponse;
@@ -196,6 +197,19 @@ namespace DiscordTextAdventure.Mechanics.Responses
                     e.RoomOfPhrase.DissoanceChannel.SendMessageAsync($"The slide... yeah, well we used to own the entire upstairs floor before everything moved to the ***Server Farm***, which is where we now store all our user data and process it, we're so excited that we even developed a custom emote for it! So a slide was a fun, innovative way to encourage interdisciplinary communication, but now is more of a set piece.");
                 }, null);
             
+            MeganPepe = new PhraseResponse(new PhraseBlueprint(NounTable.Pepe, new []{roomManager.Megan}),
+                e =>
+                {
+                    if (e.Session.Player.Role == Player.RoleTypes.Cat)
+                    {
+                        e.RoomOfPhrase.RoomOwnerChannel.SendMessageAsync(cannedCatResponse);
+                        return;
+                    }
+
+                    e.RoomOfPhrase.DissoanceChannel.SendMessageAsync(
+                        $"At Dissonance, we acknowledge the recent controversies sourronding Pepe the Frog and the alt right. Dissonance is a strictly a-political organization, we believe in the freedom of thought and rights of all individuals, epitomized by our laissez faire user-contract. We just love the Pepe Meme so much around the office and don't want to have all that fun sanitized just because a couple of bad actors. ");
+                }, null);
+            
             
             MeganTags = new PhraseResponse(new PhraseBlueprint(NounTable.NameTags, new []{roomManager.Megan}),
                 e =>
@@ -312,6 +326,11 @@ namespace DiscordTextAdventure.Mechanics.Responses
                     var bot = e.RoomOfPhrase.TryFindFirstObject(NounTable.MemeBot);
                     if (bot != null)
                     {
+                        if (e.Session.Player?.Role != Player.RoleTypes.Cat)
+                        {
+                            e.Session.RoomManager.MemeDM.RoomOwnerChannel.SendMessageAsync("🐈");
+                            return;
+                        }
                         e.Session.RoomManager.Screen.ChangeRoomVisibilityAsync(e.Session, RoomCategory.NothingPermission);
                         e.Session.RoomManager.TheCloud.ChangeRoomVisibilityAsync(e.Session, RoomCategory.NothingPermission);
                         e.Session.RoomManager.Intro.ChangeRoomVisibilityAsync(e.Session, RoomCategory.NothingPermission);

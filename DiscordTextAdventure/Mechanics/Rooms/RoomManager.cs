@@ -98,9 +98,6 @@ namespace DiscordTextAdventure.Mechanics.Rooms
             DnD = Room.CreateGuildRoom("DnD", Screen)
                 .WithStaticDescriptions("All stuff DnD, TTRP, and high fantasy.\nGrab a beer a join us at the pub!\nYour quest awaits!\nAvailable Roles: Dwarf.")
                 .WithReactions(new Emoji("🪓"))
-                .WithObjects(
-                   
-                    )
                 ;
 
             Pokemon = Room.CreateGuildRoom("Pokemon", Screen)
@@ -165,8 +162,9 @@ namespace DiscordTextAdventure.Mechanics.Rooms
                 .WithObjects(
                     new AdventureObject(
                         NounTable.Megan,
-                        "I feel awkward staring, I should say something to break the silence.")
+                        "You and Megan would both be better off if you don't stare, use your words")
                         .WithCannotDamage(table, "I'm not going to hurt a person... It wouldn't even break the user-agreement")
+                        .WithInspectDefault(table)
                
                 );
 
@@ -180,7 +178,9 @@ namespace DiscordTextAdventure.Mechanics.Rooms
                     new AdventureObject(
                             NounTable.ServerRacks,
                             "An array of computer racks, where Dissonance stores their user data and servers to run their services")
-                        .WithDamageCustom(table, damageServer));
+                        .WithDamageCustom(table, damageServer)
+                        .WithInspectDefault(table)
+                    );
 
             ControlRoom = Room.CreateGuildRoom("Routing", TheFarm)
                 .WithStaticDescriptions(
@@ -191,7 +191,9 @@ namespace DiscordTextAdventure.Mechanics.Rooms
                             NounTable.Panel,
                             "There doesn't seem to be any accessories and the purple panel isn't a touch screen, there must be some other way to interact with the modem's firewall.")
 
-                        .WithCannotDamage(table));
+                        .WithCannotDamage(table)
+                        .WithInspectDefault(table)
+                    );
 
             void damageServer(PhraseResponseEventArgs e)
             {

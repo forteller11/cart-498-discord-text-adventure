@@ -22,6 +22,7 @@ namespace DiscordTextAdventure.Parsing.Tables
         public static readonly SynonymCollection TheFarm = new SynonymCollection("<:the_farm:806894562320449566>");
         public static readonly SynonymCollection ServerRacks = new SynonymCollection("computer", "server", "server rack", "server racks", "computers", "servers");
         public static readonly SynonymCollection Panel = new SynonymCollection("panel", "screen", "lcd screen", "lcd");
+        public static readonly SynonymCollection Pepe = new SynonymCollection("pepe", "frog", "pepe the frog");
 
 
         public static readonly SynonymCollection[] Nouns;

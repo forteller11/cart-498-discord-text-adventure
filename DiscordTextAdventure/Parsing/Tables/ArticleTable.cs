@@ -19,6 +19,8 @@
             "about",
             "what",
             "how",
+            "at",
+            "that"
         };
     }
 }
