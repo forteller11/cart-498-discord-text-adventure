@@ -20,6 +20,7 @@ namespace DiscordTextAdventure.Parsing.Tables
         public static readonly SynonymCollection Megan = new SynonymCollection("megan", "creative director", "director", "employee");
         public static readonly SynonymCollection Dissonance = new SynonymCollection("dissonance");
         public static readonly SynonymCollection TheFarm = new SynonymCollection("<:the_farm:806894562320449566>");
+        public static readonly SynonymCollection ServerRacks = new SynonymCollection("computer", "server", "server rack", "server racks", "computers", "servers");
 
 
         public static readonly SynonymCollection[] Nouns;

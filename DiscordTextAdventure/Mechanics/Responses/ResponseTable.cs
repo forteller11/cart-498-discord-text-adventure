@@ -45,10 +45,9 @@ namespace DiscordTextAdventure.Mechanics.Responses
         
         // public readonly PhraseResponse MemeNotUnderstood;
         // public readonly PhraseResponse NeedCat;
-        public readonly PhraseResponse BotSpeak;
-        public readonly PhraseResponse BotSpeakTo;
-        public readonly PhraseResponse FarmTravel;
-        
+        public readonly PhraseResponse BotResponse;
+        public readonly PhraseResponse BotFarmTravel;
+
         public readonly PhraseResponse FarmNoRoom;
         
         
@@ -274,47 +273,31 @@ namespace DiscordTextAdventure.Mechanics.Responses
 
 
             #region bot
-            BotSpeak = new PhraseResponse(
-                new PhraseBlueprint(VerbTable.Speak, null, null, null, new[] {roomManager.Office}),
-                BotSpeakAction, null);
-            
-            BotSpeakTo = new PhraseResponse(
-                new PhraseBlueprint(VerbTable.Speak, NounTable.MemeBot, null, null, new[] {roomManager.Office}),
-                BotSpeakAction, null);
-
-            void BotSpeakAction(PhraseResponseEventArgs e)
-            {
-                if (e.RoomOfPhrase.TryFindFirstObject(NounTable.MemeBot) == null)
-                    return;
-                // var farm = e.Session.ReactionTable.FarmEmote;
-                 e.RoomOfPhrase.MemeChannel.SendMessageAsync($"❓");
-                // e.RoomOfPhrase.MemeChannel.SendMessageAsync($"<:{farm.Name}:{farm.Id}");
-                e.Session.RoomManager.MemeDM.RoomOwnerChannel.SendMessageAsync(
-                    "🤫🤫🤫🤫🤫🤫🤫🤫🤫\n > 🧍 ➡ 🐈 ➡ 🌐 ➡ 🖥️ ➡ ⛏ ➡ 🚫 ➡ 😄");
-         
-                // e.Session.RoomManager.MemeDM.RoomOwnerChannel.SendMessageAsync($"<:{farm.Name}:{farm.Id}");
-            }
-            FarmTravel= new PhraseResponse(
-                new PhraseBlueprint(null, NounTable.TheFarm, null, null, new[] {roomManager.Office}),
-                (e) =>
+            BotResponse = new PhraseResponse(
+                new PhraseBlueprint(new[] {roomManager.Office}),
+                e =>
                 {
-                    if (e.RoomOfPhrase.TryFindFirstObject(NounTable.MemeBot) != null)
+                    var bot = e.RoomOfPhrase.TryFindFirstObject(NounTable.Dissonance);
+                    if (bot != null)
                     {
-                        if (e.Session.Player.Role == Player.RoleTypes.Cat)
-                        {
-                            e.RoomOfPhrase.MemeChannel.SendMessageAsync("https://tenor.com/view/basher756-gif-20147055");
-                            e.RoomOfPhrase.BodyChannel.SendMessageAsync("The feline body has disappeared, but its spirit is not lost. Transcending the physical world, the machine has turned us into a cat meme itself.");
-                            e.RoomOfPhrase.MemeChannel.SendMessageAsync("`YOU WON THE WIP GAME` \n`(there's one more puzzle that should come after this but i didn't have time`");
-                        }
-                        else 
-                            e.RoomOfPhrase.MemeChannel.SendMessageAsync("🧍 ➡ 🐱");
-                    }
-
-                    else
-                    {
-                        e.RoomOfPhrase.RoomOwnerChannel.SendMessageAsync("Who are you talking to?");
-                    }
+                        e.RoomOfPhrase.MemeChannel.SendMessageAsync($"❓");
+                        e.Session.RoomManager.MemeDM.RoomOwnerChannel.SendMessageAsync(
+                            "🤫🤫🤫🤫🤫🤫🤫🤫🤫\n > 🧍 ➡ 🐈 ➡ 🌐 ➡ 🖥️ ➡ ⛏ ➡ 🚫 ➡ 😄");
+                    } 
                 }, null);
+            
+            BotFarmTravel = new PhraseResponse(
+                new PhraseBlueprint(NounTable.TheFarm, new[] {roomManager.Office}),
+                e =>
+                {
+                    var bot = e.RoomOfPhrase.TryFindFirstObject(NounTable.Dissonance);
+                    if (bot != null)
+                    {
+                        e.Session.RoomManager.BodyDM.RoomOwnerChannel.SendMessageAsync("https://tenor.com/view/basher756-gif-20147055");
+                        e.Session.RoomManager.BodyDM.RoomOwnerChannel.SendMessageAsync("The feline body has disappeared, but its spirit is not lost. Transcending the organic realm, the machine has turned us into a cat meme itself. An idea, a comedic moment -- compressed and serialized into a stream of bytes, able to reach the most remote areas of internet.");
+                    } 
+                }, null);
+            
             #endregion
             
             PhraseResponses.AddRange(ReflectionHelpers.ClassMembersToArray<PhraseResponse>(typeof(PhraseResponseTable), this));

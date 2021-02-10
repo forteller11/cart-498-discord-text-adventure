@@ -8,6 +8,7 @@ using Discord;
 using Discord.Rest;
 using Discord.WebSocket;
 using DiscordTextAdventure.Mechanics.Responses;
+using DiscordTextAdventure.Mechanics.User;
 using DiscordTextAdventure.Parsing.DataStructures;
 using DiscordTextAdventure.Parsing.Tables;
 using DiscordTextAdventure.Reflection;
@@ -40,9 +41,13 @@ namespace DiscordTextAdventure.Mechanics.Rooms
         public readonly Room Office;
         public readonly Room Megan;
 
+        public readonly Room Servers;
+        public readonly Room ControlRoom;
+
         public readonly RoomCategory Intro;
         public readonly RoomCategory Screen;
         public readonly RoomCategory TheCloud;
+        public readonly RoomCategory TheFarm;
         #endregion
 
         public RoomManager(Session session, SocketGuild guild)
@@ -78,8 +83,8 @@ namespace DiscordTextAdventure.Mechanics.Rooms
             Intro = new RoomCategory("Welcome");
             Screen = new RoomCategory("Screens");
             TheCloud = new RoomCategory("The Cloud");
+            TheFarm = new RoomCategory("The Farm");
             
-            #region create rooms
             
             #region useragreement
             UserAgreement = Room.CreateGuildRoom("User Agreement", Intro)
@@ -112,6 +117,7 @@ namespace DiscordTextAdventure.Mechanics.Rooms
                 ;
             #endregion
 
+            #region the office
             Office = Room.CreateGuildRoom("Office", TheCloud)
                 .WithStaticDescriptions(
                     "The feng shui of space is decided by a full sized, tubular slide which protrudes through the myriad of pipes and vents on the ceiling, coming to rest in the center of the room. On one side of the room, a glass fridge with a big cursive label \"Organic\" houses mason jars with green juices and smoothies. Another wall is covered in flags, all of them national, except for a larger flag in the center which wields the company logo instead. Bean bag chairs litter the hardwood. A tarp with *Pepe The Frog* printed on it is draped over a pedestal next to the slide’s entrance.")
@@ -142,7 +148,7 @@ namespace DiscordTextAdventure.Mechanics.Rooms
                                 "A small box with a small screen")
                                 .WithCannotPickup()
                                 .WithInspectDefault()
-                                .WithCannotDamage("This isn't where user data is stored, this won't get us banned... it seems pretty strong either way.\n"));
+                                .WithCannotDamage("This isn't where user data is stored, this won't get us banned... it seems pretty sturdy either way.\n"));
                             
                             room.Renderer.DrawRoomStateEmbed();
 
@@ -150,6 +156,7 @@ namespace DiscordTextAdventure.Mechanics.Rooms
                     
                 )
                 ;
+            
 
 
             
@@ -164,6 +171,49 @@ namespace DiscordTextAdventure.Mechanics.Rooms
                
                 );
 
+            #endregion
+            
+            #region the farm
+            Servers = Room.CreateGuildRoom("Servers", TheFarm)
+                .WithStaticDescriptions(
+                    "A huge warehouse. In every direction, long black aisles of server server racks, little indicator lights beeping. The ceiling isn't visible above the countless multi-coloured cables. The hum of hundreds of cooling fans and ACs combine to generate a deafening roar.")
+                .WithObjects(
+                    new AdventureObject(
+                            NounTable.ServerRacks,
+                            "an array of computer racks, where Dissonance stores their user data and servers to run their services",
+                        .WithDamageCustom(damageServer));
+            
+            ControlRoom = Room.CreateGuildRoom("Servers", TheFarm)
+                .WithStaticDescriptions(
+                    "A huge warehouse. In every direction, long black aisles of server server racks, little indicator lights beeping. The ceiling isn't visible above the countless multi-coloured cables. The hum of hundreds of cooling fans and ACs combine to generate a deafening roar.")
+                .WithObjects(
+                    new AdventureObject(
+                            NounTable.ServerRacks,
+                            "an array of computer racks, where Dissonance stores their user data and servers to run their services",
+                        .WithDamageCustom(damageServer));
+
+            void damageServer(PhraseResponseEventArgs e)
+            {
+                switch (e.Session.Player.Role)
+                {
+                    case Player.RoleTypes.Cat:
+                        e.RoomOfPhrase.RoomOwnerChannel.SendMessageAsync("Paws scratch at the racks uselessly.");
+                        e.RoomOfPhrase.BodyChannel.SendMessageAsync(
+                            "Chipped paint won't count as *hardware damage*, we need a more appropriate, stronger form to do any real damage");
+                        break;
+                    case Player.RoleTypes.Human:
+                        e.RoomOfPhrase.RoomOwnerChannel.SendMessageAsync("You punch and kick at the racks, they don't seem to flinch.");
+                        e.RoomOfPhrase.BodyChannel.SendMessageAsync(
+                            "We're going to break something before any real damage is done, we need a stronger form to do some real damage");
+                        break;
+                    case Player.RoleTypes.Dwarf:
+                        e.RoomOfPhrase.RoomOwnerChannel.SendMessageAsync($"{e.Session.Player.User.Username} use's their axe to hack at the server racks. Metal dents, and then begins to rip and tear, revealing the wires and PCBs beneath.");
+                        e.Session.RoomManager.DissonanceDM.RoomOwnerChannel.SendMessageAsync(
+                            "On Date/TIME, you broke the user agreement and damaged hardware, We're forced to ban you");//todo, timed messages
+                        break;
+                }
+                if (e.Session.Player.Role == Player.RoleTypes.Human)
+            })
             #endregion
             
             Rooms = ReflectionHelpers.ClassMembersToArray<Room>(typeof(RoomManager), this);
