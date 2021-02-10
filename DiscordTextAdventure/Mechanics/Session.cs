@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
+using System.Net.Http;
 using System.Threading.Tasks;
 using Discord;
 using Discord.WebSocket;
@@ -30,6 +32,7 @@ namespace chext.Mechanics
         public int timesMessagedMemeBotNoDM = 0;
         
         public readonly SocketGuild Guild;
+        public readonly HttpClient HttpClient;
    
         private Input _input;
         public readonly RoomManager RoomManager;
@@ -46,6 +49,7 @@ namespace chext.Mechanics
             SessionReset += sessionReset;
             
             _input = new Input();
+            HttpClient = new HttpClient();
 
             //ORDER MATTERS
             PhraseResponseTable = new PhraseResponseTable();

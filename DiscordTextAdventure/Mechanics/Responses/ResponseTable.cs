@@ -1,6 +1,7 @@
 ﻿
 using System;
 using System.Collections.Generic;
+using System.Net;
 using System.Threading.Tasks;
 using chext.Mechanics;
 using Discord;
@@ -47,6 +48,7 @@ namespace DiscordTextAdventure.Mechanics.Responses
         public PhraseResponse BotFarmTravel;
 
         public PhraseResponse FarmNoRoom;
+        public PhraseResponse UploadPassword;
         
         
         public void Init(RoomManager roomManager)
@@ -276,8 +278,7 @@ namespace DiscordTextAdventure.Mechanics.Responses
             
             
             #endregion
-
-
+            
             #region bot
             BotResponse = new PhraseResponse(
                 new PhraseBlueprint(new[] {roomManager.Office}),
@@ -316,6 +317,35 @@ namespace DiscordTextAdventure.Mechanics.Responses
                     } 
                 }, null);
             
+            #endregion
+            
+            #region the farm 
+            UploadPassword = new PhraseResponse(
+                new PhraseBlueprint( new[] {roomManager.ControlRoom}),
+                e =>
+                {
+                    if (e.Message.Attachments.Count > 0)
+                    {
+                        foreach (var txt in e.Message.Attachments)
+                        { 
+                            Uri uri = new Uri(txt.Url);
+                           e.Session.HttpClient.GetStringAsync(uri).ContinueWith(task =>
+                           {
+                               Program.DebugLog(task.Result);
+                               if (task.Result.ToLower().Trim() == "password")
+                               {
+                                   e.RoomOfPhrase.RoomOwnerChannel.SendMessageAsync("Correct Password.\nShutting Down *The Farm's* Firewall.");
+                                   e.Session.RoomManager.Screen.ChangeRoomVisibilityAsync(e.Session, OverwritePermissions.AllowAll(e.Session.RoomManager.Screen.Channel));
+                               }
+                               else
+                               {
+                                   e.RoomOfPhrase.RoomOwnerChannel.SendMessageAsync("Incorrect Password. Please Try Again.");
+                               }
+                           });
+                        }
+                    }
+                }, null);
+
             #endregion
             
             PhraseResponses.AddRange(ReflectionHelpers.ClassMembersToArray<PhraseResponse>(typeof(PhraseResponseTable), this));

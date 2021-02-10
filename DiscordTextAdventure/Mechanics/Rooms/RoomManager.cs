@@ -208,9 +208,17 @@ namespace DiscordTextAdventure.Mechanics.Rooms
                             "We're going to break something before any real damage is done, we need a stronger form to do some real damage");
                         break;
                     case Player.RoleTypes.Dwarf:
-                        e.RoomOfPhrase.RoomOwnerChannel.SendMessageAsync($"{e.Session.Player.User.Username} use's their axe to hack at the server racks. Metal dents, and then begins to rip and tear, revealing the wires and PCBs beneath.");
+                        e.Session.RoomManager.Screen.ChangeRoomVisibilityAsync(e.Session, OverwritePermissions.DenyAll(e.Session.RoomManager.Screen.Channel));
+                        e.Session.RoomManager.TheCloud.ChangeRoomVisibilityAsync(e.Session, OverwritePermissions.DenyAll(e.Session.RoomManager.TheCloud.Channel));
+                        e.Session.RoomManager.TheFarm.ChangeRoomVisibilityAsync(e.Session, OverwritePermissions.DenyAll(e.Session.RoomManager.TheFarm.Channel));
+                        e.Session.RoomManager.Intro.ChangeRoomVisibilityAsync(e.Session, OverwritePermissions.DenyAll(e.Session.RoomManager.Intro.Channel));
+                        
                         e.Session.RoomManager.DissonanceDM.RoomOwnerChannel.SendMessageAsync(
-                            "On Date/TIME, you broke the user agreement and damaged hardware, We're forced to ban you");//todo, timed messages
+                            $"```On {DateTime.Now.ToLongTimeString()}, your discord account, associated with the username {e.Session.Player.User.Username}, with UID {e.Session.Player.User.Discriminator}, broke into The Farm's facilities. An axe was used to hack into server rack 0A4B, leading to dents, rips and tearings in the metal caging, revealing wires and bare PCB to open air. These actions constitute damage to company hardware and a threat to client data which may have been corrupted and/or lost over the course of these events. This behavior represents a breakage of the Dissonance user-agreement as determined by Dissonance's legal team. You are henceforth banned from Dissonance's services including, but not limited to: the discord server run and operated by Dissonance corporation.\nReact to the ⛔ below to acknowledge.```").ContinueWith(
+                            task =>
+                            {
+                                task.Result.AddReactionAsync(new Emoji("⛔"));
+                            });
                         break;
                 }
             }
