@@ -29,7 +29,9 @@ namespace DiscordTextAdventure.Mechanics.Rooms
             addReactions: PermValue.Allow,
             connect: PermValue.Allow,
             sendMessages: PermValue.Allow,
-            viewChannel: PermValue.Allow
+            viewChannel: PermValue.Allow,
+            attachFiles: PermValue.Allow,
+            embedLinks: PermValue.Allow
             );
         
         public static readonly OverwritePermissions NothingPermission = new OverwritePermissions(
@@ -43,6 +45,7 @@ namespace DiscordTextAdventure.Mechanics.Rooms
         
         public RoomCategory(string name)
         {
+            Name = name;
             Name = name;
             Rooms = new List<Room>();
         }

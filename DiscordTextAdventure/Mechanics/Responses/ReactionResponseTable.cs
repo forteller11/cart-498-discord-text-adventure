@@ -65,6 +65,7 @@ namespace DiscordTextAdventure.Mechanics.Responses
                 //     });
             }
             #endregion
+            
             #region intro
             IEmote checkmark = new Emoji("✅");
             AcceptUserAgreement = new ReactionResponse(new ReactionBlueprint(checkmark, ReactionBlueprint.OnReactionTrigger.OnAdd), null, SetPlayerAndCreateDMChannelsAsync);
@@ -85,7 +86,7 @@ namespace DiscordTextAdventure.Mechanics.Responses
 
             async Task SetPlayerAndCreateDMChannelsAsync(ReactionResponseEventArgs e)
             {
-                if (e.Session.Player == null || e.Session?.Player.User.Id != e.User.Id)
+                if ((e.Session.Player == null || e.Session?.Player.User.Id != e.User.Id) && e.PostedRoom == e.Session.RoomManager.UserAgreement)
                 {
                     var guildUserId = e.User.Id;
                     ulong userId = e.SocketReaction.UserId;
@@ -224,6 +225,7 @@ namespace DiscordTextAdventure.Mechanics.Responses
             async Task AcceptInvitationAction(ReactionResponseEventArgs e)
             {
                 e.Session.RoomManager.TheCloud.ChangeRoomVisibilityAsync(e.Session, RoomCategory.ViewAndSendPermission);
+                e.Session.CanSeeOffice = true;
 
             }
             
@@ -278,10 +280,19 @@ namespace DiscordTextAdventure.Mechanics.Responses
             {
                 if (!ShouldContinueWithAddRole(e, e.Session.RoomManager.Pokemon))
                 {
-                    e.Session.RoomManager.Intro.ChangeRoomVisibilityAsync(session, OverwritePermissions.AllowAll( e.Session.RoomManager.Intro.Channel));
+                    if (e.Session.CanSeeIntro)
+                        e.Session.RoomManager.Intro.ChangeRoomVisibilityAsync(e.Session, RoomCategory.ViewAndSendPermission);
                     
-                    e.Session.RoomManager.DnD.ChangeRoomVisibilityAsync(session, OverwritePermissions.AllowAll(e.Session.RoomManager.DnD.RoomOwnerChannel));
-                    e.Session.RoomManager.Animals.ChangeRoomVisibilityAsync(session, OverwritePermissions.AllowAll(e.Session.RoomManager.Animals.RoomOwnerChannel));
+                    if (e.Session.CanSeeOffice)
+                        e.Session.RoomManager.TheCloud.ChangeRoomVisibilityAsync(e.Session, RoomCategory.ViewAndSendPermission);
+                    
+                    if (e.Session.CanSeeServer)
+                        e.Session.RoomManager.TheFarm.ChangeRoomVisibilityAsync(e.Session, RoomCategory.ViewAndSendPermission);
+                    
+                    e.Session.RoomManager.Intro.ChangeRoomVisibilityAsync(e.Session, RoomCategory.ViewAndSendPermission);
+                    e.Session.RoomManager.DnD.ChangeRoomVisibilityAsync(e.Session,RoomCategory.ViewAndSendPermission);
+                    e.Session.RoomManager.Animals.ChangeRoomVisibilityAsync(e.Session, RoomCategory.ViewAndSendPermission);
+                    
                     return;
                 }
 
@@ -295,12 +306,18 @@ namespace DiscordTextAdventure.Mechanics.Responses
                 
                 e.PostedRoom.DissoanceChannel.SendMessageAsync("It's not very effective!");
                 
+                if (e.Session.CanSeeIntro)
+                    e.Session.RoomManager.Intro.ChangeRoomVisibilityAsync(e.Session, RoomCategory.NothingPermission);
                 
-                e.Session.RoomManager.Intro.ChangeRoomVisibilityAsync(session, OverwritePermissions.DenyAll( e.Session.RoomManager.Intro.Channel));
-                
-                e.Session.RoomManager.DnD.ChangeRoomVisibilityAsync(session, OverwritePermissions.DenyAll(e.Session.RoomManager.DnD.RoomOwnerChannel));
-                e.Session.RoomManager.Animals.ChangeRoomVisibilityAsync(session, OverwritePermissions.DenyAll(e.Session.RoomManager.Animals.RoomOwnerChannel));
-            
+                if (e.Session.CanSeeOffice)
+                    e.Session.RoomManager.TheCloud.ChangeRoomVisibilityAsync(e.Session, RoomCategory.NothingPermission);
+                    
+                if (e.Session.CanSeeServer)
+                    e.Session.RoomManager.TheFarm.ChangeRoomVisibilityAsync(e.Session, RoomCategory.NothingPermission);
+                    
+                e.Session.RoomManager.Intro.ChangeRoomVisibilityAsync(e.Session, RoomCategory.NothingPermission);
+                e.Session.RoomManager.DnD.ChangeRoomVisibilityAsync(e.Session,RoomCategory.NothingPermission);
+                e.Session.RoomManager.Animals.ChangeRoomVisibilityAsync(e.Session, RoomCategory.NothingPermission);
                 
             }
 

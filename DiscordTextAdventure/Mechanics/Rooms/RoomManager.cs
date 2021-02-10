@@ -96,7 +96,7 @@ namespace DiscordTextAdventure.Mechanics.Rooms
             
             #region the screens
             DnD = Room.CreateGuildRoom("DnD", Screen)
-                .WithStaticDescriptions("All stuff DnD, TTRP, and high fantasy.\nGrab a beer a join us at the pub!\nYour quest awaits!")
+                .WithStaticDescriptions("All stuff DnD, TTRP, and high fantasy.\nGrab a beer a join us at the pub!\nYour quest awaits!\nAvailable Roles: Dwarf.")
                 .WithReactions(new Emoji("🪓"))
                 .WithObjects(
                    
@@ -104,13 +104,13 @@ namespace DiscordTextAdventure.Mechanics.Rooms
                 ;
 
             Pokemon = Room.CreateGuildRoom("Pokemon", Screen)
-                    .WithStaticDescriptions("Gotta catch em' all!\nWe mean the memes, give us your Poké memes now.")
+                    .WithStaticDescriptions("Gotta catch em' all!\nWe mean the memes, give us your Poké memes now.\nAvailable roles: Magikarp.")
                     .WithReactions(new Emoji("🐠"))
                 ;
 
             Animals = Room.CreateGuildRoom("Cute Animals", Screen)
                     .WithStaticDescriptions(
-                        "Dogs chasing their tails, cucumbers scaring cats, tiny frogs making impressive noises -- we love them all!\nPreferably .gifs, so we can see them in action!")
+                        "Dogs chasing their tails, cucumbers scaring cats, tiny frogs making impressive noises -- we love them all!\nPreferably .gifs, so we can see them in action!\nAvailable Roles: Cat.")
                     .WithReactions(new Emoji("🐱"))
                 ;
             #endregion
@@ -296,9 +296,10 @@ namespace DiscordTextAdventure.Mechanics.Rooms
                 
             }
             
-            Screen.ChangeRoomVisibilityAsync(session, OverwritePermissions.DenyAll(Screen.Channel));
-            TheCloud.ChangeRoomVisibilityAsync(session, OverwritePermissions.DenyAll(TheCloud.Channel));
-            
+            Screen.ChangeRoomVisibilityAsync(session, RoomCategory.NothingPermission);
+            TheCloud.ChangeRoomVisibilityAsync(session, RoomCategory.NothingPermission);
+            TheFarm.ChangeRoomVisibilityAsync(session, RoomCategory.NothingPermission);
+
             #endregion
 
             #region static gifs
@@ -320,7 +321,7 @@ namespace DiscordTextAdventure.Mechanics.Rooms
             DnD.RoomOwnerChannel.SendMessageAsync("https://tenor.com/view/lilo-pelekai-im-sorry-lilo-and-stitch-apologize-gif-8930173");
             #endregion
             
-            TheCloud.ChangeRoomVisibilityAsync(session, OverwritePermissions.AllowAll(TheCloud.Channel));
+
 
         }
 

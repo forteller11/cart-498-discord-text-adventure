@@ -312,7 +312,17 @@ namespace DiscordTextAdventure.Mechanics.Responses
                     var bot = e.RoomOfPhrase.TryFindFirstObject(NounTable.MemeBot);
                     if (bot != null)
                     {
+                        e.Session.RoomManager.Screen.ChangeRoomVisibilityAsync(e.Session, RoomCategory.NothingPermission);
+                        e.Session.RoomManager.TheCloud.ChangeRoomVisibilityAsync(e.Session, RoomCategory.NothingPermission);
+                        e.Session.RoomManager.Intro.ChangeRoomVisibilityAsync(e.Session, RoomCategory.NothingPermission);
+                        e.Session.RoomManager.TheFarm.ChangeRoomVisibilityAsync(e.Session, RoomCategory.ViewAndSendPermission);
+
+                        e.Session.CanSeeOffice = false;
+                        e.Session.CanSeeServer = true;
+                        e.Session.CanSeeIntro  = false;
+                        
                         e.Session.RoomManager.BodyDM.RoomOwnerChannel.SendMessageAsync("https://tenor.com/view/basher756-gif-20147055");
+                        e.Session.RoomManager.MemeDM.RoomOwnerChannel.SendMessageAsync("🏌️ 😼 ↗➡↘ 💥");
                         e.Session.RoomManager.BodyDM.RoomOwnerChannel.SendMessageAsync("The feline body has disappeared, but its spirit is not lost. Transcending the organic realm, the machine has turned us into a cat meme itself. An idea, a comedic moment -- compressed and serialized into a stream of bytes, able to reach the most remote areas of internet.");
                     } 
                 }, null);
@@ -335,7 +345,7 @@ namespace DiscordTextAdventure.Mechanics.Responses
                                if (task.Result.ToLower().Trim() == "password")
                                {
                                    e.RoomOfPhrase.RoomOwnerChannel.SendMessageAsync("Correct Password.\nShutting Down *The Farm's* Firewall.");
-                                   e.Session.RoomManager.Screen.ChangeRoomVisibilityAsync(e.Session, OverwritePermissions.AllowAll(e.Session.RoomManager.Screen.Channel));
+                                   e.Session.RoomManager.Screen.ChangeRoomVisibilityAsync(e.Session, RoomCategory.ViewAndSendPermission);
                                }
                                else
                                {

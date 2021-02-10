@@ -25,9 +25,11 @@ namespace chext.Mechanics
         public readonly DiscordSocketClient MemeBot;
         public readonly DiscordSocketClient BodyBot;
 
-        public int SucessfulAnimalPosts = 0;
-        public int SucessfulDnDPosts = 0;
-        public int SucessfulPokemonPosts = 0;
+        public int SucessfulGifPosts = 0;
+
+        public bool CanSeeIntro  = true;
+        public bool CanSeeOffice = false;
+        public bool CanSeeServer = false;
 
         public int timesMessagedMemeBotNoDM = 0;
         

@@ -98,7 +98,7 @@ namespace DiscordTextAdventure.Mechanics.Responses
                     InterestingLinkCheck(e, AnimalRelatedWords, e.Session.RoomManager.Animals,
                         relevantPhrasePicker,
                         irrelevantPhrasePicker,
-                        2));
+                        1));
 
             }
 
@@ -110,9 +110,9 @@ namespace DiscordTextAdventure.Mechanics.Responses
                     if (ContainsWords(e.Link.Words, relevantWords, wordsThatMustMatch))
                     {
                         e.PostedRoom.RoomOwnerChannel.SendMessageAsync(phraseOnRelevant.GetNextPhrase());
-                        e.Session.SucessfulAnimalPosts++;
+                        e.Session.SucessfulGifPosts++;
 
-                        if (e.Session.SucessfulAnimalPosts >= 3)
+                        if (e.Session.SucessfulGifPosts >= 3)
                         {
                             e.Session.RoomManager.DissonanceDM.RoomOwnerChannel.SendMessageAsync(
                                 "Congrats!!!" +
@@ -123,8 +123,7 @@ namespace DiscordTextAdventure.Mechanics.Responses
 
                             e.Session.RoomManager.DissonanceDM.RoomOwnerChannel.SendMessageAsync(
                                 ":confetti_ball: :confetti_ball: :confetti_ball:");
-                            
-                            //todo other rooms visible
+           
                         }
                         
                     }
