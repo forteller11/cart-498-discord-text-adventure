@@ -17,41 +17,39 @@ namespace DiscordTextAdventure.Mechanics.Responses
     {
         public readonly List<PhraseResponse> PhraseResponses = new List<PhraseResponse>();
 
-        public readonly PhraseResponse SessionResetResponse;
+        public PhraseResponse SessionResetResponse;
         
-        public readonly PhraseResponse LookResponse;
-        public readonly PhraseResponse DestroyResponse;
-        public readonly PhraseResponse MoveResponse;
+        public PhraseResponse LookResponse;
+        public PhraseResponse DestroyResponse;
+        public PhraseResponse MoveResponse;
         
-        public readonly PhraseResponse DnDResponse;
-        public readonly PhraseResponse AnimalReponse;
-        public readonly PhraseResponse PokemonResponse;
+        public PhraseResponse DnDResponse;
+        public PhraseResponse AnimalReponse;
+        public PhraseResponse PokemonResponse;
         
-        //public readonly PhraseResponse BodyDMResponse;
-        public readonly PhraseResponse DissonanceDMResponse;
-        public readonly PhraseResponse MemeGeneratorResponse;
+        //publly PhraseResponse BodyDMResponse;
+        public PhraseResponse DissonanceDMResponse;
+        public PhraseResponse MemeGeneratorResponse;
         
-        public readonly PhraseResponse MeganSpeak;
-        public readonly PhraseResponse MeganDissonance;
-        public readonly PhraseResponse MeganHi01;
-        public readonly PhraseResponse MeganHi02;
-        public readonly PhraseResponse MeganSpeakTo;
-        public readonly PhraseResponse MeganTags;
-        public readonly PhraseResponse MeganTarp;
-        public readonly PhraseResponse MeganFridge;
-        public readonly PhraseResponse MeganFlags;
-        public readonly PhraseResponse MeganSlide;
-        public readonly PhraseResponse MeganBot;
+        public PhraseResponse MeganSpeak;
+        public PhraseResponse MeganDissonance;
+        public PhraseResponse MeganHi01;
+        public PhraseResponse MeganHi02;
+        public PhraseResponse MeganSpeakTo;
+        public PhraseResponse MeganTags;
+        public PhraseResponse MeganTarp;
+        public PhraseResponse MeganFridge;
+        public PhraseResponse MeganFlags;
+        public PhraseResponse MeganSlide;
+        public PhraseResponse MeganBot;
         
-        // public readonly PhraseResponse MemeNotUnderstood;
-        // public readonly PhraseResponse NeedCat;
-        public readonly PhraseResponse BotResponse;
-        public readonly PhraseResponse BotFarmTravel;
+        public PhraseResponse BotResponse;
+        public PhraseResponse BotFarmTravel;
 
-        public readonly PhraseResponse FarmNoRoom;
+        public PhraseResponse FarmNoRoom;
         
         
-        public PhraseResponseTable(RoomManager roomManager)
+        public void Init(RoomManager roomManager)
         {
             #region general responses
             DestroyResponse = new PhraseResponse( new PhraseBlueprint(VerbTable.Destroy, null, null, null, null), e =>
@@ -269,6 +267,14 @@ namespace DiscordTextAdventure.Mechanics.Responses
 
                     e.RoomOfPhrase.DissoanceChannel.SendMessageAsync($"We're a cutting edge, tech forward, social media platform. We're excited to have recently moved all our hardware to ***The (server) Farm***, we even have a custom emote which users can now use to share their excitement!");
                 }, null);
+            
+            MeganDissonance = new PhraseResponse(new PhraseBlueprint( NounTable.TheFarm, new []{roomManager.Megan}),
+                e =>
+                {
+                    e.RoomOfPhrase.DissoanceChannel.SendMessageAsync($"I'm so glad to see you inspired by ***The Farm*** Emoji! We've been really excited to move all of our computing power to the cloud.");
+                }, null);
+            
+            
             #endregion
 
 
@@ -277,12 +283,24 @@ namespace DiscordTextAdventure.Mechanics.Responses
                 new PhraseBlueprint(new[] {roomManager.Office}),
                 e =>
                 {
-                    var bot = e.RoomOfPhrase.TryFindFirstObject(NounTable.Dissonance);
+                    var bot = e.RoomOfPhrase.TryFindFirstObject(NounTable.MemeBot);
+                    
                     if (bot != null)
                     {
-                        e.RoomOfPhrase.MemeChannel.SendMessageAsync($"❓");
-                        e.Session.RoomManager.MemeDM.RoomOwnerChannel.SendMessageAsync(
-                            "🤫🤫🤫🤫🤫🤫🤫🤫🤫\n > 🧍 ➡ 🐈 ➡ 🌐 ➡ 🖥️ ➡ ⛏ ➡ 🚫 ➡ 😄");
+                        if (e.Session.timesMessagedMemeBotNoDM == 1)
+                        {
+                            e.Session.RoomManager.MemeDM.RoomOwnerChannel.SendMessageAsync(
+                                "\n🤫🤫🤫🤫🤫🤫🤫🤫🤫\n > 🧍 ➡ 🐈 ➡ 🌐 ➡ 🖥️ ➡ ⛏ ➡ 🚫 ➡ 😄\n. . .");
+                        }
+                        
+                        if (e.Session.timesMessagedMemeBotNoDM % 3 == 1)
+                        {
+                            e.RoomOfPhrase.MemeChannel.SendMessageAsync("https://tenor.com/view/con-gif-4384521");
+                            e.RoomOfPhrase.MemeChannel.SendMessageAsync("❓");
+                        }
+
+                        e.Session.timesMessagedMemeBotNoDM++;
+                        
                     } 
                 }, null);
             
@@ -290,7 +308,7 @@ namespace DiscordTextAdventure.Mechanics.Responses
                 new PhraseBlueprint(NounTable.TheFarm, new[] {roomManager.Office}),
                 e =>
                 {
-                    var bot = e.RoomOfPhrase.TryFindFirstObject(NounTable.Dissonance);
+                    var bot = e.RoomOfPhrase.TryFindFirstObject(NounTable.MemeBot);
                     if (bot != null)
                     {
                         e.Session.RoomManager.BodyDM.RoomOwnerChannel.SendMessageAsync("https://tenor.com/view/basher756-gif-20147055");

@@ -102,14 +102,13 @@ namespace DiscordTextAdventure.Parsing.DataStructures
                        DoesWordMatch(MustContain, phrase.Noun) ||
                        DoesWordMatch(MustContain, phrase.Preposition) ||
                        DoesWordMatch(MustContain, phrase.IndirectObject);
-               
                case BlueprintType.Phrase:
                    return
                        DoesWordMatch(Verb, phrase.Verb) &&
                        DoesWordMatch(Noun, phrase.Noun) &&
                        DoesWordMatch(Preposition, phrase.Preposition) &&
                        DoesWordMatch(IndirectObject, phrase.IndirectObject);
-               
+
                default:
                    throw new Exception("No Type specefied");
                    

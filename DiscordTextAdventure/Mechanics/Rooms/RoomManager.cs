@@ -22,8 +22,6 @@ namespace DiscordTextAdventure.Mechanics.Rooms
         public Room [] Rooms;
         public Dictionary<ulong, Room> RoomKV;
         public RoomCategory [] Categories;
-        public List<PhraseResponse> ResponsesToAddToResponseTable = new List<PhraseResponse>();
-
         
         #region declaring rooms
 
@@ -50,30 +48,30 @@ namespace DiscordTextAdventure.Mechanics.Rooms
         public readonly RoomCategory TheFarm;
         #endregion
 
-        public RoomManager(Session session, SocketGuild guild)
+        public RoomManager(Session session, PhraseResponseTable table, SocketGuild guild)
         {
             #region dms
 
-            DissonanceDM = Room.CreateDMRoom(true);
+            DissonanceDM = Room.CreateDMRoom(false);
 
             BodyDM = Room.CreateDMRoom(true).WithSubtitle("It's ours, warts and all")
                 .WithStaticDescriptions(
                     "Things have been better. We should probably drink more water, or go for a walk... pretty much anything is better than sitting at a computer all day.")
                 .WithObjects(
                     new AdventureObject(NounTable.Arms, "All this typing can't be good for the wrists, we should look into getting a better mouse pad or wrist brace.", true)
-                        .WithInspectDefault()
-                        .WithPickupNoSense()
-                        .WithCannotDamage("We smash the arms on the table, the sharp pain on impact fades into a dull ache."),
+                        .WithInspectDefault(table)
+                        .WithPickupNoSense(table)
+                        .WithCannotDamage(table, "We smash the arms on the table, the sharp pain on impact fades into a dull ache."),
                     
                     new AdventureObject(NounTable.Legs, "The knees ache from being bent so long", true)
-                        .WithInspectDefault()
-                        .WithCannotPickup()
-                        .WithCannotDamage("We punch our thighs, it leaves a bruise."),
+                        .WithInspectDefault(table)
+                        .WithCannotPickup(table)
+                        .WithCannotDamage(table, "We punch our thighs, it leaves a bruise."),
                 
                     new AdventureObject(NounTable.Head, "We can't see the head, but we do take note of growing pain of the headphones on its ears. Forcing itself into conscious thought.", true)
-                        .WithInspectDefault()
-                        .WithPickupNoSense()
-                        .WithCannotDamage("We're not going to do that. We really do need the head, and that is not a sincere solution to our problems.")
+                        .WithInspectDefault(table)
+                        .WithPickupNoSense(table)
+                        .WithCannotDamage(table, "We're not going to do that. We really do need the head, and that is not a sincere solution to our problems.")
                 );
 
 
@@ -125,9 +123,10 @@ namespace DiscordTextAdventure.Mechanics.Rooms
                     new AdventureObject(
                         NounTable.Tarp,
                         "The tarp is clearly over top of something. Odd that a Pepe meme is printed on the fabric...")
-                        .WithInspectDefault()
-                        .WithCannotDamage("Let's not be violent needlessly")
-                        .OnPickup(e =>
+                        .WithInspectDefault(table)
+                        .WithCannotDamage(table, "Let's not be violent needlessly")
+                        .OnPickup(table, 
+                            e =>
                         {
                             var room = e.RoomOfPhrase;
                             
@@ -135,7 +134,7 @@ namespace DiscordTextAdventure.Mechanics.Rooms
                                 return;
                             
                             room.DissoanceChannel.SendMessageAsync(
-                                "You take off the tarp to reveal a metal box with a small screen, engraved on its chassis: \"The Meme Machine, by Dissonance R&D\"");        
+                                "You take off the tarp to reveal a metal box with a small screen, engraved on its chassis: \"⚙ The Meme Machine  ⚙, by Dissonance R&D\"");        
                             room.MemeChannel.SendMessageAsync("👋");
 
                             var tarp = room.TryFindFirstObject(NounTable.Tarp);
@@ -145,10 +144,10 @@ namespace DiscordTextAdventure.Mechanics.Rooms
                             }
                             
                             room.Objects.Add(new AdventureObject(NounTable.MemeBot, 
-                                "A small box with a small screen")
-                                .WithCannotPickup()
-                                .WithInspectDefault()
-                                .WithCannotDamage("This isn't where user data is stored, this won't get us banned... it seems pretty sturdy either way.\n"));
+                                "A small box, you get the feeling it's listening to you.")
+                                .WithCannotPickup(table)
+                                .WithInspectDefault(table)
+                                .WithCannotDamage(table, "This isn't where user data is stored, this won't get us banned... it seems pretty sturdy either way.\n"));
                             
                             room.Renderer.DrawRoomStateEmbed();
 
@@ -167,7 +166,7 @@ namespace DiscordTextAdventure.Mechanics.Rooms
                     new AdventureObject(
                         NounTable.Megan,
                         "I feel awkward staring, I should say something to break the silence.")
-                        .WithCannotDamage("I'm not going to hurt a person... It wouldn't even break the user-agreement")
+                        .WithCannotDamage(table, "I'm not going to hurt a person... It wouldn't even break the user-agreement")
                
                 );
 
@@ -180,8 +179,8 @@ namespace DiscordTextAdventure.Mechanics.Rooms
                 .WithObjects(
                     new AdventureObject(
                             NounTable.ServerRacks,
-                            "an array of computer racks, where Dissonance stores their user data and servers to run their services",
-                        .WithDamageCustom(damageServer));
+                            "an array of computer racks, where Dissonance stores their user data and servers to run their services")
+                        .WithDamageCustom(table, damageServer));
             
             ControlRoom = Room.CreateGuildRoom("Servers", TheFarm)
                 .WithStaticDescriptions(
@@ -189,8 +188,8 @@ namespace DiscordTextAdventure.Mechanics.Rooms
                 .WithObjects(
                     new AdventureObject(
                             NounTable.ServerRacks,
-                            "an array of computer racks, where Dissonance stores their user data and servers to run their services",
-                        .WithDamageCustom(damageServer));
+                            "an array of computer racks, where Dissonance stores their user data and servers to run their services")
+                        .WithDamageCustom(table, damageServer));
 
             void damageServer(PhraseResponseEventArgs e)
             {
@@ -212,8 +211,7 @@ namespace DiscordTextAdventure.Mechanics.Rooms
                             "On Date/TIME, you broke the user agreement and damaged hardware, We're forced to ban you");//todo, timed messages
                         break;
                 }
-                if (e.Session.Player.Role == Player.RoleTypes.Human)
-            })
+            }
             #endregion
             
             Rooms = ReflectionHelpers.ClassMembersToArray<Room>(typeof(RoomManager), this);

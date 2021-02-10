@@ -78,7 +78,6 @@ namespace DiscordTextAdventure.Mechanics.Rooms
             }
             
             LinkToDiscord(channelOwner, disChannel, BodyChannel, memeChannel);
-            LinkActions(session, roomManager);
             if (DrawOnLink)
                 Renderer.DrawRoomStateEmbed();
         }
@@ -99,13 +98,6 @@ namespace DiscordTextAdventure.Mechanics.Rooms
             Renderer = new RoomRenderer(this, ownerOfRoom);
         }
 
-        void LinkActions(Session session, RoomManager roomManager)
-        {
-            for (int i = 0; i < Objects.Count; i++)
-                Objects[i].LinkActions(session, roomManager);
-
-        }
-        
         #region builder helpers
         public Room WithStaticDescriptions(string staticDescription) 
         {

@@ -26,6 +26,8 @@ namespace chext.Mechanics
         public int SucessfulAnimalPosts = 0;
         public int SucessfulDnDPosts = 0;
         public int SucessfulPokemonPosts = 0;
+
+        public int timesMessagedMemeBotNoDM = 0;
         
         public readonly SocketGuild Guild;
    
@@ -45,10 +47,11 @@ namespace chext.Mechanics
             
             _input = new Input();
 
-            //must be called in this order.... as responsetables rely on room manager being static info
-            RoomManager = new RoomManager(this, guild);
-            PhraseResponseTable = new PhraseResponseTable(RoomManager);
-            PhraseResponseTable.PhraseResponses.AddRange(RoomManager.ResponsesToAddToResponseTable);
+            //ORDER MATTERS
+            PhraseResponseTable = new PhraseResponseTable();
+            RoomManager = new RoomManager(this, PhraseResponseTable, guild);
+            PhraseResponseTable.Init(RoomManager);
+            
             ReactionTable = new ReactionResponseTable(this);
 
             DissonanceBot.MessageReceived += OnMessageReceived;

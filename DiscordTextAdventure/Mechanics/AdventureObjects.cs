@@ -20,8 +20,6 @@ namespace DiscordTextAdventure.Mechanics
         public Room? CurrentRoom;
         public object State;
 
-        private List<PhraseResponse> _phraseResponsesBuffer = new List<PhraseResponse>();
-
         // public Action<PhraseResponseEventArgs> LookResponse;
         public string Article
         {
@@ -41,43 +39,33 @@ namespace DiscordTextAdventure.Mechanics
         
         
 
-        AdventureObject WithAddAdventureResponse(Action<PhraseResponseEventArgs>? action, Func<PhraseResponseEventArgs, Task>? actionAsync, SynonymCollection verbs, SynonymCollection? preps = null, SynonymCollection? indirectObj = null)
+        AdventureObject WithAddAdventureResponse(PhraseResponseTable table, Action<PhraseResponseEventArgs>? action, Func<PhraseResponseEventArgs, Task>? actionAsync, SynonymCollection verbs, SynonymCollection? preps = null, SynonymCollection? indirectObj = null)
         {
-            _phraseResponsesBuffer.Add(new PhraseResponse(new PhraseBlueprint(verbs, Names, preps, indirectObj, null), action,
+            table.PhraseResponses.Add(new PhraseResponse(new PhraseBlueprint(verbs, Names, preps, indirectObj, null), action,
                 actionAsync));
             return this;
         }
 
-        public void LinkActions(Session session, RoomManager roomManager)
-        {
-            for (int i = 0; i < _phraseResponsesBuffer.Count; i++)
-            {
-                if (session.Player == null)
-                    roomManager.ResponsesToAddToResponseTable.Add(_phraseResponsesBuffer[i]);
-                else //for dm servers who are lazy initalized
-                    session.PhraseResponseTable.PhraseResponses.Add(_phraseResponsesBuffer[i]);
-            }
-        }
-
         #region response helpers
-        public AdventureObject WithInspectDefault()
+        public AdventureObject WithInspectDefault(PhraseResponseTable table)
         {
-            return WithAddAdventureResponse(e 
-                    => { e.RoomOfPhrase.Renderer.Channel.SendMessageAsync(Description); },
+            return WithAddAdventureResponse(table,
+                e => { e.RoomOfPhrase.Renderer.Channel.SendMessageAsync(Description); },
                 null, 
                 VerbTable.Inspect);
         }
-        public AdventureObject WithPickupNoSense()
+        public AdventureObject WithPickupNoSense(PhraseResponseTable table)
         {
-            return WithAddAdventureResponse(e 
-                => { e.Message.Channel.SendMessageAsync($"What would picking up {Article} {Names} even mean?"); },
+            return WithAddAdventureResponse(table,
+                e => { e.Message.Channel.SendMessageAsync($"What would picking up {Article} {Names} even mean?"); },
                 null, 
                 VerbTable.Pickup);
         }
         
-        public AdventureObject WithCannotPickup()
+        public AdventureObject WithCannotPickup(PhraseResponseTable table)
         {
-            return WithAddAdventureResponse(e =>
+            return WithAddAdventureResponse(table,
+                e =>
                 {
                     if (e.RoomOfPhrase != CurrentRoom)
                         return;
@@ -88,14 +76,14 @@ namespace DiscordTextAdventure.Mechanics
                 VerbTable.Pickup);
         }
 
-        public AdventureObject WithDamageCustom(Action<PhraseResponseEventArgs> action)
+        public AdventureObject WithDamageCustom(PhraseResponseTable table, Action<PhraseResponseEventArgs> action)
         {
-            return WithAddAdventureResponse(action, null, VerbTable.Destroy);
+            return WithAddAdventureResponse(table, action, null, VerbTable.Destroy);
         }
         
-        public AdventureObject WithCannotDamage(string message="I don't want to do that")
+        public AdventureObject WithCannotDamage(PhraseResponseTable table, string message="I don't want to do that")
         {
-            return WithAddAdventureResponse(CannotDamage, null, VerbTable.Destroy);
+            return WithAddAdventureResponse(table, CannotDamage, null, VerbTable.Destroy);
 
             void CannotDamage(PhraseResponseEventArgs e)
             {
@@ -107,9 +95,9 @@ namespace DiscordTextAdventure.Mechanics
         }
         
 
-        public AdventureObject OnPickup(Action<PhraseResponseEventArgs> action)
+        public AdventureObject OnPickup(PhraseResponseTable table, Action<PhraseResponseEventArgs> action)
         {
-            return WithAddAdventureResponse(action, null, VerbTable.Pickup);
+            return WithAddAdventureResponse(table, action, null, VerbTable.Pickup);
         }
         
         
