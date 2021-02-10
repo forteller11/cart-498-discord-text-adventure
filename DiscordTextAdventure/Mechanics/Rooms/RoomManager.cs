@@ -179,17 +179,19 @@ namespace DiscordTextAdventure.Mechanics.Rooms
                 .WithObjects(
                     new AdventureObject(
                             NounTable.ServerRacks,
-                            "an array of computer racks, where Dissonance stores their user data and servers to run their services")
+                            "An array of computer racks, where Dissonance stores their user data and servers to run their services")
                         .WithDamageCustom(table, damageServer));
-            
-            ControlRoom = Room.CreateGuildRoom("Servers", TheFarm)
+
+            ControlRoom = Room.CreateGuildRoom("Routing", TheFarm)
                 .WithStaticDescriptions(
-                    "A huge warehouse. In every direction, long black aisles of server server racks, little indicator lights beeping. The ceiling isn't visible above the countless multi-coloured cables. The hum of hundreds of cooling fans and ACs combine to generate a deafening roar.")
+                    "A darkly lit room, in its center lies a metal cabinet. Thousands of wires enter the box from its top and bottom, packed tightly together, forming a sort of trunk. All connecting to a large modem which connects The Farm to the larger internet. There's a small, purple LCD screen on the cabinet which reads \"Firewall Password\".")
+                .WithReactions(ReactionResponseTable.BlueSquare, ReactionResponseTable.RedSquare)
                 .WithObjects(
                     new AdventureObject(
-                            NounTable.ServerRacks,
-                            "an array of computer racks, where Dissonance stores their user data and servers to run their services")
-                        .WithDamageCustom(table, damageServer));
+                            NounTable.Panel,
+                            "There doesn't seem to be any accessories and the purple panel isn't a touch screen, there must be some other way to interact with the modem's firewall.")
+
+                        .WithCannotDamage(table));
 
             void damageServer(PhraseResponseEventArgs e)
             {

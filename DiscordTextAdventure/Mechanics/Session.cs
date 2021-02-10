@@ -58,6 +58,7 @@ namespace chext.Mechanics
             
             DissonanceBot.ReactionAdded   += OnReactionAdded;
             DissonanceBot.ReactionRemoved += OnReactionRemoved;
+            
         }
 
         public async Task OnReactionAdded(Cacheable<IUserMessage, ulong> potentialMessage, ISocketMessageChannel channel, SocketReaction reaction)
@@ -91,6 +92,12 @@ namespace chext.Mechanics
         {
             if (!_input.FilterMessage(socketMessage.Author, socketMessage.Channel, Guild))
                 return;
+
+            if (Player == null)
+            {
+                Program.DebugLog($"No Player No Message!");
+                return;
+            }
 
             Program.DebugLog($"Message received at {Guild.Name}");
             Tuple<Phrase?, Link?> parseResult = await _input.ProcessMessage(socketMessage);

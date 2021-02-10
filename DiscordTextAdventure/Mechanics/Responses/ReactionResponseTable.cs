@@ -20,12 +20,19 @@ namespace DiscordTextAdventure.Mechanics.Responses
         public readonly ReactionResponse AttemptVoidUserAgreement;
         public readonly ReactionResponse AcceptInvitation;
         
-        public readonly ReactionResponse[] ReactionResponses;
-
         public readonly ReactionResponse CatRole;
         public readonly ReactionResponse DwarfRole;
         public readonly ReactionResponse MagikarpRole;
 
+        public readonly ReactionResponse BlueButton;
+        public readonly ReactionResponse RedButton;
+
+        public static readonly Emoji RedSquare    = new Emoji("🟥");
+        public static readonly Emoji PurpleSquare = new Emoji("🟪");
+        public static readonly Emoji BlueSquare   = new Emoji("🟦");
+        
+        public readonly ReactionResponse[] ReactionResponses;
+        
         public GuildEmote FarmEmote { get; private set; }
         
         public ReactionResponseTable(Session session)
@@ -307,6 +314,27 @@ namespace DiscordTextAdventure.Mechanics.Responses
                     "\nWe are human again.");
             }
             #endregion
+            
+            #region the farm
+            BlueButton = new ReactionResponse(new ReactionBlueprint(BlueSquare, ReactionBlueprint.OnReactionTriggerBoth),
+                e =>
+                {
+                    if (e.PostedRoom != e.Session.RoomManager.ControlRoom)
+                        return;
+
+                    e.PostedRoom.BodyChannel.SendFileAsync(Program.AssetsPath + "/blue_pass.txt");
+                }, null);
+            
+            RedButton = new ReactionResponse(new ReactionBlueprint(RedSquare,   ReactionBlueprint.OnReactionTriggerBoth),    e =>
+            {
+                if (e.PostedRoom != e.Session.RoomManager.ControlRoom)
+                    return;
+
+                e.PostedRoom.BodyChannel.SendFileAsync(Program.AssetsPath + "/red_pass.txt");
+            } , null);
+            #endregion
+            
+            
             #region sort by triggers and add to static lists
             ReactionResponses = ReflectionHelpers.ClassMembersToArray<ReactionResponse>(typeof(ReactionResponseTable), this);
             
