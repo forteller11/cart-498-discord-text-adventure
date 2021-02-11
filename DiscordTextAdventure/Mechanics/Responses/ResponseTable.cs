@@ -226,7 +226,7 @@ namespace DiscordTextAdventure.Mechanics.Responses
                         return;
                     }
                     
-                    e.RoomOfPhrase.DissoanceChannel.SendMessageAsync($"The name tags were from our former team of engineers. We used to own more of this space and have hundreds of workers, but when everything moved to the cloud, we were able to operate with a fraction of the staff. Now all the brains of the Dissonance are housed in the ***Server Farm***, or just ***The Farm*** as we call it around the office. This place’s main purpose is PR now, but we have a couple of Engineers still working on the ***Meme Bot***. But all our hardware is now stored at ***The Farm*** now, we're so excited that we even developed a custom emote for the ***The Farm*** so people can join the conversation!");
+                    e.RoomOfPhrase.DissoanceChannel.SendMessageAsync($"The name tags were from our former team of engineers. We used to own more of this space and have hundreds of workers, but when everything moved to the cloud, we were able to operate with a fraction of the staff. Now all the brains of the Dissonance are housed in the ***Server Farm***, or just ***The Farm*** as we call it around the office. This place’s main purpose is PR now, but we have a couple of Engineers still working on the ***Meme Bot***. But all our hardware is now stored at ***The Farm*** now, we're so excited that we even developed a *custom emote* for the ***The Farm*** so people can join the conversation!");
                 }, null);
             
             MeganBot = new PhraseResponse(new PhraseBlueprint(NounTable.MemeBot, new []{roomManager.Megan}),
@@ -299,7 +299,7 @@ namespace DiscordTextAdventure.Mechanics.Responses
             MeganFarm = new PhraseResponse(new PhraseBlueprint( NounTable.TheFarm, new []{roomManager.Megan}),
                 e =>
                 {
-                    e.RoomOfPhrase.DissoanceChannel.SendMessageAsync($"***The Farm*** is the cutting edge facility where we now house all of our hardware necessary for Dissonance operations. We're so excited that we created a custom emoji that can be used around the office to promote this tech forward happening.");
+                    e.RoomOfPhrase.DissoanceChannel.SendMessageAsync($"***The Farm*** is the cutting edge facility where we now house all of our hardware necessary for Dissonance operations. We're so excited that we created a **custom emoji** that can be used around the office to promote this tech forward happening.");
                 }, null);
             
             MeganBeanBag = new PhraseResponse(new PhraseBlueprint( NounTable.BeanBagChairs, new []{roomManager.Megan}),
@@ -393,7 +393,7 @@ namespace DiscordTextAdventure.Mechanics.Responses
                     }
                 }, null);
             
-            ComputerLook = new PhraseResponse(new PhraseBlueprint( new[] {roomManager.Servers}),
+            ComputerLook = new PhraseResponse( new PhraseBlueprint(VerbTable.Inspect, NounTable.ServerRacks, null, null, new[] {roomManager.Servers}),
                 e => 
                 {
                     e.RoomOfPhrase.BodyChannel.SendMessageAsync("Now's our chance to damage Dissonance's hardware");

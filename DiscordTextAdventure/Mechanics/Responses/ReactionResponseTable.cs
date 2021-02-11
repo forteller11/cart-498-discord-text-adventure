@@ -26,10 +26,13 @@ namespace DiscordTextAdventure.Mechanics.Responses
 
         public readonly ReactionResponse BlueButton;
         public readonly ReactionResponse RedButton;
+        
+        public readonly ReactionResponse BanAcknowledge;
 
         public static readonly Emoji RedSquare    = new Emoji("🟥");
         public static readonly Emoji PurpleSquare = new Emoji("🟪");
         public static readonly Emoji BlueSquare   = new Emoji("🟦");
+        public static readonly Emoji NoEntry   = new Emoji("⛔");
         
         public readonly ReactionResponse[] ReactionResponses;
         
@@ -78,10 +81,17 @@ namespace DiscordTextAdventure.Mechanics.Responses
             CatRole = new ReactionResponse(new ReactionBlueprint(new Emoji( "🐱"), ReactionBlueprint.OnReactionTriggerBoth), AddRoleCat, null);
             DwarfRole = new ReactionResponse(new ReactionBlueprint(new Emoji( "🪓"), ReactionBlueprint.OnReactionTriggerBoth), AddRoleDwarf, null);
             MagikarpRole = new ReactionResponse(new ReactionBlueprint(new Emoji( "🐠"), ReactionBlueprint.OnReactionTriggerBoth), null, AddRoleMagikarp);
+           
 
             #endregion
 
-
+        MagikarpRole = new ReactionResponse(new ReactionBlueprint(NoEntry, ReactionBlueprint.OnReactionTrigger.OnAdd),
+            e =>
+            {
+                e.Session.RoomManager.DissonanceDM.RoomOwnerChannel.SendMessageAsync("```diff\n-You've Been Banned.\n```");
+                e.Session.RoomManager.BodyDM.RoomOwnerChannel.SendMessageAsync(
+                    "☺\nNow we can get our lives back, yay!");
+            }, null);
             #region response intro
 
             async Task SetPlayerAndCreateDMChannelsAsync(ReactionResponseEventArgs e)
@@ -302,7 +312,6 @@ namespace DiscordTextAdventure.Mechanics.Responses
                     "\nWe fall onto the floor as legs dissolve into a fin." +
                     "\nLips fade into bone" +
                     "\nWe flop uselessly on the floor, breaths become painful, and mobility is hopeless." +
-                    "\nWe cannot traverse channels in this state." +
                     "\nWe're a Magikarp");
                 
                 e.PostedRoom.DissoanceChannel.SendMessageAsync("It's not very effective!");

@@ -20,8 +20,8 @@ namespace DiscordTextAdventure.Parsing.Tables
         public static readonly SynonymCollection Megan = new SynonymCollection("megan", "creative director", "director", "employee");
         public static readonly SynonymCollection Dissonance = new SynonymCollection("dissonance");
         public static readonly SynonymCollection TheFarmEmoji = new SynonymCollection("<:the_farm:806894562320449566>");
-        public static readonly SynonymCollection TheFarm = new SynonymCollection("the farm", "farms");
-        public static readonly SynonymCollection ServerRacks = new SynonymCollection("computer", "server", "server rack", "server racks", "computers", "servers");
+        public static readonly SynonymCollection TheFarm = new SynonymCollection("farms", "farm");
+        public static readonly SynonymCollection ServerRacks = new SynonymCollection("computer", "server", "server rack", "server racks", "computers", "servers", "hardware");
         public static readonly SynonymCollection Panel = new SynonymCollection("panel", "screen", "lcd screen", "lcd");
         public static readonly SynonymCollection Pepe = new SynonymCollection("pepe", "frog", "pepe the frog");
         public static readonly SynonymCollection BeanBagChairs = new SynonymCollection("bean bag chair", "bean bag chairs", "bean bag");
