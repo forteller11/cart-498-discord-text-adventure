@@ -136,9 +136,9 @@ namespace DiscordTextAdventure.Mechanics.Responses
                 "From your throat comes a lot of dramatic meowing and whining which Megan sympathetically listens to, but unfortunately can't understand";
 
             string hintResponse =
-                "I can small talk all day, but if I were you i'd take some time to collect my thoughts and ask about something around the office while you have this opportunity!";
+                "I can small talk all day, but if I were you i'd take some time to collect my thoughts and ask about something around *Headquarters* while you have this opportunity!";
 
-            string welcomeResponse = "So you must be the lucky contest winner! The name's, Megan, I’m the senior and chief managing, administrative and creative director in training at *Dissonance*.\n> We really value our customers time, **if there's anything around the office you want to ask me about, I'm here!**";
+            string welcomeResponse = "So you must be the lucky contest winner! The name's, Megan, I’m the senior and chief managing, administrative and creative director in training at *Dissonance*.\n> We really value our customers time, **if there's anything around Headquarters you want to ask me about, I'm here!**";
             
             MeganHi01 = new PhraseResponse(
                 new PhraseBlueprint(VerbTable.Salutation, null, null, null, new[] {roomManager.Megan}),
@@ -226,7 +226,7 @@ namespace DiscordTextAdventure.Mechanics.Responses
                         return;
                     }
                     
-                    e.RoomOfPhrase.DissoanceChannel.SendMessageAsync($"The name tags were from our former team of engineers. We used to own more of this space and have hundreds of workers, but when everything moved to the cloud, we were able to operate with a fraction of the staff. Now all the brains of the Dissonance are housed in the ***Server Farm***, or just ***The Farm*** as we call it around the office. This place’s main purpose is PR now, but we have a couple of Engineers still working on the ***Meme Bot***. But all our hardware is now stored at ***The Farm*** now, we're so excited that we even developed a *custom emote* for the ***The Farm*** so people can join the conversation!");
+                    e.RoomOfPhrase.DissoanceChannel.SendMessageAsync($"The name tags were from our former team of engineers. We used to own more of this space and have hundreds of workers, but when everything moved to the cloud, we were able to operate with a fraction of the staff. Now all the brains of the Dissonance are housed in the ***Server Farm***, or just ***The Farm*** as we call it around Headquarters. This place’s main purpose is PR now, but we have a couple of Engineers still working on the ***Meme Bot***. But all our hardware is now stored at ***The Farm*** now, we're so excited that we even developed a *custom emote* for the ***The Farm*** so people can join the conversation!");
                 }, null);
             
             MeganBot = new PhraseResponse(new PhraseBlueprint(NounTable.MemeBot, new []{roomManager.Megan}),

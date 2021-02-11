@@ -113,7 +113,7 @@ namespace DiscordTextAdventure.Mechanics.Rooms
             #endregion
 
             #region the office
-            Office = Room.CreateGuildRoom("Office", TheCloud)
+            Office = Room.CreateGuildRoom("Common Room", TheCloud)
                 .WithStaticDescriptions(
                     "The feng shui of space is decided by a full sized, tubular **slide** which protrudes through the myriad of pipes and vents on the ceiling, coming to rest in the center of the room. On one side of the room, a glass **fridge** with a big cursive label \"Organic\" houses mason jars with green juices and smoothies. Another wall is covered in **flags**, all of them national, except for a larger flag in the center which wields the company logo instead. **Bean bag chairs** litter the hardwood. A **tarp** with *Pepe The Frog* printed on it is draped over a pedestal next to the slide’s entrance.")
                 .WithObjects(
@@ -191,7 +191,7 @@ namespace DiscordTextAdventure.Mechanics.Rooms
                 .WithObjects(
                     new AdventureObject(
                             NounTable.Panel,
-                            "There doesn't seem to be any accessories to type in a password and the purple panel isn't a touch screen. There must be some other way to *upload* a password to the modem's firewall.")
+                            "There doesn't seem to be any accessories to type in a password and the purple panel isn't a touch screen. There must be some other way to **upload** a password to the modem's firewall.")
 
                         .WithCannotDamage(table)
                         .WithInspectDefault(table)

@@ -123,7 +123,7 @@ namespace DiscordTextAdventure.Mechanics.Responses
                             e.Session.RoomManager.DissonanceDM.RoomOwnerChannel.SendMessageAsync(
                                 "Congrats!!!" +
                                 "It's clear that you've made some big contributions to our community here at Dissonance!" +
-                                "\nAs a reward, you're invited to our tech-forward headquarters, in ***The Cloud***!!!" +
+                                "\nAs a reward, you're invited to our tech-forward headquarters!!" +
                                 "\nReact to the confetti to Accept."
                                 ).ContinueWith(task => { task.Result.AddReactionAsync(new Emoji("🎉")); });
 
