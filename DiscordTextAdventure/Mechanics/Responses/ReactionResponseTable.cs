@@ -116,8 +116,8 @@ namespace DiscordTextAdventure.Mechanics.Responses
                                 task.Result.SendMessageAsync(
                                     $"Welcome {e.Session.Player.User.Username}!" +
                                     $"\nThese are exciting times in which you're entering Dissonance server, as we have a special event currently taking place!." +
-                                    $"\nThe user with the most contributions to our community, will have the privilege to visit ***The Cloud***. " +
-                                    $"\nOur headquarters where you'll get to me out ambitious crew and have a chance to get to know our cutting edge technology." +
+                                    $"\nThe user with the most contributions to our community, will have the privilege to visit our ***Headquarters***. " +
+                                    $"\nThere you'll get to meet ambitious crew and have a chance to get to know our cutting edge technology." +
                                     $"\nMake sure to participate! We recommend getting to know each one of our communities and posting relevant content!" +
                                     $"\nWe've found our users prefer visuals over text, as you may notice, gifs have become especially popular recently!");
                             });

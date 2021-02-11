@@ -80,7 +80,7 @@ namespace DiscordTextAdventure.Mechanics.Rooms
             
             Intro = new RoomCategory("Welcome");
             Screen = new RoomCategory("Screens");
-            TheCloud = new RoomCategory("The Cloud");
+            TheCloud = new RoomCategory("Headquarters");
             TheFarm = new RoomCategory("The Farm");
             
             
@@ -174,7 +174,7 @@ namespace DiscordTextAdventure.Mechanics.Rooms
             #region the farm
             Servers = Room.CreateGuildRoom("Servers", TheFarm)
                 .WithStaticDescriptions(
-                    "A huge warehouse. In every direction, long black aisles of server server racks, little indicator lights beeping. The ceiling isn't visible above the countless multi-coloured cables. The hum of hundreds of cooling fans and ACs combine to generate a deafening roar.")
+                    "A huge warehouse. In every direction, long black aisles of server racks, little indicator lights beeping. The ceiling isn't visible above the countless multi-coloured cables. The hum of hundreds of cooling fans and ACs combine to generate a deafening roar.")
                 .WithObjects(
                     new AdventureObject(
                             NounTable.ServerRacks,
