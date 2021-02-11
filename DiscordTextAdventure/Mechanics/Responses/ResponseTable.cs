@@ -50,7 +50,8 @@ namespace DiscordTextAdventure.Mechanics.Responses
         
         public PhraseResponse BotResponse;
         public PhraseResponse BotFarmTravel;
-
+        
+        public PhraseResponse ComputerLook;
         public PhraseResponse FarmNoRoom;
         public PhraseResponse UploadPassword;
         
@@ -86,6 +87,8 @@ namespace DiscordTextAdventure.Mechanics.Responses
                         "I've seen you've noticed our custom ***\"the_farm\"***, I'm glad! We're very proud of The (server) Farm at Dissonance, it's how we manage to run all our tech and store all our user data!");
                 }
             }, null);
+            
+            
             
 
             void LookResponseAction(PhraseResponseEventArgs e)
@@ -388,6 +391,12 @@ namespace DiscordTextAdventure.Mechanics.Responses
                            });
                         }
                     }
+                }, null);
+            
+            ComputerLook = new PhraseResponse(new PhraseBlueprint( new[] {roomManager.Servers}),
+                e => 
+                {
+                    e.RoomOfPhrase.BodyChannel.SendMessageAsync("Now's our chance to damage Dissonance's hardware");
                 }, null);
 
             #endregion

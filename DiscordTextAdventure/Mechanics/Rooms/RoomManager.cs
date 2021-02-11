@@ -164,6 +164,7 @@ namespace DiscordTextAdventure.Mechanics.Rooms
                         NounTable.Megan,
                         "You and Megan would both be better off if you don't stare, use your words")
                         .WithCannotDamage(table, "I'm not going to hurt a person... It wouldn't even break the user-agreement")
+                        .WithPickupNoSense(table)
                         .WithInspectDefault(table)
                
                 );
@@ -180,7 +181,8 @@ namespace DiscordTextAdventure.Mechanics.Rooms
                             "An array of computer racks, where Dissonance stores their user data and servers to run their services")
                         .WithDamageCustom(table, damageServer)
                         .WithInspectDefault(table)
-                    );
+                        .WithCannotPickup(table)
+                );
 
             ControlRoom = Room.CreateGuildRoom("Routing", TheFarm)
                 .WithStaticDescriptions(
@@ -189,10 +191,11 @@ namespace DiscordTextAdventure.Mechanics.Rooms
                 .WithObjects(
                     new AdventureObject(
                             NounTable.Panel,
-                            "There doesn't seem to be any accessories and the purple panel isn't a touch screen, there must be some other way to interact with the modem's firewall.")
+                            "There doesn't seem to be any accessories to type in a password and the purple panel isn't a touch screen. There must be some other way to *upload* a password to the modem's firewall.")
 
                         .WithCannotDamage(table)
                         .WithInspectDefault(table)
+                        .WithCannotPickup(table)
                     );
 
             void damageServer(PhraseResponseEventArgs e)

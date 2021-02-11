@@ -16,7 +16,7 @@ namespace DiscordTextAdventure.Parsing.Tables
         
         public static readonly SynonymCollection SessionReset = new SynonymCollection("__reset__");
         
-        public static readonly SynonymCollection Destroy = new SynonymCollection("attack", "destroy", "hit", "hurt", "kill", "damage", "strike", "cut", "punch", "damage", "break");
+        public static readonly SynonymCollection Destroy = new SynonymCollection("attack", "destroy", "hit", "hurt", "kill", "damage", "strike", "cut", "punch", "damage", "break", "🪓");
 
         public readonly static SynonymCollection[] Verbs;
 

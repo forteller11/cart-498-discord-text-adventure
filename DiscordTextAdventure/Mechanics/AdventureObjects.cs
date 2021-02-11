@@ -102,34 +102,6 @@ namespace DiscordTextAdventure.Mechanics
         
         
         #endregion
-        
-
-        
-        public virtual void OnLook(PhraseResponseEventArgs e)
-        {
-            // if (e.RoomOfPhrase.)
-        }
-
-        public virtual void OnHit(Phrase phrase)
-        {
-            // IndirectObjectTable.Axe.ContainsCompoundWord(phrase.IndirectObject);
-            // if (phrase.IndirectObject.Equals(IndirectObjectTable.Axe))
-        }
-
-        public async Task LookAtDefault(PhraseResponseEventArgs e)
-        {
-            await e.RoomOfPhrase.Renderer.Channel.SendMessageAsync(Description);
-        }
-        
-        public void CannotPickupDefault(PhraseResponseEventArgs e)
-        {
-            e.Message.Channel.SendMessageAsync($"Cannot take {Name}");
-        }
-        public void NoSensePickupDefault(PhraseResponseEventArgs e)
-        {
-            e.Message.Channel.SendMessageAsync("What would that even mean?");
-        }
-        public void CanPickupDefault(Session session) => throw new NotImplementedException();
 
 
 
