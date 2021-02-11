@@ -44,6 +44,9 @@ namespace DiscordTextAdventure.Mechanics.Responses
         public PhraseResponse MeganSlide;
         public PhraseResponse MeganPepe;
         public PhraseResponse MeganBot;
+        public PhraseResponse MeganFarm;
+        public PhraseResponse MeganFarmEmoji;
+        public PhraseResponse MeganBeanBag;
         
         public PhraseResponse BotResponse;
         public PhraseResponse BotFarmTravel;
@@ -72,7 +75,7 @@ namespace DiscordTextAdventure.Mechanics.Responses
             MoveResponse = new PhraseResponse( new PhraseBlueprint(VerbTable.Inspect, null, null, null, null), LookResponseAction, null);
             LookResponse = new PhraseResponse( new PhraseBlueprint(VerbTable.Move, NounTable.Legs, null, null, null), MoveResponseAction, null);
             
-            FarmNoRoom = new PhraseResponse(new PhraseBlueprint(null, NounTable.TheFarm, null, null, null), e =>
+            FarmNoRoom = new PhraseResponse(new PhraseBlueprint(null, NounTable.TheFarmEmoji, null, null, null), e =>
             {
                 if (e.RoomOfPhrase == e.Session.RoomManager.Office)
                     return;
@@ -132,7 +135,7 @@ namespace DiscordTextAdventure.Mechanics.Responses
             string hintResponse =
                 "I can small talk all day, but if I were you i'd take some time to collect my thoughts and ask about something around the office while you have this opportunity!";
 
-            string welcomeResponse = "So you must be the lucky contest winner! The names, Megan, I’m the senior and chief managing, administrative and creative director in training at *Dissonance*. We really value our customers time, if there's anything around the office you want to ask me about, I'm here!";
+            string welcomeResponse = "So you must be the lucky contest winner! The name's, Megan, I’m the senior and chief managing, administrative and creative director in training at *Dissonance*.\n> We really value our customers time, **if there's anything around the office you want to ask me about, I'm here!**";
             
             MeganHi01 = new PhraseResponse(
                 new PhraseBlueprint(VerbTable.Salutation, null, null, null, new[] {roomManager.Megan}),
@@ -220,7 +223,7 @@ namespace DiscordTextAdventure.Mechanics.Responses
                         return;
                     }
                     
-                    e.RoomOfPhrase.DissoanceChannel.SendMessageAsync($"The name tags were from our former team of engineers. We used to own more of this space and have hundreds of workers, but when everything moved to the cloud, we were able to operate with a fraction of the staff. Now all the brains of the Dissonance are housed in the ***Server Farm***, or just ***The Farm*** as we call it around the office. This place’s main purpose is PR now, but we have a couple of Engineers still working on the ***Meme Machine***. But all our hardware is now stored at ***The Farm*** now, we're so excited that we even developed a custom emote for the ***The Farm*** so people can join the conversation!");
+                    e.RoomOfPhrase.DissoanceChannel.SendMessageAsync($"The name tags were from our former team of engineers. We used to own more of this space and have hundreds of workers, but when everything moved to the cloud, we were able to operate with a fraction of the staff. Now all the brains of the Dissonance are housed in the ***Server Farm***, or just ***The Farm*** as we call it around the office. This place’s main purpose is PR now, but we have a couple of Engineers still working on the ***Meme Bot***. But all our hardware is now stored at ***The Farm*** now, we're so excited that we even developed a custom emote for the ***The Farm*** so people can join the conversation!");
                 }, null);
             
             MeganBot = new PhraseResponse(new PhraseBlueprint(NounTable.MemeBot, new []{roomManager.Megan}),
@@ -281,13 +284,25 @@ namespace DiscordTextAdventure.Mechanics.Responses
                         return;
                     }
 
-                    e.RoomOfPhrase.DissoanceChannel.SendMessageAsync($"We're a cutting edge, tech forward, social media platform. We're excited to have recently moved all our hardware to ***The (server) Farm***, we even have a custom emote which users can now use to share their excitement!");
+                    e.RoomOfPhrase.DissoanceChannel.SendMessageAsync($"We're a cutting edge, tech forward, social media platform. We're excited to have recently moved all our hardware to ***The (server) Farm***, we even have **a custom emoji** which users like yourself can now use to share their excitement!");
                 }, null);
             
-            MeganDissonance = new PhraseResponse(new PhraseBlueprint( NounTable.TheFarm, new []{roomManager.Megan}),
+            MeganFarmEmoji = new PhraseResponse(new PhraseBlueprint( NounTable.TheFarmEmoji, new []{roomManager.Megan}),
                 e =>
                 {
                     e.RoomOfPhrase.DissoanceChannel.SendMessageAsync($"I'm so glad to see you inspired by ***The Farm*** Emoji! We've been really excited to move all of our computing power to the cloud.");
+                }, null);
+            
+            MeganFarm = new PhraseResponse(new PhraseBlueprint( NounTable.TheFarm, new []{roomManager.Megan}),
+                e =>
+                {
+                    e.RoomOfPhrase.DissoanceChannel.SendMessageAsync($"***The Farm*** is the cutting edge facility where we now house all of our hardware necessary for Dissonance operations. We're so excited that we created a custom emoji that can be used around the office to promote this tech forward happening.");
+                }, null);
+            
+            MeganBeanBag = new PhraseResponse(new PhraseBlueprint( NounTable.BeanBagChairs, new []{roomManager.Megan}),
+                e =>
+                {
+                    e.RoomOfPhrase.DissoanceChannel.SendMessageAsync($"The Bean Bag Chairs help promote the dynamic and casual environment that Dissonance is so proud of.");
                 }, null);
             
             
@@ -305,7 +320,7 @@ namespace DiscordTextAdventure.Mechanics.Responses
                         if (e.Session.timesMessagedMemeBotNoDM == 1)
                         {
                             e.Session.RoomManager.MemeDM.RoomOwnerChannel.SendMessageAsync(
-                                "\n🤫🤫🤫🤫🤫🤫🤫🤫🤫\n > 🧍 ➡ 🐈 ➡ 🌐 ➡ 🖥️ ➡ ⛏ ➡ 🚫 ➡ 😄\n. . .");
+                                "\n🤫🤫🤫🤫🤫🤫🤫🤫🤫\n > 🧍 ➡ 🐈 ➡ 🌐 ➡ 🖥️ ➡ 🪓 ➡ 🚫 ➡ 😄\n. . .");
                         }
                         
                         if (e.Session.timesMessagedMemeBotNoDM % 3 == 1)
@@ -320,7 +335,7 @@ namespace DiscordTextAdventure.Mechanics.Responses
                 }, null);
             
             BotFarmTravel = new PhraseResponse(
-                new PhraseBlueprint(NounTable.TheFarm, new[] {roomManager.Office}),
+                new PhraseBlueprint(NounTable.TheFarmEmoji, new[] {roomManager.Office}),
                 e =>
                 {
                     var bot = e.RoomOfPhrase.TryFindFirstObject(NounTable.MemeBot);

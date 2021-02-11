@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using Discord;
 using DiscordTextAdventure.Mechanics.Rooms;
+using DiscordTextAdventure.Mechanics.User;
 using DiscordTextAdventure.Parsing.DataStructures;
 using DiscordTextAdventure.Reflection;
 
@@ -104,9 +105,14 @@ namespace DiscordTextAdventure.Mechanics.Responses
 
             Task InterestingLinkCheck (LinkResponseEventArgs e, string[] relevantWords, Room relevantRoom, RandomPhrasePicker phraseOnRelevant, RandomPhrasePicker phraseOnNotRelevant, int wordsThatMustMatch)
             {
-                if (e.PostedRoom.RoomOwnerChannel.Id == relevantRoom.RoomOwnerChannel.Id
-                    && e.Link.IsValid)
+                if (e.PostedRoom.RoomOwnerChannel.Id == relevantRoom.RoomOwnerChannel.Id && e.Link.IsValid)
                 {
+                    if (e.Session.Player!.Role == Player.RoleTypes.Magikarp)
+                    {
+                        e.PostedRoom.RoomOwnerChannel.SendMessageAsync("It doesn't matter what one posts, if they're a Magikarp, it won't be taking seriously.\nAs a wise man once said: \"The Body Is The Message, if you're a useless fish\"");
+                        return Task.CompletedTask;
+                    }
+                    
                     if (ContainsWords(e.Link.Words, relevantWords, wordsThatMustMatch))
                     {
                         e.PostedRoom.RoomOwnerChannel.SendMessageAsync(phraseOnRelevant.GetNextPhrase());

@@ -302,6 +302,7 @@ namespace DiscordTextAdventure.Mechanics.Responses
                     "\nWe fall onto the floor as legs dissolve into a fin." +
                     "\nLips fade into bone" +
                     "\nWe flop uselessly on the floor, breaths become painful, and mobility is hopeless." +
+                    "\nWe cannot traverse channels in this state." +
                     "\nWe're a Magikarp");
                 
                 e.PostedRoom.DissoanceChannel.SendMessageAsync("It's not very effective!");

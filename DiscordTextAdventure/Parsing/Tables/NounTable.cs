@@ -14,15 +14,17 @@ namespace DiscordTextAdventure.Parsing.Tables
         public static readonly SynonymCollection Flags = new SynonymCollection("flags", "flag", "nationalities", "national-flags");
         public static readonly SynonymCollection NameTags = new SynonymCollection("name tags","names","tags");
         public static readonly SynonymCollection Tarp = new SynonymCollection("tarp", "cover","blanket");
-        public static readonly SynonymCollection MemeBot = new SynonymCollection("meme bot", "bot", "memer","meme machine", "meme-machine");
-        public static readonly SynonymCollection Slide = new SynonymCollection("slide");
+        public static readonly SynonymCollection MemeBot = new SynonymCollection("meme bot", "bot", "memer","meme machine", "meme machine", "meme generator");
+        public static readonly SynonymCollection Slide = new SynonymCollection("slide", "slides");
         public static readonly SynonymCollection Fridge = new SynonymCollection("fridge", "refrigerator");
         public static readonly SynonymCollection Megan = new SynonymCollection("megan", "creative director", "director", "employee");
         public static readonly SynonymCollection Dissonance = new SynonymCollection("dissonance");
-        public static readonly SynonymCollection TheFarm = new SynonymCollection("<:the_farm:806894562320449566>");
+        public static readonly SynonymCollection TheFarmEmoji = new SynonymCollection("<:the_farm:806894562320449566>");
+        public static readonly SynonymCollection TheFarm = new SynonymCollection("the farm", "farms");
         public static readonly SynonymCollection ServerRacks = new SynonymCollection("computer", "server", "server rack", "server racks", "computers", "servers");
         public static readonly SynonymCollection Panel = new SynonymCollection("panel", "screen", "lcd screen", "lcd");
         public static readonly SynonymCollection Pepe = new SynonymCollection("pepe", "frog", "pepe the frog");
+        public static readonly SynonymCollection BeanBagChairs = new SynonymCollection("bean bag chair", "bean bag chairs", "bean bag");
 
 
         public static readonly SynonymCollection[] Nouns;

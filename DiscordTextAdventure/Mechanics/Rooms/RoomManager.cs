@@ -115,7 +115,7 @@ namespace DiscordTextAdventure.Mechanics.Rooms
             #region the office
             Office = Room.CreateGuildRoom("Office", TheCloud)
                 .WithStaticDescriptions(
-                    "The feng shui of space is decided by a full sized, tubular slide which protrudes through the myriad of pipes and vents on the ceiling, coming to rest in the center of the room. On one side of the room, a glass fridge with a big cursive label \"Organic\" houses mason jars with green juices and smoothies. Another wall is covered in flags, all of them national, except for a larger flag in the center which wields the company logo instead. Bean bag chairs litter the hardwood. A tarp with *Pepe The Frog* printed on it is draped over a pedestal next to the slide’s entrance.")
+                    "The feng shui of space is decided by a full sized, tubular **slide** which protrudes through the myriad of pipes and vents on the ceiling, coming to rest in the center of the room. On one side of the room, a glass **fridge** with a big cursive label \"Organic\" houses mason jars with green juices and smoothies. Another wall is covered in **flags**, all of them national, except for a larger flag in the center which wields the company logo instead. **Bean bag chairs** litter the hardwood. A **tarp** with *Pepe The Frog* printed on it is draped over a pedestal next to the slide’s entrance.")
                 .WithObjects(
                     new AdventureObject(
                         NounTable.Tarp,
