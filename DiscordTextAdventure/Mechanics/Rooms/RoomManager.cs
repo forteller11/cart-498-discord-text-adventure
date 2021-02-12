@@ -131,7 +131,7 @@ namespace DiscordTextAdventure.Mechanics.Rooms
                                 return;
                             
                             room.DissoanceChannel.SendMessageAsync(
-                                "You take off the tarp to reveal a metal box with a small screen, engraved on its chassis: \"⚙ The Meme Machine  ⚙, by Dissonance R&D\"");        
+                                "You take off the tarp to reveal a metal box with a small screen, engraved on its chassis: \"⚙ The Meme Bot  ⚙, by Dissonance R&D\"");        
                             room.MemeChannel.SendMessageAsync("👋");
 
                             var tarp = room.TryFindFirstObject(NounTable.Tarp);

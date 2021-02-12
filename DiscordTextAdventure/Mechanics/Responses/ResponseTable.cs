@@ -238,7 +238,7 @@ namespace DiscordTextAdventure.Mechanics.Responses
                         return;
                     }
                     
-                    e.RoomOfPhrase.DissoanceChannel.SendMessageAsync($"I’m glad you asked! The ***Meme-Machine*** is a project we’re developing to reimagine advertising in a new digital, interconnected age. Memes spread across international and economic borders, we’re trying to harness that potential to communicate to, and expand our client base. The only problem is that it’s hard to transform products into original, viral memes. So, we’re developing a bot that will be able to intelligently do that for us! The only problem is right now it can only understand and communicate in emojis, and it only currently works on cats and cat-related products. If only Dissonance had access to kitty litter supply chains, we could turn them into viral memes and dominate the markets!");
+                    e.RoomOfPhrase.DissoanceChannel.SendMessageAsync($"I’m glad you asked! The ***Meme Bot*** is a project we’re developing to reimagine advertising in a new digital, interconnected age. Memes spread across international and economic borders, we’re trying to harness that potential to communicate to, and expand our client base. The only problem is that it’s hard to transform products into original, viral memes. So, we’re developing a bot that will be able to intelligently do that for us! The only problem is right now it can only understand and communicate in emojis, and it only currently works on cats and cat-related products. If only Dissonance had access to kitty litter supply chains, we could turn them into viral memes and dominate the markets!");
                 }, null);
             
             
@@ -300,6 +300,7 @@ namespace DiscordTextAdventure.Mechanics.Responses
                 e =>
                 {
                     e.RoomOfPhrase.DissoanceChannel.SendMessageAsync($"***The Farm*** is the cutting edge facility where we now house all of our hardware necessary for Dissonance operations. We're so excited that we created a **custom emoji** that can be used around the office to promote this tech forward happening.");
+                    e.Session.RoomManager.BodyDM.RoomOwnerChannel.SendMessageAsync($"We have to find get to *The Farm* so we can tamper with company hardware. We don't know where it is... but we know it must be connected to the internet.");
                 }, null);
             
             MeganBeanBag = new PhraseResponse(new PhraseBlueprint( NounTable.BeanBagChairs, new []{roomManager.Megan}),
