@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
 using chext.Mechanics;
@@ -85,7 +86,7 @@ namespace DiscordTextAdventure.Mechanics.Responses
 
             #endregion
 
-        MagikarpRole = new ReactionResponse(new ReactionBlueprint(NoEntry, ReactionBlueprint.OnReactionTrigger.OnAdd),
+        BanAcknowledge = new ReactionResponse(new ReactionBlueprint(NoEntry, ReactionBlueprint.OnReactionTrigger.OnAdd),
             e =>
             {
                 e.Session.RoomManager.DissonanceDM.RoomOwnerChannel.SendMessageAsync("```diff\n-You've Been Banned.\n```");
